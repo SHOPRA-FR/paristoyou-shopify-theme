@@ -337,10 +337,15 @@
     "contact": {
       "type": "contact-cta",
       "settings": {}
+    },
+    "ticker": {
+      "type": "price-ticker",
+      "settings": {}
     }
   },
   "order": [
     "hero",
+    "ticker",
     "why",
     "how",
     "pricing",

@@ -16,7 +16,7 @@
       --dark:#0f1512; --accent:#12b886; --accent-soft:#a7e8d0;
     }
   </style>
-  <link rel="stylesheet" href="assets/base.css?v=3">
+  <link rel="stylesheet" href="assets/base.css?v=4">
 </head>
 <body class="template-index">
 
@@ -29,6 +29,7 @@
         <a href="#how">How it works</a>
         <a href="#pricing">Pricing</a>
         <a href="selection.html">Selection</a>
+        <a href="catalogue.html">Catalogue</a>
         <a href="liste.html">My list</a>
       </nav>
       <div class="header-actions">
@@ -64,6 +65,12 @@
           <div><strong>🌍</strong><span>Europe & worldwide</span></div>
         </div>
       </div>
+    </section>
+
+    <!-- section: price ticker (banderole derniers prix) -->
+    <section class="price-ticker" style="--ticker-speed:60s">
+      <span class="ticker-label">LATEST PRICES SPOTTED</span>
+      <div class="ticker-viewport"><div class="ticker-track" id="TickerTrack"></div></div>
     </section>
 
     <!-- section: why my service -->
@@ -252,6 +259,21 @@
       track.innerHTML=html;
     })();
 
+    // ------- Démo : ticker des derniers prix (dans Shopify : réglage texte) -------
+    (function(){
+      var T=[["Gucci","GG Marmont small",1290,1980,"04/07"],["Moncler","Maya down jacket",840,1450,"04/07"],
+        ["Balenciaga","Le City small",1190,1900,"04/07"],["Christian Louboutin","So Kate 120",495,795,"04/07"],
+        ["Burberry","Check cashmere scarf",290,470,"04/07"],["Longchamp","Le Pliage original",95,145,"04/07"],
+        ["Polo Ralph Lauren","Cable-knit sweater",89,159,"04/07"],["Guerlain","La Petite Robe Noire 100ml",75,142,"04/07"]];
+      var one=T.map(function(t){
+        var pct=Math.round((1-t[2]/t[3])*100);
+        return '<span class="ticker-item"><strong>'+t[0]+'</strong> '+t[1]+' <em>'+t[2]+' \u20ac</em>'+
+          '<span class="ticker-pct">\u2212'+pct+'% vs EU</span><span class="ticker-date">seen '+t[4]+'</span></span>'+
+          '<span class="ticker-sep" aria-hidden="true">\u25c6</span>';
+      }).join("");
+      document.getElementById("TickerTrack").innerHTML=one+one;
+    })();
+
     // ------- Démo : selection cards (dans Shopify : blocks avec image_picker) -------
     (function(){
       var items=[
@@ -294,6 +316,6 @@
       }
     })();
   </script>
-  <script src="assets/theme.js?v=3"></script>
+  <script src="assets/theme.js?v=4"></script>
 </body>
 </html>

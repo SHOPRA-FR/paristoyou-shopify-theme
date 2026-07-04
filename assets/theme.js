@@ -113,6 +113,52 @@
     simUpdate(simNum.value, "");
   }
 
+  // Brand catalog — filtres marque / audience / catégorie / recherche
+  var catGrid = document.getElementById("CatGrid");
+  if (catGrid) {
+    var cards = [].slice.call(catGrid.querySelectorAll(".cat-card"));
+    var selBrand = document.getElementById("CatBrand");
+    var selAud = document.getElementById("CatAudience");
+    var selCat = document.getElementById("CatCategory");
+    var catSearch = document.getElementById("CatSearch");
+    var catCount = document.getElementById("CatCount");
+    var catNone = document.getElementById("CatNone");
+
+    // options construites depuis les données des cartes
+    var fill = function (sel, attr) {
+      var vals = [];
+      cards.forEach(function (c) {
+        var v = c.dataset[attr];
+        if (v && vals.indexOf(v) === -1) vals.push(v);
+      });
+      vals.sort().forEach(function (v) {
+        var o = document.createElement("option");
+        o.value = v; o.textContent = v.charAt(0).toUpperCase() + v.slice(1);
+        sel.appendChild(o);
+      });
+    };
+    fill(selBrand, "brand"); fill(selAud, "aud"); fill(selCat, "cat");
+
+    var applyCat = function () {
+      var b = selBrand.value, a = selAud.value, k = selCat.value;
+      var q = (catSearch.value || "").trim().toLowerCase();
+      var n = 0;
+      cards.forEach(function (c) {
+        var show = (!b || c.dataset.brand === b) &&
+                   (!a || c.dataset.aud === a) &&
+                   (!k || c.dataset.cat === k) &&
+                   (!q || c.dataset.search.indexOf(q) !== -1);
+        c.style.display = show ? "" : "none";
+        if (show) n++;
+      });
+      if (catCount) catCount.textContent = n;
+      if (catNone) catNone.hidden = n !== 0;
+    };
+    [selBrand, selAud, selCat].forEach(function (s) { s.addEventListener("change", applyCat); });
+    catSearch.addEventListener("input", applyCat);
+    applyCat();
+  }
+
   // Product: thumbnail gallery
   var main = document.getElementById("ProductMainImage");
   if (main) {

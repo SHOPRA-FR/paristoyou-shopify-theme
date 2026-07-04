@@ -1,0 +1,107 @@
+{%- comment -%}
+  Catalogue des produits de référence par marque.
+  Une ligne de réglage = un produit repéré en boutique :
+    Marque|audience|catégorie|Produit|Prix outlet €|Prix public EU €|Date YYYY-MM-DD|image (assets/xxx.jpg ou URL, optionnel)
+  audience : homme / femme / enfant / mixte
+  catégories standard : chemise, pantalon, robe, chaussures, accessoires,
+  lunettes de soleil, sac, sous-vêtements, pantoufle, basket, montre,
+  téléphone, ordinateur, tablette, montre connectée, parfum
+  Filtres (marque, audience, catégorie, recherche) générés côté client.
+{%- endcomment -%}
+
+<section class="section catalog-section" id="catalog">
+  <div class="container">
+    <p class="kicker center">{{ section.settings.kicker }}</p>
+    <h1 class="center">{{ section.settings.title }}</h1>
+    <p class="lead center">{{ section.settings.subtitle }}</p>
+
+    <div class="catalog-toolbar" id="CatToolbar">
+      <input type="search" id="CatSearch" placeholder="{{ section.settings.search_ph }}" aria-label="Search">
+      <select id="CatBrand" aria-label="Brand"><option value="">{{ section.settings.all_brands }}</option></select>
+      <select id="CatAudience" aria-label="Audience"><option value="">{{ section.settings.all_audiences }}</option></select>
+      <select id="CatCategory" aria-label="Category"><option value="">{{ section.settings.all_categories }}</option></select>
+    </div>
+    <p class="catalog-count"><span id="CatCount">0</span> {{ section.settings.count_label }}</p>
+
+    <div class="sel-grid catalog-grid" id="CatGrid">
+      {%- capture nl %}
+{% endcapture -%}
+      {%- assign lines = section.settings.items | strip | split: nl -%}
+      {%- for line in lines -%}
+        {%- assign p = line | strip | split: '|' -%}
+        {%- if p[0] == blank -%}{% continue %}{%- endif -%}
+        {%- assign brand = p[0] | strip -%}
+        {%- assign aud = p[1] | strip | downcase -%}
+        {%- assign cat = p[2] | strip | downcase -%}
+        {%- assign item = p[3] | strip -%}
+        {%- assign outlet = p[4] | strip | times: 1.0 -%}
+        {%- assign public = p[5] | strip | times: 1.0 -%}
+        {%- assign img = p[7] | strip -%}
+        <article class="sel-card cat-card" data-brand="{{ brand | escape }}" data-aud="{{ aud }}" data-cat="{{ cat }}"
+                 data-search="{{ brand | downcase }} {{ item | downcase }} {{ cat }}">
+          <div class="sel-media">
+            {%- if img != blank -%}
+              {%- if img contains '//' -%}
+                <img src="{{ img }}" alt="{{ item | escape }}" width="640" height="640" loading="lazy">
+              {%- else -%}
+                <img src="{{ img | asset_url }}" alt="{{ item | escape }}" width="640" height="640" loading="lazy">
+              {%- endif -%}
+            {%- else -%}
+              <div class="cat-noimg"><span>📷</span>{{ section.settings.photo_soon }}</div>
+            {%- endif -%}
+            {%- if public > outlet -%}
+              {%- assign pct = outlet | divided_by: public | times: -100 | plus: 100 | round -%}
+              <span class="sel-badge">−{{ pct }}%</span>
+            {%- endif -%}
+          </div>
+          <div class="sel-info">
+            <span class="sel-brand">{{ brand }}</span>
+            <span class="sel-item">{{ item }}</span>
+            <span class="cat-chips"><span class="cat-chip">{{ aud }}</span><span class="cat-chip">{{ cat }}</span></span>
+            <span class="sel-price">
+              {%- if public > outlet -%}<s>{{ p[5] | strip }} €</s>{%- endif -%}
+              {{ p[4] | strip }} €
+            </span>
+            {%- if p[6] != blank -%}
+              {%- assign d = p[6] | strip | split: '-' -%}
+              <span class="cat-date">{{ section.settings.seen_label }} {{ d[2] }}/{{ d[1] }}/{{ d[0] }}</span>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    <p class="brands-none" id="CatNone" hidden>{{ section.settings.none_label }}</p>
+
+    {%- if section.settings.cta_label != blank -%}
+      <p class="center sel-cta"><a href="{{ section.settings.cta_link | default: '/pages/my-list' }}" class="btn btn-dark">{{ section.settings.cta_label }}</a></p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand catalog",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Reference catalogue" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Spotted in boutique, price-checked" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Flagship products I identified in the Paris outlets — photographed in boutique with the price and the date it was checked. Ask for any of them, or anything similar." },
+    { "type": "text", "id": "search_ph", "label": "Search placeholder", "default": "Search a product…" },
+    { "type": "text", "id": "all_brands", "label": "All brands option", "default": "All brands" },
+    { "type": "text", "id": "all_audiences", "label": "All audiences option", "default": "Men · Women · Kids" },
+    { "type": "text", "id": "all_categories", "label": "All categories option", "default": "All categories" },
+    { "type": "text", "id": "count_label", "label": "Count label", "default": "reference products" },
+    { "type": "text", "id": "seen_label", "label": "Date prefix", "default": "price checked" },
+    { "type": "text", "id": "photo_soon", "label": "No-photo placeholder", "default": "Photo coming soon" },
+    { "type": "text", "id": "none_label", "label": "No result", "default": "No match — ask me anyway, I will find it." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Add to my shopping list" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    {
+      "type": "textarea",
+      "id": "items",
+      "label": "Produits (Marque|audience|catégorie|Produit|Outlet €|Public EU €|Date|image)",
+      "default": "Gucci|femme|sac|GG Marmont small|1290|1980|2026-07-04|sel-gucci.jpg\nMoncler|femme|accessoires|Maya down jacket|840|1450|2026-07-04|sel-moncler.jpg\nBalenciaga|femme|sac|Le City small|1190|1900|2026-07-04|sel-balenciaga.jpg\nChristian Louboutin|femme|chaussures|So Kate 120|495|795|2026-07-04|sel-louboutin.jpg\nBurberry|mixte|accessoires|Check cashmere scarf|290|470|2026-07-04|sel-burberry.jpg\nLongchamp|femme|sac|Le Pliage original|95|145|2026-07-04|sel-longchamp.jpg\nPolo Ralph Lauren|homme|chemise|Oxford shirt|59|119|2026-07-04|\nPolo Ralph Lauren|homme|pantalon|Chino slim|69|125|2026-07-04|\nGolden Goose|femme|basket|Super-Star|285|455|2026-07-04|\nGuerlain|femme|parfum|La Petite Robe Noire 100ml|75|142|2026-07-04|\nMontblanc|homme|montre|Tradition Automatic|1490|2350|2026-07-04|\nGucci|femme|lunettes de soleil|GG oversized|189|320|2026-07-04|\nMax Mara|femme|robe|Wool midi dress|390|690|2026-07-04|\nBonpoint|enfant|chemise|Liberty blouse|65|120|2026-07-04|\nUGG|mixte|pantoufle|Scuff slipper|59|100|2026-07-04|\nCalvin Klein|homme|sous-vêtements|Trunk 3-pack|29|55|2026-07-04|"
+    }
+  ],
+  "presets": [{ "name": "Brand catalog" }]
+}
+{% endschema %}

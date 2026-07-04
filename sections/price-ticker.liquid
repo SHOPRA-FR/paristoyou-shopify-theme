@@ -1,0 +1,58 @@
+{%- comment -%}
+  Banderole « derniers prix constatés » — marquee horizontal infini.
+  Une ligne de réglage = un relevé :
+    Marque|Produit|Prix outlet €|Prix public EU € (optionnel)|Date YYYY-MM-DD
+  Le % de réduction vs prix public Europe est calculé automatiquement.
+{%- endcomment -%}
+
+<section class="price-ticker" style="--ticker-speed:{{ section.settings.speed }}s">
+  {%- if section.settings.label != blank -%}
+    <span class="ticker-label">{{ section.settings.label }}</span>
+  {%- endif -%}
+  <div class="ticker-viewport">
+    <div class="ticker-track">
+      {%- capture nl %}
+{% endcapture -%}
+      {%- assign lines = section.settings.items | strip | split: nl -%}
+      {%- for rep in (1..2) -%}
+        {%- for line in lines -%}
+          {%- assign p = line | strip | split: '|' -%}
+          {%- if p[0] == blank -%}{% continue %}{%- endif -%}
+          {%- assign outlet = p[2] | strip | times: 1.0 -%}
+          {%- assign public = p[3] | strip | times: 1.0 -%}
+          <span class="ticker-item">
+            <strong>{{ p[0] | strip }}</strong> {{ p[1] | strip }}
+            <em>{{ p[2] | strip }} €</em>
+            {%- if public > outlet -%}
+              {%- assign pct = outlet | divided_by: public | times: -100 | plus: 100 | round -%}
+              <span class="ticker-pct">−{{ pct }}% vs EU</span>
+            {%- endif -%}
+            {%- if p[4] != blank -%}
+              {%- assign d = p[4] | strip | split: '-' -%}
+              <span class="ticker-date">{{ section.settings.seen_label }} {{ d[2] }}/{{ d[1] }}</span>
+            {%- endif -%}
+          </span>
+          <span class="ticker-sep" aria-hidden="true">◆</span>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Price ticker",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Badge label", "default": "LATEST PRICES SPOTTED" },
+    { "type": "text", "id": "seen_label", "label": "Date prefix", "default": "seen" },
+    { "type": "range", "id": "speed", "min": 20, "max": 120, "step": 5, "unit": "s", "label": "Scroll duration", "default": 60 },
+    {
+      "type": "textarea",
+      "id": "items",
+      "label": "Relevés (Marque|Produit|Outlet €|Public EU €|Date)",
+      "default": "Gucci|GG Marmont small|1290|1980|2026-07-04\nMoncler|Maya down jacket|840|1450|2026-07-04\nBalenciaga|Le City small|1190|1900|2026-07-04\nChristian Louboutin|So Kate 120|495|795|2026-07-04\nBurberry|Check cashmere scarf|290|470|2026-07-04\nLongchamp|Le Pliage original|95|145|2026-07-04\nPolo Ralph Lauren|Cable-knit sweater|89|159|2026-07-04\nGuerlain|La Petite Robe Noire 100ml|75|142|2026-07-04"
+    }
+  ],
+  "presets": [{ "name": "Price ticker" }]
+}
+{% endschema %}
