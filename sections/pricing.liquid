@@ -1,32 +1,69 @@
-<section class="section section-dark" id="pricing">
+{%- comment -%}
+  Pricing + SIMULATEUR de commission.
+  Barème : {{ settings.commission_rate }}% du montant des achats,
+  minimum {{ settings.commission_min }} €. Pas de minimum d'achat.
+  Le simulateur (assets/theme.js) lit les data-attributes ci-dessous.
+{%- endcomment -%}
+
+<section class="section section-dark" id="pricing"
+  data-sim-rate="{{ settings.commission_rate | default: 20 }}"
+  data-sim-min="{{ settings.commission_min | default: 300 }}">
   <div class="container">
     {%- if section.settings.kicker != blank -%}<p class="kicker center accent">{{ section.settings.kicker }}</p>{%- endif -%}
     {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+
     <div class="pricing-grid">
-      <div class="price-hero">
-        <span class="price-big">{{ settings.commission_rate }}%</span>
-        <span class="price-label">{{ section.settings.rate_label }}</span>
-        <p class="price-incl">{{ section.settings.rate_note }}</p>
+      <div>
+        <div class="price-hero">
+          <span class="price-big">{{ settings.commission_rate }}%</span>
+          <span class="price-label">{{ section.settings.rate_label }}</span>
+          <p class="price-incl">{{ section.settings.rate_note }}</p>
+        </div>
+        <ul class="price-list">
+          {%- for block in section.blocks -%}
+            <li {{ block.shopify_attributes }}{% if block.settings.muted %} class="muted"{% endif %}>
+              <span>{{ block.settings.label }}</span><strong>{{ block.settings.value }}</strong>
+            </li>
+          {%- endfor -%}
+        </ul>
       </div>
-      <ul class="price-list">
-        {%- for block in section.blocks -%}
-          <li {{ block.shopify_attributes }}{% if block.settings.muted %} class="muted"{% endif %}>
-            <span>{{ block.settings.label }}</span><strong>{{ block.settings.value }}</strong>
-          </li>
-        {%- endfor -%}
-      </ul>
+
+      <aside class="sim-card">
+        <h3>{{ section.settings.sim_title }}</h3>
+        <label class="sim-label" for="SimAmountNum">{{ section.settings.sim_label }}</label>
+        <input type="range" id="SimAmount" min="0" max="10000" step="100" value="1500">
+        <input type="number" id="SimAmountNum" min="0" step="50" value="1500" inputmode="numeric">
+        <div class="sim-rows">
+          <div class="sim-row"><span>{{ section.settings.sim_purchases }}</span><strong id="SimPurchases">—</strong></div>
+          <div class="sim-row"><span id="SimCommissionLabel">{{ section.settings.sim_commission }}</span><strong id="SimCommission">—</strong></div>
+          <div class="sim-row sim-total"><span>{{ section.settings.sim_total }}</span><strong id="SimTotal">—</strong></div>
+        </div>
+        <div class="sim-examples" id="SimExamples">
+          <button type="button" data-amount="100">100 € → 300 €</button>
+          <button type="button" data-amount="1000">1 000 € → 300 €</button>
+          <button type="button" data-amount="1500">1 500 € → 300 €</button>
+          <button type="button" data-amount="2000">2 000 € → 400 €</button>
+        </div>
+        <p class="sim-note">{{ section.settings.sim_note }}</p>
+      </aside>
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Pricing",
+  "name": "Pricing + simulator",
   "settings": [
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Pricing" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Simple, all-inclusive" },
-    { "type": "text", "id": "rate_label", "label": "Rate label", "default": "commission on total purchases" },
-    { "type": "textarea", "id": "rate_note", "label": "Rate note", "default": "Includes travel to the outlets, in-store sourcing, photos, secure packaging and handling." }
+    { "type": "text", "id": "title", "label": "Title", "default": "Simple, transparent fees" },
+    { "type": "text", "id": "rate_label", "label": "Rate label", "default": "commission on your purchases" },
+    { "type": "textarea", "id": "rate_note", "label": "Rate note", "default": "Minimum commission 300 €. No minimum purchase. Includes outlet trips, in-store scouting, photos & phone debrief, secure packing and shipment handling." },
+    { "type": "text", "id": "sim_title", "label": "Simulator title", "default": "Commission simulator" },
+    { "type": "text", "id": "sim_label", "label": "Simulator input label", "default": "Amount of your purchases (€)" },
+    { "type": "text", "id": "sim_purchases", "label": "Purchases row label", "default": "Your purchases" },
+    { "type": "text", "id": "sim_commission", "label": "Commission row label", "default": "My commission" },
+    { "type": "text", "id": "sim_total", "label": "Total row label", "default": "Estimated total" },
+    { "type": "textarea", "id": "sim_note", "label": "Simulator note", "default": "Indicative estimate before delivery. A firm quote is validated together before any deposit." }
   ],
   "blocks": [
     {
@@ -41,14 +78,13 @@
   ],
   "presets": [
     {
-      "name": "Pricing",
+      "name": "Pricing + simulator",
       "blocks": [
-        { "type": "row", "settings": { "label": "Minimum order", "value": "500 €" } },
-        { "type": "row", "settings": { "label": "Minimum commission", "value": "150 €" } },
-        { "type": "row", "settings": { "label": "Live shopping option", "value": "+10% (40% total)" } },
-        { "type": "row", "settings": { "label": "Delivery · Colissimo Zone C (by weight)", "value": "from 35,19 €" } },
-        { "type": "row", "settings": { "label": "Payment", "value": "100% upfront · Wise / PayPal" } },
-        { "type": "row", "settings": { "label": "Turkish customs duties", "value": "client's responsibility (~20%)", "muted": true } }
+        { "type": "row", "settings": { "label": "Minimum purchase", "value": "None" } },
+        { "type": "row", "settings": { "label": "Minimum commission", "value": "300 €" } },
+        { "type": "row", "settings": { "label": "Deposit", "value": "Purchases + provisional fee, validated together" } },
+        { "type": "row", "settings": { "label": "Delivery", "value": "Tracked parcel · Europe & worldwide" } },
+        { "type": "row", "settings": { "label": "Destination customs duties", "value": "client's responsibility", "muted": true } }
       ]
     }
   ]

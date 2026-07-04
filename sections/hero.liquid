@@ -1,55 +1,85 @@
-<section class="hero" {% if section.settings.bg_image %}style="--hero-img:url('{{ section.settings.bg_image | image_url: width: 2000 }}')"{% endif %}>
-  <div class="hero-overlay"></div>
-  <div class="container hero-inner">
-    {%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}
-    <h1>{{ section.settings.title }}</h1>
-    {%- if section.settings.subtitle != blank -%}<p class="hero-sub">{{ section.settings.subtitle }}</p>{%- endif -%}
-    <div class="hero-cta">
-      {%- if section.settings.cta1_label != blank -%}<a href="{{ section.settings.cta1_link | default: '#' }}" class="btn btn-accent">{{ section.settings.cta1_label }}</a>{%- endif -%}
-      {%- if section.settings.cta2_label != blank -%}<a href="{{ section.settings.cta2_link | default: '#' }}" class="btn btn-ghost-light">{{ section.settings.cta2_label }}</a>{%- endif -%}
-    </div>
-    {%- if section.blocks.size > 0 -%}
-      <div class="hero-stats">
-        {%- for block in section.blocks -%}
-          <div {{ block.shopify_attributes }}><strong>{{ block.settings.value }}</strong><span>{{ block.settings.label }}</span></div>
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
+{%- comment -%}
+  Hero « filmstrip » : images en translation continue (blocks image),
+  bandeau titre superposé + CTA création de compte / connexion (comptes Shopify).
+{%- endcomment -%}
+
+<section class="hero-strip">
+  <div class="hero-strip-track" style="--slides:{{ section.blocks.size | at_least: 1 }};--speed:{{ section.settings.speed }}s">
+    {%- for i in (1..2) -%}
+      {%- for block in section.blocks -%}
+        <div class="hero-slide" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.image.alt | escape }}"
+                 width="900" height="620" loading="{% if forloop.first and i == 1 %}eager{% else %}lazy{% endif %}">
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slide-ph' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+      {%- if section.blocks.size == 0 -%}
+        <div class="hero-slide">{{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slide-ph' }}</div>
+        <div class="hero-slide">{{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slide-ph' }}</div>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
+
+  <div class="hero-band">
+    <div class="container center">
+      {%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+      <h1>{{ section.settings.title }}</h1>
+      {%- if section.settings.subtitle != blank -%}<p class="hero-band-sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+      <div class="hero-band-cta">
+        {%- if section.settings.show_account -%}
+          <a href="{{ routes.account_register_url }}" class="btn btn-accent">{{ section.settings.cta_register }}</a>
+          <a href="{{ routes.account_login_url }}" class="btn btn-ghost-light">{{ section.settings.cta_login }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta_extra_label != blank -%}
+          <a href="{{ section.settings.cta_extra_link | default: '#brands' }}" class="btn btn-ghost-light">{{ section.settings.cta_extra_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.show_stats -%}
+    <div class="hero-strip-stats">
+      <div class="container hero-stats">
+        <div><strong>120+</strong><span>{{ section.settings.stat1 }}</span></div>
+        <div><strong>-30% / -70%</strong><span>{{ section.settings.stat2 }}</span></div>
+        <div><strong>2 – 2.5×</strong><span>{{ section.settings.stat3 }}</span></div>
+        <div><strong>🌍</strong><span>{{ section.settings.stat4 }}</span></div>
+      </div>
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
-  "name": "Hero",
+  "name": "Hero filmstrip",
   "settings": [
-    { "type": "image_picker", "id": "bg_image", "label": "Background image" },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "PERSONAL SHOPPER · PARIS TO TURKEY" },
-    { "type": "textarea", "id": "title", "label": "Title", "default": "Paris Shopping, Done for You." },
-    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Luxury personal shopping from Paris's finest outlets. 120+ brands, hand-selected, photographed for your approval, delivered to Turkey." },
-    { "type": "text", "id": "cta1_label", "label": "Primary button", "default": "Get started" },
-    { "type": "url", "id": "cta1_link", "label": "Primary button link" },
-    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "How it works" },
-    { "type": "url", "id": "cta2_link", "label": "Secondary button link" }
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "PERSONAL SHOPPER · PARIS → WORLDWIDE" },
+    { "type": "textarea", "id": "title", "label": "Title", "default": "Paris Shopping, Done For You." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Luxury brands at Paris outlet prices — hand-picked for you and shipped across Europe and worldwide." },
+    { "type": "checkbox", "id": "show_account", "label": "Show account buttons", "default": true },
+    { "type": "text", "id": "cta_register", "label": "Register button", "default": "Create my account" },
+    { "type": "text", "id": "cta_login", "label": "Login button", "default": "Sign in" },
+    { "type": "text", "id": "cta_extra_label", "label": "Extra button label", "default": "Browse brands" },
+    { "type": "url", "id": "cta_extra_link", "label": "Extra button link" },
+    { "type": "range", "id": "speed", "min": 20, "max": 80, "step": 5, "unit": "s", "label": "Scroll speed (lower = faster)", "default": 45 },
+    { "type": "checkbox", "id": "show_stats", "label": "Show stats bar", "default": true },
+    { "type": "text", "id": "stat1", "label": "Stat 1 label", "default": "Luxury brands" },
+    { "type": "text", "id": "stat2", "label": "Stat 2 label", "default": "Outlet prices" },
+    { "type": "text", "id": "stat3", "label": "Stat 3 label", "default": "Cheaper than at home" },
+    { "type": "text", "id": "stat4", "label": "Stat 4 label", "default": "Europe & worldwide" }
   ],
   "blocks": [
     {
-      "type": "stat",
-      "name": "Stat",
-      "settings": [
-        { "type": "text", "id": "value", "label": "Value", "default": "120+" },
-        { "type": "text", "id": "label", "label": "Label", "default": "Luxury brands" }
-      ]
+      "type": "slide",
+      "name": "Image",
+      "settings": [ { "type": "image_picker", "id": "image", "label": "Image" } ]
     }
   ],
   "presets": [
-    {
-      "name": "Hero",
-      "blocks": [
-        { "type": "stat", "settings": { "value": "120+", "label": "Luxury brands" } },
-        { "type": "stat", "settings": { "value": "-30% / -70%", "label": "Outlet prices" } },
-        { "type": "stat", "settings": { "value": "5-10 days", "label": "Delivery" } }
-      ]
-    }
+    { "name": "Hero filmstrip", "blocks": [ { "type": "slide" }, { "type": "slide" }, { "type": "slide" }, { "type": "slide" } ] }
   ]
 }
 {% endschema %}

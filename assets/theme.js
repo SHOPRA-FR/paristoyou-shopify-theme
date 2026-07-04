@@ -45,6 +45,38 @@
     });
   }
 
+  // Commission simulator (pricing section) — commission = max(rate%, minimum)
+  var simSection = document.getElementById("pricing");
+  var simRange = document.getElementById("SimAmount");
+  var simNum = document.getElementById("SimAmountNum");
+  if (simSection && simRange && simNum) {
+    var simRate = parseFloat(simSection.dataset.simRate || "20") / 100;
+    var simMin = parseFloat(simSection.dataset.simMin || "300");
+    var simFmt = function (n) {
+      return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n || 0);
+    };
+    var simLabel = document.getElementById("SimCommissionLabel");
+    if (simLabel) simLabel.textContent = simLabel.textContent.split(" · ")[0] +
+      " · " + Math.round(simRate * 100) + "% (min " + simFmt(simMin) + ")";
+
+    var simUpdate = function (val, from) {
+      var a = Math.max(0, parseFloat(val) || 0);
+      if (from !== "range") simRange.value = Math.min(a, parseFloat(simRange.max));
+      if (from !== "num") simNum.value = a;
+      var commission = a > 0 ? Math.max(a * simRate, simMin) : 0;
+      document.getElementById("SimPurchases").textContent = simFmt(a);
+      document.getElementById("SimCommission").textContent = simFmt(commission);
+      document.getElementById("SimTotal").textContent = simFmt(a + commission);
+    };
+    simRange.addEventListener("input", function (e) { simUpdate(e.target.value, "range"); });
+    simNum.addEventListener("input", function (e) { simUpdate(e.target.value, "num"); });
+    var simEx = document.getElementById("SimExamples");
+    if (simEx) simEx.querySelectorAll("button").forEach(function (b) {
+      b.addEventListener("click", function () { simUpdate(b.dataset.amount, ""); });
+    });
+    simUpdate(simNum.value, "");
+  }
+
   // Product: thumbnail gallery
   var main = document.getElementById("ProductMainImage");
   if (main) {

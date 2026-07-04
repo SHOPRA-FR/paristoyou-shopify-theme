@@ -1,7 +1,7 @@
 {
   "current": {
     "logo_text": "paristoyou",
-    "tagline": "Personal Shopper · Paris to Turkey",
+    "tagline": "Personal Shopper · Paris → Europe & Worldwide",
     "color_bg": "#faf8f5",
     "color_surface": "#ffffff",
     "color_text": "#141414",
@@ -14,9 +14,9 @@
     "whatsapp_number": "33600000000",
     "instagram_url": "",
     "contact_email": "contact@paristoyou.com",
-    "commission_rate": "30",
-    "commission_min": "150",
-    "order_min": "500",
+    "commission_rate": "20",
+    "commission_min": "300",
+    "order_min": "0",
     "customs_rate": "20"
   },
   "presets": {

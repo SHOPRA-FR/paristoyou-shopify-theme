@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- APERÇU LOCAL de la page "Selection" du thème (template page.selection). Hors zip. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selection — Aperçu du thème PARISTOYOU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>:root{--bg:#faf8f5;--surface:#fff;--text:#141414;--muted:#6b6b6b;--dark:#0f1512;--accent:#12b886;--accent-soft:#a7e8d0}</style>
+  <link rel="stylesheet" href="assets/base.css?v=2">
+</head>
+<body class="template-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">paristoyou</a>
+      <nav class="main-nav" id="MainNav">
+        <a href="index.html#brands">Brands</a>
+        <a href="index.html#how">How it works</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="selection.html">Selection</a>
+        <a href="liste.html">My list</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#" class="account-link">Sign in</a>
+        <a href="index.html#contact" class="btn btn-accent btn-sm">Contact</a>
+        <button class="burger" id="Burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="MainContent">
+    <section class="section" id="selection">
+      <div class="container">
+        <p class="kicker center">The selection</p>
+        <h2 class="center">Examples by brand, at outlet price</h2>
+        <p class="lead center">A glimpse of what I find at the Paris outlets — unit prices seen in boutique. Your wishlist can be anything from these brands.</p>
+        <div class="sel-grid" id="SelGrid"></div>
+        <p class="center sel-cta"><a href="liste.html" class="btn btn-dark">Build my shopping list</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand"><span class="logo">paristoyou</span><p>Personal Shopper · Paris → Europe & Worldwide</p></div>
+      <p class="footer-rights">© 2026 paristoyou. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var items=[
+        ["Gucci","GG Marmont shoulder bag","1 290 €","1 980 €","-35%","sel-gucci"],
+        ["Moncler","Maya down jacket","840 €","1 450 €","-42%","sel-moncler"],
+        ["Saint Laurent","Loulou medium bag","1 450 €","2 300 €","-37%","sel-ysl"],
+        ["Christian Louboutin","So Kate 120 pumps","495 €","795 €","-38%","sel-loub"],
+        ["Burberry","Check cashmere scarf","290 €","470 €","-38%","sel-burb"],
+        ["Sephora","Luxury beauty set","120 €","180 €","-33%","sel-seph"],
+        ["Longchamp","Le Pliage XL","95 €","145 €","-34%","sel-long"],
+        ["Polo Ralph Lauren","Cable-knit sweater","89 €","159 €","-44%","sel-polo"]
+      ];
+      document.getElementById("SelGrid").innerHTML=items.map(function(it){
+        return '<article class="sel-card"><div class="sel-media">'+
+          '<img src="https://picsum.photos/seed/'+it[5]+'/640/640" alt="'+it[1]+'" width="640" height="640" loading="lazy">'+
+          '<span class="sel-badge">'+it[4]+'</span></div>'+
+          '<div class="sel-info"><span class="sel-brand">'+it[0]+'</span><span class="sel-item">'+it[1]+'</span>'+
+          '<span class="sel-price"><s>'+it[3]+'</s>'+it[2]+'</span>'+
+          '<a href="liste.html" class="sel-link">Ask for this item →</a></div></article>';
+      }).join("");
+    })();
+  </script>
+  <script src="assets/theme.js?v=2"></script>
+</body>
+</html>

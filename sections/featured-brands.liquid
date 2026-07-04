@@ -1,0 +1,84 @@
+{%- comment -%}
+  Sélection — exemples d'articles par marque : photo + prix unitaire.
+  Chaque block = un article (image, marque, nom, prix outlet, prix comparé,
+  lien optionnel). Sert de vitrine « marques sélectionnées ».
+{%- endcomment -%}
+
+<section class="section" id="selection">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    {%- if section.settings.subtitle != blank -%}<p class="lead center">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+    <div class="sel-grid">
+      {%- for block in section.blocks -%}
+        {%- assign s = block.settings -%}
+        <article class="sel-card" {{ block.shopify_attributes }}>
+          <div class="sel-media">
+            {%- if s.image != blank -%}
+              <img src="{{ s.image | image_url: width: 640 }}" alt="{{ s.item | escape }}" width="640" height="640" loading="lazy">
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'sel-ph' }}
+            {%- endif -%}
+            {%- if s.discount != blank -%}<span class="sel-badge">{{ s.discount }}</span>{%- endif -%}
+          </div>
+          <div class="sel-info">
+            <span class="sel-brand">{{ s.brand }}</span>
+            <span class="sel-item">{{ s.item }}</span>
+            <span class="sel-price">
+              {%- if s.compare != blank -%}<s>{{ s.compare }}</s>{%- endif -%}
+              {{ s.price }}
+            </span>
+            {%- if s.link != blank -%}<a href="{{ s.link }}" class="sel-link">{{ section.settings.card_cta }}</a>{%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.cta_label != blank -%}
+      <p class="center sel-cta"><a href="{{ section.settings.cta_link | default: '/pages/my-list' }}" class="btn btn-dark">{{ section.settings.cta_label }}</a></p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Selection (examples)",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The selection" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Examples by brand, at outlet price" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "A glimpse of what I find at the Paris outlets — unit prices seen in boutique. Your wishlist can be anything from these brands." },
+    { "type": "text", "id": "card_cta", "label": "Card link label", "default": "Ask for this item →" },
+    { "type": "text", "id": "cta_label", "label": "Bottom CTA label", "default": "Build my shopping list" },
+    { "type": "url", "id": "cta_link", "label": "Bottom CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "brand", "label": "Brand", "default": "Gucci" },
+        { "type": "text", "id": "item", "label": "Item name", "default": "GG Marmont bag" },
+        { "type": "text", "id": "price", "label": "Outlet unit price", "default": "1 290 €" },
+        { "type": "text", "id": "compare", "label": "Regular price (optional)", "default": "1 980 €" },
+        { "type": "text", "id": "discount", "label": "Badge (optional)", "default": "-35%" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Selection (examples)",
+      "blocks": [
+        { "type": "item", "settings": { "brand": "Gucci", "item": "GG Marmont shoulder bag", "price": "1 290 €", "compare": "1 980 €", "discount": "-35%" } },
+        { "type": "item", "settings": { "brand": "Moncler", "item": "Maya down jacket", "price": "840 €", "compare": "1 450 €", "discount": "-42%" } },
+        { "type": "item", "settings": { "brand": "Saint Laurent", "item": "Loulou medium bag", "price": "1 450 €", "compare": "2 300 €", "discount": "-37%" } },
+        { "type": "item", "settings": { "brand": "Christian Louboutin", "item": "So Kate 120 pumps", "price": "495 €", "compare": "795 €", "discount": "-38%" } },
+        { "type": "item", "settings": { "brand": "Burberry", "item": "Check cashmere scarf", "price": "290 €", "compare": "470 €", "discount": "-38%" } },
+        { "type": "item", "settings": { "brand": "Sephora", "item": "Luxury beauty set", "price": "120 €", "compare": "180 €", "discount": "-33%" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

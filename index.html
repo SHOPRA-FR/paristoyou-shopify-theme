@@ -1,11 +1,12 @@
 <!doctype html>
-<!-- APERÇU LOCAL du thème Shopify PARISTOYOU (réplique du rendu Liquid, mêmes assets).
+<!-- APERÇU LOCAL du thème Shopify PARISTOYOU v2 (réplique du rendu Liquid, mêmes assets).
+     Images de démonstration : picsum.photos (à remplacer par tes photos dans Shopify).
      Ce fichier N'EST PAS inclus dans le zip d'upload. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PARISTOYOU — Aperçu du thème Shopify</title>
+  <title>PARISTOYOU — Aperçu du thème Shopify v2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,25 +16,24 @@
       --dark:#0f1512; --accent:#12b886; --accent-soft:#a7e8d0;
     }
   </style>
-  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/base.css?v=2">
 </head>
 <body class="template-index">
 
   <!-- section: header -->
   <header class="site-header">
     <div class="container header-inner">
-      <a href="#" class="logo">paristoyou</a>
+      <a href="index.html" class="logo">paristoyou</a>
       <nav class="main-nav" id="MainNav">
         <a href="#brands">Brands</a>
         <a href="#how">How it works</a>
         <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
+        <a href="selection.html">Selection</a>
         <a href="liste.html">My list</a>
       </nav>
       <div class="header-actions">
-        <div class="locale-form"><select aria-label="Language"><option>EN</option><option>TR</option><option>FR</option></select></div>
+        <a href="#" class="account-link">Sign in</a>
         <a href="#contact" class="btn btn-accent btn-sm">Contact</a>
-        <a href="#" class="cart-link">Your list <span class="cart-count">0</span></a>
         <button class="burger" id="Burger" aria-label="Menu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -41,95 +41,126 @@
 
   <main id="MainContent">
 
-    <!-- section: hero -->
-    <section class="hero">
-      <div class="hero-overlay"></div>
-      <div class="container hero-inner">
-        <p class="kicker">PERSONAL SHOPPER · PARIS TO TURKEY</p>
-        <h1>Paris Shopping, Done for You.</h1>
-        <p class="hero-sub">Luxury personal shopping from Paris's finest outlets. 120+ brands, hand-selected, photographed for your approval, delivered to Turkey.</p>
-        <div class="hero-cta">
-          <a href="#brands" class="btn btn-accent">Browse brands</a>
-          <a href="#how" class="btn btn-ghost-light">How it works</a>
+    <!-- section: hero filmstrip -->
+    <section class="hero-strip">
+      <div class="hero-strip-track" style="--speed:45s" id="HeroTrack"></div>
+      <div class="hero-band">
+        <div class="container center">
+          <p class="kicker">PERSONAL SHOPPER · PARIS → WORLDWIDE</p>
+          <h1>Paris Shopping, Done For You.</h1>
+          <p class="hero-band-sub">Luxury brands at Paris outlet prices — hand-picked for you and shipped across Europe and worldwide.</p>
+          <div class="hero-band-cta">
+            <a href="#" class="btn btn-accent">Create my account</a>
+            <a href="#" class="btn btn-ghost-light">Sign in</a>
+            <a href="#brands" class="btn btn-ghost-light">Browse brands</a>
+          </div>
         </div>
-        <div class="hero-stats">
-          <div><strong>120+</strong><span>Brands · 2 centres</span></div>
+      </div>
+      <div class="hero-strip-stats">
+        <div class="container hero-stats">
+          <div><strong>120+</strong><span>Luxury brands</span></div>
           <div><strong>-30% / -70%</strong><span>Outlet prices</span></div>
-          <div><strong>30%</strong><span>All-in commission</span></div>
-          <div><strong>5-10 days</strong><span>Tracked delivery</span></div>
+          <div><strong>2 – 2.5×</strong><span>Cheaper than at home</span></div>
+          <div><strong>🌍</strong><span>Europe & worldwide</span></div>
         </div>
       </div>
     </section>
 
-    <!-- section: offer -->
-    <section class="section section-alt" id="offer">
+    <!-- section: why my service -->
+    <section class="section section-alt" id="why">
       <div class="container">
-        <p class="kicker center">What I offer</p>
-        <h2 class="center">Everything handled, end to end</h2>
+        <p class="kicker center">Why my service</p>
+        <h2 class="center">Paris luxury, without the Paris trip</h2>
         <div class="card-grid cols-4">
-          <article class="feature-card"><span class="feature-ic">❶</span><h3>120+ brands, 2 centres</h3><p>La Vallée Village (luxury outlet) and Val d'Europe: Gucci, Moncler, Chloé, Sephora, Nike, Apple and more.</p></article>
-          <article class="feature-card"><span class="feature-ic">❷</span><h3>Live shopping</h3><p>Real-time photos of every item and your validation before I pay at the till.</p></article>
-          <article class="feature-card"><span class="feature-ic">❸</span><h3>Secure delivery</h3><p>Careful packaging and tracked Colissimo shipping straight to your address in Turkey.</p></article>
-          <article class="feature-card"><span class="feature-ic">❹</span><h3>100% authentic</h3><p>Bought directly in official boutiques — guaranteed genuine, with receipts.</p></article>
+          <article class="feature-card"><span class="feature-ic">🛂</span><h3>No visa, no trip</h3><p>Shopping in Paris without a travel visa, without taking a week off work.</p></article>
+          <article class="feature-card"><span class="feature-ic">🏨</span><h3>Zero travel costs</h3><p>No flights, no week of hotel, no restaurants — your budget goes into the products, not the trip.</p></article>
+          <article class="feature-card"><span class="feature-ic">💶</span><h3>2 – 2.5× cheaper</h3><p>Luxury items are often 2 to 2.5 times cheaper than at home, where import taxes and duties inflate prices.</p></article>
+          <article class="feature-card"><span class="feature-ic">📦</span><h3>Delivered to your door</h3><p>Outlet prices (-30% to -70%), tracked parcels shipped across Europe and worldwide.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- section: how-it-works -->
+    <!-- section: how it works (6 étapes) -->
     <section class="section" id="how">
       <div class="container">
         <p class="kicker center">How it works</p>
-        <h2 class="center">Five simple steps</h2>
-        <div class="steps">
-          <article class="step"><div class="step-num">01</div><h3>Consult</h3><p>Share your wishlist, sizes and budget. Minimum order: 500 € of purchases.</p></article>
-          <article class="step"><div class="step-num">02</div><h3>Pay</h3><p>100% upfront via Wise or PayPal, including commission and shipping.</p></article>
-          <article class="step"><div class="step-num">03</div><h3>Shop</h3><p>I visit the outlets and send you photos of the selected items.</p></article>
-          <article class="step"><div class="step-num">04</div><h3>Validate</h3><p>You approve within 4 hours so I can secure the pieces.</p></article>
-          <article class="step"><div class="step-num">05</div><h3>Receive</h3><p>Tracked Colissimo International delivery to Turkey within 5–10 days.</p></article>
+        <h2 class="center">Six simple steps</h2>
+        <div class="steps cols-6">
+          <article class="step"><div class="step-num">01</div><h3>Create your account</h3><p>Sign up with your delivery address and contact details — everything stays saved for your orders.</p></article>
+          <article class="step"><div class="step-num">02</div><h3>Send your shopping list</h3><p>Build your list on the My List page: paste the links of the items you want, with sizes and prices.</p></article>
+          <article class="step"><div class="step-num">03</div><h3>Pay the deposit</h3><p>A deposit matching the estimated total of your shopping + my provisional fee, validated together.</p></article>
+          <article class="step"><div class="step-num">04</div><h3>Book a call</h3><p>Tell me your date and time availability for a phone exchange about your list.</p></article>
+          <article class="step"><div class="step-num">05</div><h3>I scout, you validate, I buy</h3><p>After our call I go to the boutiques, report back on the items found matching your request — and buy them upon your validation.</p></article>
+          <article class="step"><div class="step-num">06</div><h3>Tracked delivery</h3><p>Carefully packed and shipped with tracking to the address from your account — Europe & worldwide.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- section: pricing -->
-    <section class="section section-dark" id="pricing">
+    <!-- section: pricing + simulateur -->
+    <section class="section section-dark" id="pricing" data-sim-rate="20" data-sim-min="300">
       <div class="container">
         <p class="kicker center">Pricing</p>
-        <h2 class="center">Simple, all-inclusive</h2>
+        <h2 class="center">Simple, transparent fees</h2>
         <div class="pricing-grid">
-          <div class="price-hero">
-            <span class="price-big">30%</span>
-            <span class="price-label">commission on total purchases</span>
-            <p class="price-incl">Includes travel to the outlets, in-store sourcing, photos, secure packaging and handling.</p>
+          <div>
+            <div class="price-hero">
+              <span class="price-big">20%</span>
+              <span class="price-label">commission on your purchases</span>
+              <p class="price-incl">Minimum commission 300 €. No minimum purchase. Includes outlet trips, in-store scouting, photos & phone debrief, secure packing and shipment handling.</p>
+            </div>
+            <ul class="price-list">
+              <li><span>Minimum purchase</span><strong>None</strong></li>
+              <li><span>Minimum commission</span><strong>300 €</strong></li>
+              <li><span>Deposit</span><strong>Purchases + provisional fee, validated together</strong></li>
+              <li><span>Delivery</span><strong>Tracked parcel · Europe & worldwide</strong></li>
+              <li class="muted"><span>Destination customs duties</span><strong>client's responsibility</strong></li>
+            </ul>
           </div>
-          <ul class="price-list">
-            <li><span>Minimum order</span><strong>500 €</strong></li>
-            <li><span>Minimum commission</span><strong>150 €</strong></li>
-            <li><span>Live shopping option</span><strong>+10% (40% total)</strong></li>
-            <li><span>Delivery · Colissimo Zone C (by weight)</span><strong>from 35,19 €</strong></li>
-            <li><span>Payment</span><strong>100% upfront · Wise / PayPal</strong></li>
-            <li class="muted"><span>Turkish customs duties</span><strong>client's responsibility (~20%)</strong></li>
-          </ul>
+          <aside class="sim-card">
+            <h3>Commission simulator</h3>
+            <label class="sim-label" for="SimAmountNum">Amount of your purchases (€)</label>
+            <input type="range" id="SimAmount" min="0" max="10000" step="100" value="1500">
+            <input type="number" id="SimAmountNum" min="0" step="50" value="1500" inputmode="numeric">
+            <div class="sim-rows">
+              <div class="sim-row"><span>Your purchases</span><strong id="SimPurchases">—</strong></div>
+              <div class="sim-row"><span id="SimCommissionLabel">My commission</span><strong id="SimCommission">—</strong></div>
+              <div class="sim-row sim-total"><span>Estimated total</span><strong id="SimTotal">—</strong></div>
+            </div>
+            <div class="sim-examples" id="SimExamples">
+              <button type="button" data-amount="100">100 € → 300 €</button>
+              <button type="button" data-amount="1000">1 000 € → 300 €</button>
+              <button type="button" data-amount="1500">1 500 € → 300 €</button>
+              <button type="button" data-amount="2000">2 000 € → 400 €</button>
+            </div>
+            <p class="sim-note">Indicative estimate before delivery. A firm quote is validated together before any deposit.</p>
+          </aside>
         </div>
       </div>
     </section>
 
-    <!-- section: brands -->
-    <section class="section section-alt" id="brands">
+    <!-- section: selection (exemples par marque) -->
+    <section class="section" id="selection">
       <div class="container">
-        <p class="kicker center">Catalogue</p>
-        <h2 class="center">Brands I shop for you</h2>
-        <p class="lead center">From the two Paris shopping hubs. A brand not on the list? Ask anyway — I can most likely source it.</p>
-        <div class="brands-toolbar">
-          <input type="search" id="BrandSearch" placeholder="Search a brand…" aria-label="Search a brand">
-          <div class="filters" id="BrandFilters">
-            <button type="button" data-mall="all" class="active">All</button>
-            <button type="button" data-mall="lavallee">La Vallée Village</button>
-            <button type="button" data-mall="valdeurope">Val d'Europe</button>
-          </div>
-        </div>
-        <div class="brands-grid" id="BrandsGrid"></div>
-        <p class="brands-none" id="BrandsNone" hidden>No match. You can still make a request.</p>
+        <p class="kicker center">The selection</p>
+        <h2 class="center">Examples by brand, at outlet price</h2>
+        <p class="lead center">A glimpse of what I find at the Paris outlets — unit prices seen in boutique. Your wishlist can be anything from these brands.</p>
+        <div class="sel-grid" id="SelGrid"></div>
+        <p class="center sel-cta"><a href="liste.html" class="btn btn-dark">Build my shopping list</a></p>
       </div>
+    </section>
+
+    <!-- section: brands logo wall -->
+    <section class="section section-alt brands-wall-section" id="brands">
+      <div class="container">
+        <p class="kicker center">The brands</p>
+        <h2 class="center">120+ luxury & fashion brands</h2>
+        <p class="lead center">Tap any brand to open its official website, pick your items, then paste the links into your list.</p>
+      </div>
+      <div class="brands-wall" id="BrandsWall" style="--wall-h:520px;--wall-speed:55s">
+        <div class="wall-fade top" aria-hidden="true"></div>
+        <div class="wall-fade bottom" aria-hidden="true"></div>
+      </div>
+      <div class="container"><p class="brands-wall-note center">Brands from La Vallée Village (luxury outlet) and Val d'Europe, Paris. No official affiliation — I buy on your behalf in the official boutiques.</p></div>
     </section>
 
     <!-- section: faq -->
@@ -138,10 +169,10 @@
         <p class="kicker center">FAQ</p>
         <h2 class="center">Frequently asked questions</h2>
         <div class="faq-list">
-          <details><summary>How does payment work?</summary><p>After approving the quote, you pay 100% upfront via Wise or PayPal. Product price + commission + shipping included.</p></details>
-          <details><summary>How do I know it's authentic?</summary><p>All products are bought in official boutiques. Original invoice, receipt and photos are sent on every purchase.</p></details>
-          <details><summary>What are the delivery times?</summary><p>Tracked Colissimo International to Turkey, usually 5–10 business days.</p></details>
-          <details><summary>Are there customs duties?</summary><p>Imports are subject to Turkish customs rules (~20%). We manage the process transparently and inform you clearly upfront — duties are the client's responsibility.</p></details>
+          <details><summary>How does payment work?</summary><p>After we validate your list together, you pay a deposit covering the estimated purchases + my provisional fee (Wise, PayPal or bank transfer).</p></details>
+          <details><summary>How do I know it's authentic?</summary><p>All products are bought in the official boutiques of the Paris outlets. Original invoice, receipt and photos are sent with every purchase.</p></details>
+          <details><summary>Where do you deliver?</summary><p>Across Europe and worldwide, with a tracked parcel to the address on your account.</p></details>
+          <details><summary>Are there customs duties?</summary><p>Depending on your country, import duties may apply on arrival — they remain the client's responsibility. I manage the process transparently and inform you upfront.</p></details>
           <details><summary>Are returns possible?</summary><p>The boutiques' return policies apply. For a wrong size or colour we do our utmost to find the best solution with you.</p></details>
         </div>
       </div>
@@ -164,32 +195,67 @@
   <!-- section: footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-brand"><span class="logo">paristoyou</span><p>Personal Shopper · Paris to Turkey</p></div>
+      <div class="footer-brand"><span class="logo">paristoyou</span><p>Personal Shopper · Paris → Europe & Worldwide</p></div>
       <nav class="footer-nav"><a href="#">Terms &amp; Conditions</a><a href="#">Shipping</a><a href="#">Contact</a></nav>
-      <div class="footer-social"><a href="#">WhatsApp</a><a href="#">Instagram</a><a href="#">Email</a></div>
-      <p class="footer-legal">Independent personal shopping service. No official affiliation with the brands listed; products are purchased on the client's behalf. Turkish customs duties are the client's responsibility.</p>
+      <p class="footer-legal">Independent personal shopping service. No official affiliation with the brands listed; products are purchased on the client's behalf in official boutiques. Destination customs duties are the client's responsibility.</p>
       <p class="footer-rights">© 2026 paristoyou. All rights reserved.</p>
     </div>
   </footer>
 
-  <a class="whatsapp-fab" href="#" aria-label="WhatsApp">
-    <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M.057 24l1.687-6.163a11.87 11.87 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg>
-  </a>
-
-  <!-- Génère la grille marques (en prod : rendu Liquid depuis le réglage de section) -->
   <script>
+    // ------- Démo : hero filmstrip (dans Shopify : images uploadées dans la section) -------
     (function(){
-      var L="lavallee", V="valdeurope";
-      var brands=[["Givenchy",L,1],["Balmain",L,1],["Chloé",L,1],["Jacquemus",L,1],["Moncler",L,1],["Ferragamo",L,1],["Sandro",L,1],["Maje",L,1],["Gucci",L,1],["Prada",L,1],["Saint Laurent",L,1],["Balenciaga",L,1],["Burberry",L,1],["Loewe",L,0],["Versace",L,0],["Valentino",L,0],["Dolce & Gabbana",L,0],["Fendi",L,0],["Celine",L,0],["Alexander McQueen",L,0],["Christian Louboutin",L,1],["Jimmy Choo",L,0],["Golden Goose",L,0],["Miu Miu",L,0],["Tod's",L,0],["Zegna",L,0],["Brunello Cucinelli",L,0],["Loro Piana",L,0],["Max Mara",L,0],["Armani",L,0],["Hugo Boss",L,0],["Kenzo",L,0],["Karl Lagerfeld",L,0],["Marc Jacobs",L,0],["Michael Kors",L,1],["Coach",L,1],["Tory Burch",L,0],["Furla",L,0],["Longchamp",L,1],["Lancel",L,0],["Montblanc",L,0],["Ami Paris",L,0],["Acne Studios",L,0],["Isabel Marant",L,0],["Zadig&Voltaire",L,0],["Claudie Pierlot",L,0],["The Kooples",L,0],["ba&sh",L,0],["Marni",L,0],["Stone Island",L,0],["Polo Ralph Lauren",L,1],["Tommy Hilfiger",L,0],["Lacoste",L,0],["Church's",L,0],["J.M. Weston",L,0],["Repetto",L,0],["UGG",L,0],["Fusalp",L,0],["K-Way",L,0],["Guerlain",L,0],["Vilebrequin",L,0],["Zimmermann",L,0],["Bonpoint",L,0],["TUMI",L,0],["Samsonite",L,0],["Zara",V,1],["H&M",V,0],["Mango",V,1],["Uniqlo",V,1],["Pull & Bear",V,0],["Bershka",V,0],["Stradivarius",V,0],["Primark",V,0],["Jack&Jones",V,0],["Levi's Store",V,0],["Sephora",V,1],["Nocibé",V,0],["MAC Cosmetics",V,1],["KIKO Milano",V,0],["NYX Cosmetics",V,0],["Rituals",V,0],["Lush",V,0],["Yves Rocher",V,0],["Nike Store",V,1],["adidas",V,1],["Foot Locker",V,0],["JD Sports",V,0],["Courir",V,0],["Victoria's Secret",V,1],["Etam",V,0],["Undiz",V,0],["Calzedonia",V,0],["Intimissimi",V,0],["Tezenis",V,0],["Swarovski",V,1],["Pandora",V,1],["Histoire d'Or",V,0],["MATY",V,0],["Mauboussin",V,0],["Apple Store",V,1],["FNAC",V,0],["Micromania",V,0],["Nespresso",V,0],["Kusmi Tea",V,0],["Okaïdi - Obaïbi",V,0],["Sergent Major",V,0]];
-      var grid=document.getElementById("BrandsGrid");
-      grid.innerHTML=brands.map(function(b){
-        var tag=b[1]===L?'<span class="brand-tag lavallee">Outlet</span>':'<span class="brand-tag valdeurope">Boutique</span>';
-        var star=b[2]?'<span class="brand-star">★</span>':"";
-        return '<a class="brand-card" href="#" data-mall="'+b[1]+'" data-name="'+b[0].toLowerCase()+'">'+
-          '<span class="brand-name">'+b[0]+'</span><span class="brand-meta">'+tag+star+'</span></a>';
+      var seeds=["paris-fashion","paris-boutique","paris-luxury","paris-shopping","paris-style","paris-bags"];
+      var track=document.getElementById("HeroTrack");
+      var html="";
+      for(var r=0;r<2;r++) seeds.forEach(function(s,i){
+        html+='<div class="hero-slide"><img src="https://picsum.photos/seed/'+s+'/900/620" alt="" width="900" height="620" loading="'+(r===0&&i===0?"eager":"lazy")+'"></div>';
+      });
+      track.innerHTML=html;
+    })();
+
+    // ------- Démo : selection cards (dans Shopify : blocks avec image_picker) -------
+    (function(){
+      var items=[
+        ["Gucci","GG Marmont shoulder bag","1 290 €","1 980 €","-35%","sel-gucci"],
+        ["Moncler","Maya down jacket","840 €","1 450 €","-42%","sel-moncler"],
+        ["Saint Laurent","Loulou medium bag","1 450 €","2 300 €","-37%","sel-ysl"],
+        ["Christian Louboutin","So Kate 120 pumps","495 €","795 €","-38%","sel-loub"],
+        ["Burberry","Check cashmere scarf","290 €","470 €","-38%","sel-burb"],
+        ["Sephora","Luxury beauty set","120 €","180 €","-33%","sel-seph"]
+      ];
+      document.getElementById("SelGrid").innerHTML=items.map(function(it){
+        return '<article class="sel-card"><div class="sel-media">'+
+          '<img src="https://picsum.photos/seed/'+it[5]+'/640/640" alt="'+it[1]+'" width="640" height="640" loading="lazy">'+
+          '<span class="sel-badge">'+it[4]+'</span></div>'+
+          '<div class="sel-info"><span class="sel-brand">'+it[0]+'</span><span class="sel-item">'+it[1]+'</span>'+
+          '<span class="sel-price"><s>'+it[3]+'</s>'+it[2]+'</span>'+
+          '<a href="liste.html" class="sel-link">Ask for this item →</a></div></article>';
       }).join("");
     })();
+
+    // ------- Démo : mur de logos (dans Shopify : rendu Liquid + Clearbit) -------
+    (function(){
+      var B=[["Gucci","gucci.com"],["Prada","prada.com"],["Saint Laurent","ysl.com"],["Balenciaga","balenciaga.com"],["Burberry","burberry.com"],["Givenchy","givenchy.com"],["Balmain","balmain.com"],["Chloé","chloe.com"],["Jacquemus","jacquemus.com"],["Moncler","moncler.com"],["Ferragamo","ferragamo.com"],["Sandro","sandro-paris.com"],["Maje","maje.com"],["Loewe","loewe.com"],["Versace","versace.com"],["Valentino","valentino.com"],["Dolce & Gabbana","dolcegabbana.com"],["Fendi","fendi.com"],["Celine","celine.com"],["Alexander McQueen","alexandermcqueen.com"],["Louboutin","christianlouboutin.com"],["Jimmy Choo","jimmychoo.com"],["Golden Goose","goldengoose.com"],["Miu Miu","miumiu.com"],["Tod's","tods.com"],["Zegna","zegna.com"],["Cucinelli","brunellocucinelli.com"],["Loro Piana","loropiana.com"],["Max Mara","maxmara.com"],["Armani","armani.com"],["Hugo Boss","hugoboss.com"],["Kenzo","kenzo.com"],["Karl Lagerfeld","karl.com"],["Marc Jacobs","marcjacobs.com"],["Michael Kors","michaelkors.eu"],["Coach","coach.com"],["Tory Burch","toryburch.com"],["Furla","furla.com"],["Longchamp","longchamp.com"],["Lancel","lancel.com"],["Montblanc","montblanc.com"],["Ami Paris","amiparis.com"],["Acne Studios","acnestudios.com"],["Isabel Marant","isabelmarant.com"],["Zadig&Voltaire","zadig-et-voltaire.com"],["The Kooples","thekooples.com"],["ba&sh","ba-sh.com"],["Stone Island","stoneisland.com"],["Ralph Lauren","ralphlauren.eu"],["Tommy Hilfiger","tommy.com"],["Lacoste","lacoste.com"],["UGG","ugg.com"],["Guerlain","guerlain.com"],["Vilebrequin","vilebrequin.com"],["Zimmermann","zimmermann.com"],["TUMI","tumi.com"],["Zara","zara.com"],["Mango","shop.mango.com"],["Uniqlo","uniqlo.com"],["Sephora","sephora.fr"],["MAC","maccosmetics.fr"],["Nike","nike.com"],["adidas","adidas.fr"],["Victoria's Secret","victoriassecret.com"],["Swarovski","swarovski.com"],["Pandora","pandora.net"],["Apple","apple.com"],["Levi's","levi.com"],["Calzedonia","calzedonia.com"],["Intimissimi","intimissimi.com"],["Kusmi Tea","kusmitea.com"],["Nespresso","nespresso.com"]];
+      var wall=document.getElementById("BrandsWall");
+      var COLS=6;
+      var tile=function(b){
+        return '<a class="wall-tile" href="https://www.'+b[1].replace(/^shop\./,'')+'" target="_blank" rel="noopener nofollow" aria-label="'+b[0]+'">'+
+          '<img src="https://www.google.com/s2/favicons?domain='+b[1]+'&sz=64" alt="'+b[0]+'" width="48" height="48" '+
+          'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+
+          '<span class="wall-mono" style="display:none">'+b[0].charAt(0)+'</span>'+
+          '<span class="wall-name">'+b[0]+'</span></a>';
+      };
+      for(var c=0;c<COLS;c++){
+        var items=B.filter(function(_,i){return i%COLS===c;});
+        var inner=items.map(tile).join("")+items.map(tile).join("");
+        var col=document.createElement("div");
+        col.className="wall-col "+(c%2?"up":"down");
+        col.innerHTML='<div class="wall-track">'+inner+'</div>';
+        wall.appendChild(col);
+      }
+    })();
   </script>
-  <script src="assets/theme.js"></script>
+  <script src="assets/theme.js?v=2"></script>
 </body>
 </html>

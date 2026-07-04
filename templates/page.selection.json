@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "featured-brands",
+      "blocks": {
+        "i1": { "type": "item", "settings": { "brand": "Gucci", "item": "GG Marmont shoulder bag", "price": "1 290 €", "compare": "1 980 €", "discount": "-35%" } },
+        "i2": { "type": "item", "settings": { "brand": "Moncler", "item": "Maya down jacket", "price": "840 €", "compare": "1 450 €", "discount": "-42%" } },
+        "i3": { "type": "item", "settings": { "brand": "Saint Laurent", "item": "Loulou medium bag", "price": "1 450 €", "compare": "2 300 €", "discount": "-37%" } },
+        "i4": { "type": "item", "settings": { "brand": "Christian Louboutin", "item": "So Kate 120 pumps", "price": "495 €", "compare": "795 €", "discount": "-38%" } },
+        "i5": { "type": "item", "settings": { "brand": "Burberry", "item": "Check cashmere scarf", "price": "290 €", "compare": "470 €", "discount": "-38%" } },
+        "i6": { "type": "item", "settings": { "brand": "Sephora", "item": "Luxury beauty set", "price": "120 €", "compare": "180 €", "discount": "-33%" } }
+      },
+      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

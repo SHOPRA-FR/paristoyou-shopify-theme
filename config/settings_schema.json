@@ -59,9 +59,9 @@
   {
     "name": "Service / Pricing",
     "settings": [
-      { "type": "text", "id": "commission_rate",  "label": "Commission rate (%)", "default": "30" },
-      { "type": "text", "id": "commission_min",   "label": "Minimum commission (€)", "default": "150" },
-      { "type": "text", "id": "order_min",        "label": "Minimum order (€)", "default": "500" },
+      { "type": "text", "id": "commission_rate",  "label": "Commission rate (%)", "default": "20" },
+      { "type": "text", "id": "commission_min",   "label": "Minimum commission (€)", "default": "300" },
+      { "type": "text", "id": "order_min",        "label": "Minimum order (€, 0 = none)", "default": "0" },
       { "type": "text", "id": "customs_rate",     "label": "Estimated Turkish customs (%)", "default": "20" }
     ]
   }

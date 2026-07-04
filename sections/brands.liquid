@@ -1,59 +1,77 @@
-<section class="section section-alt" id="brands">
+{%- comment -%}
+  Brands — mur de logos en défilement vertical (colonnes alternées montantes/
+  descendantes). Chaque tuile est cliquable vers le SITE OFFICIEL de la marque
+  (nouvel onglet). Logos chargés via l'API publique Clearbit à partir du domaine
+  officiel, avec repli monogramme si indisponible.
+  Ligne de réglage : Nom|https://site-officiel|lavallee ou valdeurope
+{%- endcomment -%}
+
+<section class="section section-alt brands-wall-section" id="brands">
   <div class="container">
     {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
     {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
     {%- if section.settings.subtitle != blank -%}<p class="lead center">{{ section.settings.subtitle }}</p>{%- endif -%}
-
-    <div class="brands-toolbar">
-      <input type="search" id="BrandSearch" placeholder="{{ section.settings.search_placeholder }}" aria-label="{{ section.settings.search_placeholder }}">
-      <div class="filters" id="BrandFilters">
-        <button type="button" data-mall="all" class="active">{{ section.settings.label_all }}</button>
-        <button type="button" data-mall="lavallee">La Vallée Village</button>
-        <button type="button" data-mall="valdeurope">Val d'Europe</button>
-      </div>
-    </div>
-
-    {%- capture nl %}
-{% endcapture -%}
-    {%- assign lines = section.settings.brands | strip | split: nl -%}
-    <div class="brands-grid" id="BrandsGrid">
-      {%- for line in lines -%}
-        {%- assign parts = line | strip | split: '|' -%}
-        {%- assign bname = parts[0] | strip -%}
-        {%- if bname == blank -%}{% continue %}{%- endif -%}
-        {%- assign bmall = parts[1] | strip | default: 'lavallee' -%}
-        {%- assign bstar = parts[2] | strip -%}
-        <a class="brand-card" href="{{ routes.collections_url }}/vendors?q={{ bname | url_encode }}"
-           data-mall="{{ bmall }}" data-name="{{ bname | downcase | escape }}">
-          <span class="brand-name">{{ bname }}</span>
-          <span class="brand-meta">
-            <span class="brand-tag {{ bmall }}">{% if bmall == 'lavallee' %}Outlet{% else %}Boutique{% endif %}</span>
-            {%- if bstar == 'star' -%}<span class="brand-star">★</span>{%- endif -%}
-          </span>
-        </a>
-      {%- endfor -%}
-    </div>
-    <p class="brands-none" id="BrandsNone" hidden>{{ section.settings.no_result }}</p>
   </div>
+
+  {%- capture nl %}
+{% endcapture -%}
+  {%- assign lines = section.settings.brands | strip | split: nl -%}
+  {%- assign cols = section.settings.columns -%}
+
+  <div class="brands-wall" style="--wall-h:{{ section.settings.height }}px;--wall-speed:{{ section.settings.speed }}s">
+    {%- assign col_max = cols | minus: 1 -%}
+    {%- for col in (0..col_max) -%}
+      <div class="wall-col {% cycle 'down', 'up' %}">
+        <div class="wall-track">
+          {%- for rep in (1..2) -%}
+            {%- for line in lines -%}
+              {%- assign idx = forloop.index0 | modulo: cols -%}
+              {%- if idx != col -%}{% continue %}{%- endif -%}
+              {%- assign parts = line | strip | split: '|' -%}
+              {%- assign bname = parts[0] | strip -%}
+              {%- if bname == blank -%}{% continue %}{%- endif -%}
+              {%- assign burl = parts[1] | strip -%}
+              {%- assign bdomain = burl | remove: 'https://' | remove: 'http://' | remove: 'www.' | split: '/' | first -%}
+              <a class="wall-tile" href="{{ burl }}" target="_blank" rel="noopener nofollow"
+                 aria-label="{{ bname | escape }} — official website">
+                <img src="https://www.google.com/s2/favicons?domain={{ bdomain }}&amp;sz=64" alt="{{ bname | escape }}"
+                     width="48" height="48"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <span class="wall-mono" style="display:none">{{ bname | slice: 0, 1 }}</span>
+                <span class="wall-name">{{ bname }}</span>
+              </a>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endfor -%}
+    <div class="wall-fade top" aria-hidden="true"></div>
+    <div class="wall-fade bottom" aria-hidden="true"></div>
+  </div>
+
+  {%- if section.settings.note != blank -%}
+    <div class="container"><p class="brands-wall-note center">{{ section.settings.note }}</p></div>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
-  "name": "Brands",
+  "name": "Brands logo wall",
   "settings": [
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Catalogue" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Brands I shop for you" },
-    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "From the two Paris shopping hubs. A brand not on the list? Ask anyway — I can most likely source it." },
-    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search a brand…" },
-    { "type": "text", "id": "label_all", "label": "\"All\" filter label", "default": "All" },
-    { "type": "text", "id": "no_result", "label": "No-result message", "default": "No match. You can still make a request." },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The brands" },
+    { "type": "text", "id": "title", "label": "Title", "default": "120+ luxury & fashion brands" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Tap any brand to open its official website, pick your items, then paste the links into your list." },
+    { "type": "textarea", "id": "note", "label": "Bottom note", "default": "Brands from La Vallée Village (luxury outlet) and Val d'Europe, Paris. No official affiliation — I buy on your behalf in the official boutiques." },
+    { "type": "range", "id": "columns", "min": 3, "max": 8, "step": 1, "label": "Columns", "default": 6 },
+    { "type": "range", "id": "height", "min": 320, "max": 720, "step": 40, "unit": "px", "label": "Wall height", "default": 520 },
+    { "type": "range", "id": "speed", "min": 20, "max": 90, "step": 5, "unit": "s", "label": "Scroll duration (higher = slower)", "default": 55 },
     {
       "type": "textarea",
       "id": "brands",
-      "label": "Brand list (one per line: Name|lavallee or valdeurope|star)",
-      "default": "Givenchy|lavallee|star\nBalmain|lavallee|star\nChloé|lavallee|star\nJacquemus|lavallee|star\nMoncler|lavallee|star\nFerragamo|lavallee|star\nSandro|lavallee|star\nMaje|lavallee|star\nGucci|lavallee|star\nPrada|lavallee|star\nSaint Laurent|lavallee|star\nBalenciaga|lavallee|star\nBurberry|lavallee|star\nLoewe|lavallee\nVersace|lavallee\nValentino|lavallee\nDolce & Gabbana|lavallee\nFendi|lavallee\nCeline|lavallee\nAlexander McQueen|lavallee\nChristian Louboutin|lavallee|star\nJimmy Choo|lavallee\nGolden Goose|lavallee\nMiu Miu|lavallee\nTod's|lavallee\nZegna|lavallee\nBrunello Cucinelli|lavallee\nLoro Piana|lavallee\nMax Mara|lavallee\nArmani|lavallee\nHugo Boss|lavallee\nKenzo|lavallee\nKarl Lagerfeld|lavallee\nMarc Jacobs|lavallee\nMichael Kors|lavallee|star\nCoach|lavallee|star\nTory Burch|lavallee\nFurla|lavallee\nLongchamp|lavallee|star\nLancel|lavallee\nMontblanc|lavallee\nAmi Paris|lavallee\nAcne Studios|lavallee\nIsabel Marant|lavallee\nZadig&Voltaire|lavallee\nClaudie Pierlot|lavallee\nThe Kooples|lavallee\nba&sh|lavallee\nMarni|lavallee\nStone Island|lavallee\nPolo Ralph Lauren|lavallee|star\nTommy Hilfiger|lavallee\nLacoste|lavallee\nChurch's|lavallee\nJ.M. Weston|lavallee\nRepetto|lavallee\nUGG|lavallee\nFusalp|lavallee\nK-Way|lavallee\nGuerlain|lavallee\nVilebrequin|lavallee\nZimmermann|lavallee\nBonpoint|lavallee\nTUMI|lavallee\nSamsonite|lavallee\nZara|valdeurope|star\nH&M|valdeurope\nMango|valdeurope|star\nUniqlo|valdeurope|star\nPull & Bear|valdeurope\nBershka|valdeurope\nStradivarius|valdeurope\nPrimark|valdeurope\nJack&Jones|valdeurope\nLevi's Store|valdeurope\nSephora|valdeurope|star\nNocibé|valdeurope\nMAC Cosmetics|valdeurope|star\nKIKO Milano|valdeurope\nNYX Cosmetics|valdeurope\nRituals|valdeurope\nLush|valdeurope\nYves Rocher|valdeurope\nNike Store|valdeurope|star\nadidas|valdeurope|star\nFoot Locker|valdeurope\nJD Sports|valdeurope\nCourir|valdeurope\nVictoria's Secret|valdeurope|star\nEtam|valdeurope\nUndiz|valdeurope\nCalzedonia|valdeurope\nIntimissimi|valdeurope\nTezenis|valdeurope\nSwarovski|valdeurope|star\nPandora|valdeurope|star\nHistoire d'Or|valdeurope\nMATY|valdeurope\nMauboussin|valdeurope\nApple Store|valdeurope|star\nFNAC|valdeurope\nMicromania|valdeurope\nNespresso|valdeurope\nKusmi Tea|valdeurope\nOkaïdi - Obaïbi|valdeurope\nSergent Major|valdeurope"
+      "label": "Brands (Name|official URL|mall)",
+      "default": "Gucci|https://www.gucci.com|lavallee\nPrada|https://www.prada.com|lavallee\nSaint Laurent|https://www.ysl.com|lavallee\nBalenciaga|https://www.balenciaga.com|lavallee\nBurberry|https://www.burberry.com|lavallee\nGivenchy|https://www.givenchy.com|lavallee\nBalmain|https://www.balmain.com|lavallee\nChloé|https://www.chloe.com|lavallee\nJacquemus|https://www.jacquemus.com|lavallee\nMoncler|https://www.moncler.com|lavallee\nFerragamo|https://www.ferragamo.com|lavallee\nSandro|https://www.sandro-paris.com|lavallee\nMaje|https://www.maje.com|lavallee\nLoewe|https://www.loewe.com|lavallee\nVersace|https://www.versace.com|lavallee\nValentino|https://www.valentino.com|lavallee\nDolce & Gabbana|https://www.dolcegabbana.com|lavallee\nFendi|https://www.fendi.com|lavallee\nCeline|https://www.celine.com|lavallee\nAlexander McQueen|https://www.alexandermcqueen.com|lavallee\nChristian Louboutin|https://www.christianlouboutin.com|lavallee\nJimmy Choo|https://www.jimmychoo.com|lavallee\nGolden Goose|https://www.goldengoose.com|lavallee\nMiu Miu|https://www.miumiu.com|lavallee\nTod's|https://www.tods.com|lavallee\nZegna|https://www.zegna.com|lavallee\nBrunello Cucinelli|https://www.brunellocucinelli.com|lavallee\nLoro Piana|https://www.loropiana.com|lavallee\nMax Mara|https://www.maxmara.com|lavallee\nArmani|https://www.armani.com|lavallee\nHugo Boss|https://www.hugoboss.com|lavallee\nKenzo|https://www.kenzo.com|lavallee\nKarl Lagerfeld|https://www.karl.com|lavallee\nMarc Jacobs|https://www.marcjacobs.com|lavallee\nMichael Kors|https://www.michaelkors.eu|lavallee\nCoach|https://www.coach.com|lavallee\nTory Burch|https://www.toryburch.com|lavallee\nFurla|https://www.furla.com|lavallee\nLongchamp|https://www.longchamp.com|lavallee\nLancel|https://www.lancel.com|lavallee\nMontblanc|https://www.montblanc.com|lavallee\nAmi Paris|https://www.amiparis.com|lavallee\nAcne Studios|https://www.acnestudios.com|lavallee\nIsabel Marant|https://www.isabelmarant.com|lavallee\nZadig&Voltaire|https://www.zadig-et-voltaire.com|lavallee\nClaudie Pierlot|https://www.claudiepierlot.com|lavallee\nThe Kooples|https://www.thekooples.com|lavallee\nba&sh|https://www.ba-sh.com|lavallee\nMarni|https://www.marni.com|lavallee\nStone Island|https://www.stoneisland.com|lavallee\nPolo Ralph Lauren|https://www.ralphlauren.eu|lavallee\nTommy Hilfiger|https://www.tommy.com|lavallee\nLacoste|https://www.lacoste.com|lavallee\nChurch's|https://www.church-footwear.com|lavallee\nJ.M. Weston|https://www.jmweston.com|lavallee\nRepetto|https://www.repetto.com|lavallee\nUGG|https://www.ugg.com|lavallee\nFusalp|https://www.fusalp.com|lavallee\nK-Way|https://www.k-way.com|lavallee\nGuerlain|https://www.guerlain.com|lavallee\nVilebrequin|https://www.vilebrequin.com|lavallee\nZimmermann|https://www.zimmermann.com|lavallee\nBonpoint|https://www.bonpoint.com|lavallee\nTUMI|https://www.tumi.com|lavallee\nSamsonite|https://www.samsonite.eu|lavallee\nZara|https://www.zara.com|valdeurope\nMango|https://shop.mango.com|valdeurope\nUniqlo|https://www.uniqlo.com|valdeurope\nSephora|https://www.sephora.fr|valdeurope\nMAC Cosmetics|https://www.maccosmetics.fr|valdeurope\nNike|https://www.nike.com|valdeurope\nadidas|https://www.adidas.fr|valdeurope\nVictoria's Secret|https://www.victoriassecret.com|valdeurope\nSwarovski|https://www.swarovski.com|valdeurope\nPandora|https://www.pandora.net|valdeurope\nMauboussin|https://www.mauboussin.fr|valdeurope\nApple|https://www.apple.com/fr|valdeurope\nLevi's|https://www.levi.com|valdeurope\nCalzedonia|https://www.calzedonia.com|valdeurope\nIntimissimi|https://www.intimissimi.com|valdeurope\nKusmi Tea|https://www.kusmitea.com|valdeurope\nNespresso|https://www.nespresso.com|valdeurope\nLush|https://www.lush.com|valdeurope\nRituals|https://www.rituals.com|valdeurope\nEtam|https://www.etam.com|valdeurope"
     }
   ],
-  "presets": [{ "name": "Brands" }]
+  "presets": [{ "name": "Brands logo wall" }]
 }
 {% endschema %}

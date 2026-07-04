@@ -19,8 +19,8 @@ dans le zip. Servir le dossier (`python3 -m http.server`) pour le voir.
 Le client navigue sur le **site officiel de la marque** (nouvel onglet — pas d'iframe,
 bloquée par les marques et assimilable à du phishing), **copie le lien** de l'article
 et le colle dans sa liste avec taille/prix/qté. La page calcule sous-total,
-**commission 30 % (min 150 €)**, livraison Colissimo Zone C, total, note douane ~20 %,
-alerte commande min. 500 € — puis **envoi WhatsApp** ou copie presse-papiers.
+**commission 20 % (min 300 €)**, livraison Colissimo (poids/zone), total, note douane
+destination — puis **envoi WhatsApp** ou copie presse-papiers. Aucun minimum d'achat.
 100 % côté navigateur (localStorage), aucun backend.
 
 **Activation après upload** : Contenu → Pages → Add page → titre « My list » →
@@ -50,7 +50,8 @@ assets/      base.css, theme.js
 config/      settings_schema.json (réglages), settings_data.json
 layout/      theme.liquid
 locales/     en.default.json
-sections/    header, footer, hero, offer, how-it-works, pricing, brands, faq,
+sections/    header, footer, hero (filmstrip), offer, how-it-works (6 étapes),
+             pricing (+ simulateur), brands (mur de logos animé), featured-brands, faq,
              contact-cta, main-product, main-collection, main-cart, main-page,
              main-404, main-search, main-blog, main-article, main-list-collections
 snippets/    product-card.liquid
@@ -60,8 +61,11 @@ templates/   index, product, collection, cart, page, 404, search, blog, article,
 
 ## Notes
 
-- Tarification affichée : commission 30 % (min 150 €), commande min 500 €,
-  Live shopping +10 %, Colissimo Zone C dès 35,19 €, douane turque ~20 % à charge client.
+- Tarification affichée : commission 20 % (min 300 €), AUCUN minimum d'achat,
+  simulateur de commission intégré (100 €→300 € · 1 500 €→300 € · 2 000 €→400 €),
+  livraison Colissimo dès 35,19 €, douane du pays de destination à charge client.
+- Positionnement : Europe & international (sans visa, sans frais de voyage,
+  produits souvent 2 à 2,5× moins chers qu'au pays).
 - Traductions TR/FR : ajouter `locales/tr.json` / `fr.json` + activer les langues
   dans Settings → Languages (à la demande).
 - Le workspace « navigateur intégré + liste dynamique » de l'app React n'existe pas

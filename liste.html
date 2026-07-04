@@ -15,7 +15,7 @@
       --dark:#0f1512; --accent:#12b886; --accent-soft:#a7e8d0;
     }
   </style>
-  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/base.css?v=2">
 </head>
 <body class="template-page">
 
@@ -26,6 +26,7 @@
         <a href="index.html#brands">Brands</a>
         <a href="index.html#how">How it works</a>
         <a href="index.html#pricing">Pricing</a>
+        <a href="selection.html">Selection</a>
         <a href="liste.html">My list</a>
       </nav>
       <div class="header-actions">
@@ -38,7 +39,7 @@
   <main id="MainContent">
     <!-- section: wishlist-builder -->
     <section class="section wishlist-section" id="WishlistApp"
-      data-rate="30" data-min-commission="150" data-min-order="500" data-customs="20" data-whatsapp="33600000000">
+      data-rate="20" data-min-commission="300" data-min-order="0" data-customs="20" data-whatsapp="33600000000">
       <div class="container">
         <p class="kicker center">Your shopping list</p>
         <h1 class="center">Build your list, I shop it for you</h1>
@@ -85,8 +86,8 @@
               </select>
             </div>
             <div class="wl-sum-row wl-sum-total"><span>Total to pay upfront</span><strong id="WlTotal">—</strong></div>
-            <p class="wl-note" id="WlCustomsNote">+ Turkish customs (~20%) on arrival — client's responsibility. Colissimo International Zone C, La Poste 2026 rates.</p>
-            <div class="wl-warn" id="WlMinWarn" hidden>Minimum order is 500 € of purchases. Add more items to proceed.</div>
+            <p class="wl-note" id="WlCustomsNote">+ destination customs duties may apply on arrival — client's responsibility. Tracked shipping, Europe & worldwide (Colissimo, by weight & zone).</p>
+            <div class="wl-warn" id="WlMinWarn" hidden>Minimum order not reached. Add more items to proceed.</div>
             <div class="wl-actions">
               <button type="button" class="btn btn-accent btn-block" id="WlSendWa">Send my list on WhatsApp</button>
               <button type="button" class="btn btn-ghost btn-block" id="WlCopy">Copy my list</button>
@@ -104,7 +105,7 @@
     </div>
   </footer>
 
-  <script src="assets/theme.js"></script>
-  <script src="assets/wishlist.js"></script>
+  <script src="assets/theme.js?v=2"></script>
+  <script src="assets/wishlist.js?v=2"></script>
 </body>
 </html>

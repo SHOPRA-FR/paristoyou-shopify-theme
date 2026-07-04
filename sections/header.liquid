@@ -29,6 +29,12 @@
         <a href="{{ section.settings.cta_link }}" class="btn btn-accent btn-sm">{{ section.settings.cta_label | default: 'Contact' }}</a>
       {%- endif -%}
 
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="account-link" aria-label="Account">
+          {% if customer %}{{ customer.first_name | default: 'Account' }}{% else %}Sign in{% endif %}
+        </a>
+      {%- endif -%}
+
       <a href="{{ routes.cart_url }}" class="cart-link" aria-label="Cart">
         {{ 'cart.general.title' | t }} <span class="cart-count">{{ cart.item_count }}</span>
       </a>
