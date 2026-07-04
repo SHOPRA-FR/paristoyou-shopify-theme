@@ -1,0 +1,23 @@
+{%- comment -%} Usage: {% render 'product-card', product: product %} {%- endcomment -%}
+<a class="product-card" href="{{ product.url }}">
+  <div class="product-card-media">
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 600 }}"
+           alt="{{ product.featured_image.alt | default: product.title | escape }}"
+           width="600" height="{{ 600 | divided_by: product.featured_image.aspect_ratio | round }}" loading="lazy">
+    {%- else -%}
+      <div class="product-card-placeholder">{{ product.title | slice: 0, 1 }}</div>
+    {%- endif -%}
+    {%- unless product.available -%}<span class="badge sold-out">{{ 'products.product.sold_out' | t }}</span>{%- endunless -%}
+  </div>
+  <div class="product-card-info">
+    <span class="product-card-vendor">{{ product.vendor }}</span>
+    <span class="product-card-title">{{ product.title }}</span>
+    <span class="product-card-price">
+      {%- if product.compare_at_price > product.price -%}
+        <s>{{ product.compare_at_price | money }}</s>
+      {%- endif -%}
+      {{ product.price | money }}{% if product.price_varies %}+{% endif %}
+    </span>
+  </div>
+</a>

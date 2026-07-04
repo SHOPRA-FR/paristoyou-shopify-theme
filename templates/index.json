@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "stat1": { "type": "stat", "settings": { "value": "120+", "label": "Brands · 2 centres" } },
+        "stat2": { "type": "stat", "settings": { "value": "-30% / -70%", "label": "Outlet prices" } },
+        "stat3": { "type": "stat", "settings": { "value": "30%", "label": "All-in commission" } },
+        "stat4": { "type": "stat", "settings": { "value": "5-10 days", "label": "Tracked delivery" } }
+      },
+      "block_order": ["stat1", "stat2", "stat3", "stat4"],
+      "settings": {
+        "kicker": "PERSONAL SHOPPER · PARIS TO TURKEY",
+        "title": "Paris Shopping, Done for You.",
+        "subtitle": "Luxury personal shopping from Paris's finest outlets. 120+ brands, hand-selected, photographed for your approval, delivered to Turkey.",
+        "cta1_label": "Browse brands",
+        "cta1_link": "#brands",
+        "cta2_label": "How it works",
+        "cta2_link": "#how"
+      }
+    },
+    "offer": {
+      "type": "offer",
+      "blocks": {
+        "f1": { "type": "feature", "settings": { "icon": "❶", "title": "120+ brands, 2 centres", "text": "La Vallée Village (luxury outlet) and Val d'Europe: Gucci, Moncler, Chloé, Sephora, Nike, Apple and more." } },
+        "f2": { "type": "feature", "settings": { "icon": "❷", "title": "Live shopping", "text": "Real-time photos of every item and your validation before I pay at the till." } },
+        "f3": { "type": "feature", "settings": { "icon": "❸", "title": "Secure delivery", "text": "Careful packaging and tracked Colissimo shipping straight to your address in Turkey." } },
+        "f4": { "type": "feature", "settings": { "icon": "❹", "title": "100% authentic", "text": "Bought directly in official boutiques — guaranteed genuine, with receipts." } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"],
+      "settings": { "kicker": "What I offer", "title": "Everything handled, end to end", "alt": true, "columns": 4 }
+    },
+    "how": {
+      "type": "how-it-works",
+      "blocks": {
+        "s1": { "type": "step", "settings": { "title": "Consult", "text": "Share your wishlist, sizes and budget. Minimum order: 500 € of purchases." } },
+        "s2": { "type": "step", "settings": { "title": "Pay", "text": "100% upfront via Wise or PayPal, including commission and shipping." } },
+        "s3": { "type": "step", "settings": { "title": "Shop", "text": "I visit the outlets and send you photos of the selected items." } },
+        "s4": { "type": "step", "settings": { "title": "Validate", "text": "You approve within 4 hours so I can secure the pieces." } },
+        "s5": { "type": "step", "settings": { "title": "Receive", "text": "Tracked Colissimo International delivery to Turkey within 5–10 days." } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5"],
+      "settings": { "kicker": "How it works", "title": "Five simple steps" }
+    },
+    "pricing": {
+      "type": "pricing",
+      "blocks": {
+        "r1": { "type": "row", "settings": { "label": "Minimum order", "value": "500 €" } },
+        "r2": { "type": "row", "settings": { "label": "Minimum commission", "value": "150 €" } },
+        "r3": { "type": "row", "settings": { "label": "Live shopping option", "value": "+10% (40% total)" } },
+        "r4": { "type": "row", "settings": { "label": "Delivery · Colissimo Zone C (by weight)", "value": "from 35,19 €" } },
+        "r5": { "type": "row", "settings": { "label": "Payment", "value": "100% upfront · Wise / PayPal" } },
+        "r6": { "type": "row", "settings": { "label": "Turkish customs duties", "value": "client's responsibility (~20%)", "muted": true } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6"],
+      "settings": {
+        "kicker": "Pricing",
+        "title": "Simple, all-inclusive",
+        "rate_label": "commission on total purchases",
+        "rate_note": "Includes travel to the outlets, in-store sourcing, photos, secure packaging and handling."
+      }
+    },
+    "brands": { "type": "brands", "settings": {} },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "question": "How does payment work?", "answer": "After approving the quote, you pay 100% upfront via Wise or PayPal. Product price + commission + shipping included." } },
+        "q2": { "type": "qa", "settings": { "question": "How do I know it's authentic?", "answer": "All products are bought in official boutiques. Original invoice, receipt and photos are sent on every purchase." } },
+        "q3": { "type": "qa", "settings": { "question": "What are the delivery times?", "answer": "Tracked Colissimo International to Turkey, usually 5–10 business days." } },
+        "q4": { "type": "qa", "settings": { "question": "Are there customs duties?", "answer": "Imports are subject to Turkish customs rules (~20%). We manage the process transparently and inform you clearly upfront — duties are the client's responsibility." } },
+        "q5": { "type": "qa", "settings": { "question": "Are returns possible?", "answer": "The boutiques' return policies apply. For a wrong size or colour we do our utmost to find the best solution with you." } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5"],
+      "settings": { "kicker": "FAQ", "title": "Frequently asked questions" }
+    },
+    "contact": { "type": "contact-cta", "settings": {} }
+  },
+  "order": ["hero", "offer", "how", "pricing", "brands", "faq", "contact"]
+}

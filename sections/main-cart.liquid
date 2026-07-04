@@ -1,0 +1,45 @@
+<section class="section">
+  <div class="container container-narrow">
+    <h1 class="center">{{ 'cart.general.title' | t }}</h1>
+
+    {%- if cart.item_count == 0 -%}
+      <p class="center lead empty-state">{{ 'cart.general.empty' | t }}</p>
+      <p class="center"><a href="{{ routes.all_products_collection_url }}" class="btn btn-dark">{{ 'cart.general.continue_shopping' | t }}</a></p>
+    {%- else -%}
+      {%- form 'cart', cart -%}
+        <div class="cart-lines">
+          {%- for item in cart.items -%}
+            <div class="cart-line">
+              <div class="cart-line-media">
+                {%- if item.image -%}<img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="80" height="80" loading="lazy">{%- endif -%}
+              </div>
+              <div class="cart-line-info">
+                <span class="cart-line-vendor">{{ item.vendor }}</span>
+                <a class="cart-line-title" href="{{ item.url }}">{{ item.product.title }}</a>
+                {%- unless item.variant.title == 'Default Title' -%}<span class="cart-line-variant">{{ item.variant.title }}</span>{%- endunless -%}
+                <a href="{{ item.url_to_remove }}" class="cart-line-remove">{{ 'cart.general.remove' | t }}</a>
+              </div>
+              <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="qty-input" aria-label="{{ 'products.product.quantity' | t }}">
+              <span class="cart-line-price">{{ item.final_line_price | money }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <label class="field-label" for="CartNote">{{ 'cart.general.note' | t }}</label>
+        <textarea id="CartNote" name="note" rows="2" class="cart-note">{{ cart.note }}</textarea>
+
+        <div class="cart-summary-bar">
+          <div><span>{{ 'cart.general.subtotal' | t }}</span><strong>{{ cart.total_price | money }}</strong></div>
+          <div class="cart-summary-actions">
+            <button type="submit" name="update" class="btn btn-ghost">Update</button>
+            <button type="submit" name="checkout" class="btn btn-accent">{{ 'cart.general.checkout' | t }}</button>
+          </div>
+        </div>
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

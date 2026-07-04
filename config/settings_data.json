@@ -1,0 +1,25 @@
+{
+  "current": {
+    "logo_text": "paristoyou",
+    "tagline": "Personal Shopper · Paris to Turkey",
+    "color_bg": "#faf8f5",
+    "color_surface": "#ffffff",
+    "color_text": "#141414",
+    "color_muted": "#6b6b6b",
+    "color_dark": "#0f1512",
+    "color_accent": "#12b886",
+    "color_accent_soft": "#a7e8d0",
+    "font_heading": "assistant_n7",
+    "font_body": "assistant_n4",
+    "whatsapp_number": "33600000000",
+    "instagram_url": "",
+    "contact_email": "contact@paristoyou.com",
+    "commission_rate": "30",
+    "commission_min": "150",
+    "order_min": "500",
+    "customs_rate": "20"
+  },
+  "presets": {
+    "PARISTOYOU": {}
+  }
+}

@@ -1,0 +1,73 @@
+<section class="section product-page">
+  <div class="container product-layout">
+    <div class="product-media">
+      {%- if product.featured_media -%}
+        <img id="ProductMainImage" src="{{ product.featured_media | image_url: width: 1200 }}"
+             alt="{{ product.featured_media.alt | default: product.title | escape }}" width="1200" height="1200" loading="eager">
+      {%- else -%}
+        <div class="product-card-placeholder xl">{{ product.title | slice: 0, 1 }}</div>
+      {%- endif -%}
+      {%- if product.media.size > 1 -%}
+        <div class="product-thumbs">
+          {%- for media in product.media limit: 8 -%}
+            <button type="button" class="thumb" data-src="{{ media | image_url: width: 1200 }}">
+              <img src="{{ media | image_url: width: 160 }}" alt="" width="160" height="160" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="product-info">
+      <p class="kicker">{{ product.vendor }}</p>
+      <h1>{{ product.title }}</h1>
+
+      {%- assign current = product.selected_or_first_available_variant -%}
+      <p class="product-price" id="ProductPrice">
+        {%- if current.compare_at_price > current.price -%}<s>{{ current.compare_at_price | money }}</s>{%- endif -%}
+        {{ current.price | money }}
+      </p>
+
+      {%- form 'product', product -%}
+        {%- if product.variants.size > 1 -%}
+          <label class="field-label" for="VariantSelect">{{ product.options | join: ' / ' }}</label>
+          <select name="id" id="VariantSelect" class="variant-select">
+            {%- for variant in product.variants -%}
+              <option value="{{ variant.id }}"
+                      data-price="{{ variant.price | money }}"
+                      {% unless variant.available %}disabled{% endunless %}
+                      {% if variant == current %}selected{% endif %}>
+                {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} · {{ 'products.product.sold_out' | t }}{% endunless %}
+              </option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ current.id }}">
+        {%- endif -%}
+
+        <label class="field-label" for="Quantity">{{ 'products.product.quantity' | t }}</label>
+        <div class="qty-row">
+          <input type="number" id="Quantity" name="quantity" value="1" min="1" class="qty-input">
+          <button type="submit" name="add" class="btn btn-dark btn-block" {% unless product.available %}disabled{% endunless %}>
+            {% if product.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+          </button>
+        </div>
+      {%- endform -%}
+
+      {%- if section.settings.service_note != blank -%}
+        <div class="service-note">{{ section.settings.service_note }}</div>
+      {%- endif -%}
+
+      <div class="product-description rte">{{ product.description }}</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product page",
+  "settings": [
+    { "type": "richtext", "id": "service_note", "label": "Service note", "default": "<p>Price includes the 30% personal shopper commission. Shipped from Paris via tracked Colissimo — Turkish customs duties (~20%) are the client's responsibility.</p>" }
+  ]
+}
+{% endschema %}

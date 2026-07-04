@@ -1,0 +1,24 @@
+<section class="section">
+  <div class="container container-narrow">
+    <h1 class="center">{{ blog.title }}</h1>
+    {%- paginate blog.articles by 12 -%}
+      {%- for article in blog.articles -%}
+        <article class="blog-item">
+          <a href="{{ article.url }}"><h3>{{ article.title }}</h3></a>
+          <p class="blog-meta">{{ article.published_at | date: '%d/%m/%Y' }}</p>
+          <p>{{ article.excerpt_or_content | strip_html | truncate: 180 }}</p>
+        </article>
+      {%- endfor -%}
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr;</a>{%- endif -%}
+          <span>{{ paginate.current_page }} / {{ paginate.pages }}</span>
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&rarr;</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "Blog", "settings": [] }
+{% endschema %}

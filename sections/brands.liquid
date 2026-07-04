@@ -1,0 +1,59 @@
+<section class="section section-alt" id="brands">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    {%- if section.settings.subtitle != blank -%}<p class="lead center">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+    <div class="brands-toolbar">
+      <input type="search" id="BrandSearch" placeholder="{{ section.settings.search_placeholder }}" aria-label="{{ section.settings.search_placeholder }}">
+      <div class="filters" id="BrandFilters">
+        <button type="button" data-mall="all" class="active">{{ section.settings.label_all }}</button>
+        <button type="button" data-mall="lavallee">La Vallée Village</button>
+        <button type="button" data-mall="valdeurope">Val d'Europe</button>
+      </div>
+    </div>
+
+    {%- capture nl %}
+{% endcapture -%}
+    {%- assign lines = section.settings.brands | strip | split: nl -%}
+    <div class="brands-grid" id="BrandsGrid">
+      {%- for line in lines -%}
+        {%- assign parts = line | strip | split: '|' -%}
+        {%- assign bname = parts[0] | strip -%}
+        {%- if bname == blank -%}{% continue %}{%- endif -%}
+        {%- assign bmall = parts[1] | strip | default: 'lavallee' -%}
+        {%- assign bstar = parts[2] | strip -%}
+        <a class="brand-card" href="{{ routes.collections_url }}/vendors?q={{ bname | url_encode }}"
+           data-mall="{{ bmall }}" data-name="{{ bname | downcase | escape }}">
+          <span class="brand-name">{{ bname }}</span>
+          <span class="brand-meta">
+            <span class="brand-tag {{ bmall }}">{% if bmall == 'lavallee' %}Outlet{% else %}Boutique{% endif %}</span>
+            {%- if bstar == 'star' -%}<span class="brand-star">★</span>{%- endif -%}
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+    <p class="brands-none" id="BrandsNone" hidden>{{ section.settings.no_result }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brands",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Catalogue" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Brands I shop for you" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "From the two Paris shopping hubs. A brand not on the list? Ask anyway — I can most likely source it." },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search a brand…" },
+    { "type": "text", "id": "label_all", "label": "\"All\" filter label", "default": "All" },
+    { "type": "text", "id": "no_result", "label": "No-result message", "default": "No match. You can still make a request." },
+    {
+      "type": "textarea",
+      "id": "brands",
+      "label": "Brand list (one per line: Name|lavallee or valdeurope|star)",
+      "default": "Givenchy|lavallee|star\nBalmain|lavallee|star\nChloé|lavallee|star\nJacquemus|lavallee|star\nMoncler|lavallee|star\nFerragamo|lavallee|star\nSandro|lavallee|star\nMaje|lavallee|star\nGucci|lavallee|star\nPrada|lavallee|star\nSaint Laurent|lavallee|star\nBalenciaga|lavallee|star\nBurberry|lavallee|star\nLoewe|lavallee\nVersace|lavallee\nValentino|lavallee\nDolce & Gabbana|lavallee\nFendi|lavallee\nCeline|lavallee\nAlexander McQueen|lavallee\nChristian Louboutin|lavallee|star\nJimmy Choo|lavallee\nGolden Goose|lavallee\nMiu Miu|lavallee\nTod's|lavallee\nZegna|lavallee\nBrunello Cucinelli|lavallee\nLoro Piana|lavallee\nMax Mara|lavallee\nArmani|lavallee\nHugo Boss|lavallee\nKenzo|lavallee\nKarl Lagerfeld|lavallee\nMarc Jacobs|lavallee\nMichael Kors|lavallee|star\nCoach|lavallee|star\nTory Burch|lavallee\nFurla|lavallee\nLongchamp|lavallee|star\nLancel|lavallee\nMontblanc|lavallee\nAmi Paris|lavallee\nAcne Studios|lavallee\nIsabel Marant|lavallee\nZadig&Voltaire|lavallee\nClaudie Pierlot|lavallee\nThe Kooples|lavallee\nba&sh|lavallee\nMarni|lavallee\nStone Island|lavallee\nPolo Ralph Lauren|lavallee|star\nTommy Hilfiger|lavallee\nLacoste|lavallee\nChurch's|lavallee\nJ.M. Weston|lavallee\nRepetto|lavallee\nUGG|lavallee\nFusalp|lavallee\nK-Way|lavallee\nGuerlain|lavallee\nVilebrequin|lavallee\nZimmermann|lavallee\nBonpoint|lavallee\nTUMI|lavallee\nSamsonite|lavallee\nZara|valdeurope|star\nH&M|valdeurope\nMango|valdeurope|star\nUniqlo|valdeurope|star\nPull & Bear|valdeurope\nBershka|valdeurope\nStradivarius|valdeurope\nPrimark|valdeurope\nJack&Jones|valdeurope\nLevi's Store|valdeurope\nSephora|valdeurope|star\nNocibé|valdeurope\nMAC Cosmetics|valdeurope|star\nKIKO Milano|valdeurope\nNYX Cosmetics|valdeurope\nRituals|valdeurope\nLush|valdeurope\nYves Rocher|valdeurope\nNike Store|valdeurope|star\nadidas|valdeurope|star\nFoot Locker|valdeurope\nJD Sports|valdeurope\nCourir|valdeurope\nVictoria's Secret|valdeurope|star\nEtam|valdeurope\nUndiz|valdeurope\nCalzedonia|valdeurope\nIntimissimi|valdeurope\nTezenis|valdeurope\nSwarovski|valdeurope|star\nPandora|valdeurope|star\nHistoire d'Or|valdeurope\nMATY|valdeurope\nMauboussin|valdeurope\nApple Store|valdeurope|star\nFNAC|valdeurope\nMicromania|valdeurope\nNespresso|valdeurope\nKusmi Tea|valdeurope\nOkaïdi - Obaïbi|valdeurope\nSergent Major|valdeurope"
+    }
+  ],
+  "presets": [{ "name": "Brands" }]
+}
+{% endschema %}

@@ -1,0 +1,55 @@
+<section class="hero" {% if section.settings.bg_image %}style="--hero-img:url('{{ section.settings.bg_image | image_url: width: 2000 }}')"{% endif %}>
+  <div class="hero-overlay"></div>
+  <div class="container hero-inner">
+    {%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+    <h1>{{ section.settings.title }}</h1>
+    {%- if section.settings.subtitle != blank -%}<p class="hero-sub">{{ section.settings.subtitle }}</p>{%- endif -%}
+    <div class="hero-cta">
+      {%- if section.settings.cta1_label != blank -%}<a href="{{ section.settings.cta1_link | default: '#' }}" class="btn btn-accent">{{ section.settings.cta1_label }}</a>{%- endif -%}
+      {%- if section.settings.cta2_label != blank -%}<a href="{{ section.settings.cta2_link | default: '#' }}" class="btn btn-ghost-light">{{ section.settings.cta2_label }}</a>{%- endif -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="hero-stats">
+        {%- for block in section.blocks -%}
+          <div {{ block.shopify_attributes }}><strong>{{ block.settings.value }}</strong><span>{{ block.settings.label }}</span></div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "bg_image", "label": "Background image" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "PERSONAL SHOPPER · PARIS TO TURKEY" },
+    { "type": "textarea", "id": "title", "label": "Title", "default": "Paris Shopping, Done for You." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Luxury personal shopping from Paris's finest outlets. 120+ brands, hand-selected, photographed for your approval, delivered to Turkey." },
+    { "type": "text", "id": "cta1_label", "label": "Primary button", "default": "Get started" },
+    { "type": "url", "id": "cta1_link", "label": "Primary button link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "How it works" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary button link" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "120+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Luxury brands" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "120+", "label": "Luxury brands" } },
+        { "type": "stat", "settings": { "value": "-30% / -70%", "label": "Outlet prices" } },
+        { "type": "stat", "settings": { "value": "5-10 days", "label": "Delivery" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

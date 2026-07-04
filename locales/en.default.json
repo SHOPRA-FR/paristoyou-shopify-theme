@@ -1,0 +1,43 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content"
+    },
+    "search": {
+      "search": "Search"
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you were looking for does not exist.",
+      "link": "Back to home"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "vendor": "Brand",
+      "quantity": "Quantity"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your list",
+      "empty": "Your list is empty",
+      "subtotal": "Subtotal",
+      "checkout": "Checkout",
+      "remove": "Remove",
+      "continue_shopping": "Continue shopping",
+      "note": "Add a note to your order"
+    }
+  },
+  "onboarding": {
+    "product_title": "Example product title",
+    "collection_title": "Example collection"
+  }
+}

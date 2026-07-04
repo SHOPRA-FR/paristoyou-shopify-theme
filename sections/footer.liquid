@@ -1,0 +1,39 @@
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="logo">{{ settings.logo_text }}</span>
+      <p>{{ settings.tagline }}</p>
+    </div>
+
+    {%- if section.settings.menu != blank -%}
+      <nav class="footer-nav">
+        {%- for link in linklists[section.settings.menu].links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    <div class="footer-social">
+      {%- assign wa = settings.whatsapp_number | remove: '+' | remove: ' ' -%}
+      {%- if wa != blank -%}<a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">WhatsApp</a>{%- endif -%}
+      {%- if settings.instagram_url != blank -%}<a href="{{ settings.instagram_url }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+      {%- if settings.contact_email != blank -%}<a href="mailto:{{ settings.contact_email }}">Email</a>{%- endif -%}
+    </div>
+
+    {%- if section.settings.legal != blank -%}
+      <p class="footer-legal">{{ section.settings.legal }}</p>
+    {%- endif -%}
+
+    <p class="footer-rights">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Footer menu", "default": "footer" },
+    { "type": "richtext", "id": "legal", "label": "Legal / disclaimer text", "default": "<p>Independent personal shopping service. No official affiliation with the brands listed; products are purchased on the client's behalf. Turkish customs duties are the client's responsibility.</p>" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,47 @@
+<section class="section" id="how">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    <div class="steps cols-{{ section.blocks.size | at_most: 5 }}">
+      {%- for block in section.blocks -%}
+        <article class="step" {{ block.shopify_attributes }}>
+          <div class="step-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How it works",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "How it works" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Five simple steps" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Step" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Describe the step." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How it works",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Consult", "text": "Share your wishlist, sizes and budget. Minimum order: 500 € of purchases." } },
+        { "type": "step", "settings": { "title": "Pay", "text": "100% upfront via Wise or PayPal, including commission and shipping." } },
+        { "type": "step", "settings": { "title": "Shop", "text": "I visit the outlets and send you photos of the selected items." } },
+        { "type": "step", "settings": { "title": "Validate", "text": "You approve within 4 hours so I can secure the pieces." } },
+        { "type": "step", "settings": { "title": "Receive", "text": "Tracked Colissimo International delivery to Turkey within 5–10 days." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

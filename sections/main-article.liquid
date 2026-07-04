@@ -1,0 +1,13 @@
+<section class="section">
+  <div class="container container-narrow">
+    <p class="kicker">{{ article.published_at | date: '%d/%m/%Y' }}</p>
+    <h1>{{ article.title }}</h1>
+    {%- if article.image -%}
+      <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.image.alt | escape }}" width="1400" height="{{ 1400 | divided_by: article.image.aspect_ratio | round }}" class="article-image">
+    {%- endif -%}
+    <div class="rte">{{ article.content }}</div>
+  </div>
+</section>
+{% schema %}
+{ "name": "Article", "settings": [] }
+{% endschema %}

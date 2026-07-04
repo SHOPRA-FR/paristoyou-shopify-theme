@@ -1,0 +1,24 @@
+<section class="final-cta" id="contact">
+  <div class="container center">
+    <h2>{{ section.settings.title }}</h2>
+    <p>{{ section.settings.subtitle }}</p>
+    <div class="contact-row">
+      {%- assign wa = settings.whatsapp_number | remove: '+' | remove: ' ' -%}
+      {%- if wa != blank -%}<a href="https://wa.me/{{ wa }}" class="btn btn-accent" target="_blank" rel="noopener">{{ section.settings.wa_label }}</a>{%- endif -%}
+      {%- if settings.instagram_url != blank -%}<a href="{{ settings.instagram_url }}" class="btn btn-ghost-light" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+      {%- if settings.contact_email != blank -%}<a href="mailto:{{ settings.contact_email }}" class="btn btn-ghost-light">Email</a>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact CTA",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Book your appointment" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Limited slots per week. Tell me what you're looking for." },
+    { "type": "text", "id": "wa_label", "label": "WhatsApp button label", "default": "WhatsApp Business" }
+  ],
+  "presets": [{ "name": "Contact CTA" }]
+}
+{% endschema %}

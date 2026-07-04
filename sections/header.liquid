@@ -1,0 +1,51 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="{{ routes.root_url }}" class="logo">
+      {%- if settings.logo_image != blank -%}
+        <img src="{{ settings.logo_image | image_url: width: 320 }}" alt="{{ shop.name | escape }}" width="160" height="40" loading="eager">
+      {%- else -%}
+        {{ settings.logo_text }}
+      {%- endif -%}
+    </a>
+
+    <nav class="main-nav" id="MainNav">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="header-actions">
+      {%- if section.settings.show_locale and localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'locale-form' -%}
+          <select name="locale_code" onchange="this.form.submit()" aria-label="Language">
+            {%- for lang in localization.available_languages -%}
+              <option value="{{ lang.iso_code }}" {% if lang.iso_code == localization.language.iso_code %}selected{% endif %}>{{ lang.endonym_name }}</option>
+            {%- endfor -%}
+          </select>
+        {%- endform -%}
+      {%- endif -%}
+
+      {%- if section.settings.cta_link != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="btn btn-accent btn-sm">{{ section.settings.cta_label | default: 'Contact' }}</a>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="cart-link" aria-label="Cart">
+        {{ 'cart.general.title' | t }} <span class="cart-count">{{ cart.item_count }}</span>
+      </a>
+
+      <button class="burger" id="Burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_locale", "label": "Show language selector", "default": true },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Contact" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ]
+}
+{% endschema %}

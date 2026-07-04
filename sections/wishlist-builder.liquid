@@ -1,0 +1,132 @@
+{%- comment -%}
+  My List — constructeur de liste de shopping (côté client, localStorage).
+  Le client colle le lien d'un article vu sur le site officiel de la marque,
+  ajoute taille/prix ; total = sous-total + commission (réglages du thème)
+  + livraison Colissimo ; export WhatsApp / copie presse-papiers.
+{%- endcomment -%}
+
+<section class="section wishlist-section"
+  id="WishlistApp"
+  data-rate="{{ settings.commission_rate | default: 30 }}"
+  data-min-commission="{{ settings.commission_min | default: 150 }}"
+  data-min-order="{{ settings.order_min | default: 500 }}"
+  data-customs="{{ settings.customs_rate | default: 20 }}"
+  data-whatsapp="{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}">
+  <div class="container">
+    <p class="kicker center">{{ section.settings.kicker }}</p>
+    <h1 class="center">{{ section.settings.title }}</h1>
+    <p class="lead center">{{ section.settings.subtitle }}</p>
+
+    <div class="wishlist-layout">
+      <div class="wishlist-main">
+        <div class="wl-help">
+          <span class="wl-help-num">1</span>
+          <p>{{ section.settings.help_step1 }}</p>
+        </div>
+        <div class="wl-help">
+          <span class="wl-help-num">2</span>
+          <p>{{ section.settings.help_step2 }}</p>
+        </div>
+
+        <form id="WlForm" class="wl-form">
+          <label class="field-label" for="WlUrl">{{ section.settings.label_url }}</label>
+          <input type="url" id="WlUrl" required placeholder="https://www.gucci.com/…" inputmode="url">
+
+          <div class="wl-form-row">
+            <label>
+              <span class="field-label">{{ section.settings.label_name }}</span>
+              <input type="text" id="WlName" required placeholder="GG Marmont bag">
+            </label>
+            <label>
+              <span class="field-label">{{ section.settings.label_size }}</span>
+              <input type="text" id="WlSize" placeholder="38 / M">
+            </label>
+          </div>
+          <div class="wl-form-row">
+            <label>
+              <span class="field-label">{{ section.settings.label_price }}</span>
+              <input type="number" id="WlPrice" required min="1" step="0.01" placeholder="0" inputmode="decimal">
+            </label>
+            <label>
+              <span class="field-label">{{ section.settings.label_qty }}</span>
+              <input type="number" id="WlQty" value="1" min="1" step="1">
+            </label>
+          </div>
+          <button type="submit" class="btn btn-accent btn-block">{{ section.settings.label_add }}</button>
+        </form>
+
+        <div class="wl-items-head">
+          <h3>{{ section.settings.label_items }}</h3>
+          <span id="WlCount" class="wl-count">0</span>
+        </div>
+        <div id="WlItems" class="wl-items"></div>
+        <p id="WlEmpty" class="wl-empty">{{ section.settings.label_empty }}</p>
+      </div>
+
+      <aside class="wl-summary">
+        <h3>{{ section.settings.label_summary }}</h3>
+        <div class="wl-sum-row"><span>{{ section.settings.label_subtotal }}</span><strong id="WlSubtotal">—</strong></div>
+        <div class="wl-sum-row"><span id="WlCommissionLabel">{{ section.settings.label_commission }}</span><strong id="WlCommission">—</strong></div>
+        <div class="wl-sum-row wl-sum-select">
+          <span>{{ section.settings.label_delivery }}</span>
+          <select id="WlDelivery">
+            {%- capture nl %}
+{% endcapture -%}
+            {%- assign tiers = section.settings.delivery_tiers | strip | split: nl -%}
+            {%- for tier in tiers -%}
+              {%- assign parts = tier | strip | split: '|' -%}
+              {%- if parts[0] == blank -%}{% continue %}{%- endif -%}
+              <option value="{{ parts[1] | strip }}"{% if parts[2] contains 'sel' %} selected{% endif %}>{{ parts[0] | strip }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+        <div class="wl-sum-row wl-sum-total"><span>{{ section.settings.label_total }}</span><strong id="WlTotal">—</strong></div>
+        <p class="wl-note" id="WlCustomsNote">{{ section.settings.customs_note }}</p>
+        <div class="wl-warn" id="WlMinWarn" hidden>{{ section.settings.min_order_warning }}</div>
+        <div class="wl-actions">
+          <button type="button" class="btn btn-accent btn-block" id="WlSendWa">{{ section.settings.label_whatsapp }}</button>
+          <button type="button" class="btn btn-ghost btn-block" id="WlCopy">{{ section.settings.label_copy }}</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'wishlist.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Wishlist builder",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Your shopping list" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Build your list, I shop it for you" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Browse the brands' official websites, copy the link of each item you want, and paste it below with the size and price. Then send me the list — I take it from there." },
+    { "type": "textarea", "id": "help_step1", "label": "Help step 1", "default": "Open the brand's official website (see the Brands page) and find your item." },
+    { "type": "textarea", "id": "help_step2", "label": "Help step 2", "default": "Copy the product link from your browser's address bar and paste it here." },
+    { "type": "text", "id": "label_url", "label": "URL field label", "default": "Product link (paste here)" },
+    { "type": "text", "id": "label_name", "label": "Name field label", "default": "Item / reference" },
+    { "type": "text", "id": "label_size", "label": "Size field label", "default": "Size" },
+    { "type": "text", "id": "label_price", "label": "Price field label", "default": "Price (€)" },
+    { "type": "text", "id": "label_qty", "label": "Qty field label", "default": "Qty" },
+    { "type": "text", "id": "label_add", "label": "Add button", "default": "+ Add to my list" },
+    { "type": "text", "id": "label_items", "label": "Items heading", "default": "My items" },
+    { "type": "text", "id": "label_empty", "label": "Empty message", "default": "Your list is empty. Paste your first product link above." },
+    { "type": "text", "id": "label_summary", "label": "Summary heading", "default": "Summary" },
+    { "type": "text", "id": "label_subtotal", "label": "Subtotal label", "default": "Items subtotal" },
+    { "type": "text", "id": "label_commission", "label": "Commission label", "default": "Commission" },
+    { "type": "text", "id": "label_delivery", "label": "Delivery label", "default": "Delivery (by weight)" },
+    { "type": "text", "id": "label_total", "label": "Total label", "default": "Total to pay upfront" },
+    { "type": "textarea", "id": "customs_note", "label": "Customs note", "default": "+ Turkish customs (~20%) on arrival — client's responsibility. Colissimo International Zone C, La Poste 2026 rates." },
+    { "type": "textarea", "id": "min_order_warning", "label": "Min order warning", "default": "Minimum order is 500 € of purchases. Add more items to proceed." },
+    { "type": "text", "id": "label_whatsapp", "label": "WhatsApp button", "default": "Send my list on WhatsApp" },
+    { "type": "text", "id": "label_copy", "label": "Copy button", "default": "Copy my list" },
+    {
+      "type": "textarea",
+      "id": "delivery_tiers",
+      "label": "Delivery tiers (Label|price, one per line; add |sel for default)",
+      "default": "≤ 500 g · 35,19 €|35.19\n≤ 1 kg · 39,19 €|39.19\n≤ 2 kg · 53,99 €|53.99|sel\n≤ 5 kg · 78,69 €|78.69\n≤ 10 kg · 148,99 €|148.99\n≤ 15 kg · 210,79 €|210.79\n≤ 20 kg · 256,89 €|256.89"
+    }
+  ],
+  "presets": [{ "name": "Wishlist builder" }]
+}
+{% endschema %}

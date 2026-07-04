@@ -1,0 +1,68 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "PARISTOYOU",
+    "theme_version": "1.0.0",
+    "theme_author": "SHOPRA / ARSEL",
+    "theme_documentation_url": "https://github.com/SHOPRA-FR/paristoyou",
+    "theme_support_url": "https://github.com/SHOPRA-FR/paristoyou"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "text",
+        "id": "logo_text",
+        "label": "Logo text (wordmark)",
+        "default": "paristoyou"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_image",
+        "label": "Logo image (optional — replaces text)"
+      },
+      {
+        "type": "text",
+        "id": "tagline",
+        "label": "Tagline",
+        "default": "Personal Shopper · Paris to Turkey"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_bg",      "label": "Page background", "default": "#faf8f5" },
+      { "type": "color", "id": "color_surface", "label": "Surface / cards",  "default": "#ffffff" },
+      { "type": "color", "id": "color_text",    "label": "Text",            "default": "#141414" },
+      { "type": "color", "id": "color_muted",   "label": "Muted text",      "default": "#6b6b6b" },
+      { "type": "color", "id": "color_dark",    "label": "Dark sections",   "default": "#0f1512" },
+      { "type": "color", "id": "color_accent",  "label": "Accent",          "default": "#12b886" },
+      { "type": "color", "id": "color_accent_soft", "label": "Accent soft", "default": "#a7e8d0" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      { "type": "font_picker", "id": "font_heading", "label": "Headings", "default": "assistant_n4" },
+      { "type": "font_picker", "id": "font_body",    "label": "Body",     "default": "assistant_n4" }
+    ]
+  },
+  {
+    "name": "Contact & Social",
+    "settings": [
+      { "type": "text", "id": "whatsapp_number", "label": "WhatsApp (international, no +)", "default": "33600000000" },
+      { "type": "url",  "id": "instagram_url",   "label": "Instagram URL" },
+      { "type": "text", "id": "contact_email",   "label": "Contact email", "default": "contact@paristoyou.com" }
+    ]
+  },
+  {
+    "name": "Service / Pricing",
+    "settings": [
+      { "type": "text", "id": "commission_rate",  "label": "Commission rate (%)", "default": "30" },
+      { "type": "text", "id": "commission_min",   "label": "Minimum commission (€)", "default": "150" },
+      { "type": "text", "id": "order_min",        "label": "Minimum order (€)", "default": "500" },
+      { "type": "text", "id": "customs_rate",     "label": "Estimated Turkish customs (%)", "default": "20" }
+    ]
+  }
+]

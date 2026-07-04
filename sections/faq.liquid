@@ -1,0 +1,46 @@
+<section class="section" id="faq">
+  <div class="container container-narrow">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    <div class="faq-list">
+      {%- for block in section.blocks -%}
+        <details {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.question }}</summary>
+          <p>{{ block.settings.answer }}</p>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "FAQ" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Frequently asked questions" }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Question?" },
+        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Answer." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "qa", "settings": { "question": "How does payment work?", "answer": "After approving the quote, you pay 100% upfront via Wise or PayPal. Product price + commission + shipping included." } },
+        { "type": "qa", "settings": { "question": "How do I know it's authentic?", "answer": "All products are bought in official boutiques. Original invoice, receipt and photos are sent on every purchase." } },
+        { "type": "qa", "settings": { "question": "What are the delivery times?", "answer": "Tracked Colissimo International to Turkey, usually 5–10 business days." } },
+        { "type": "qa", "settings": { "question": "Are there customs duties?", "answer": "Imports are subject to Turkish customs rules (~20%). We manage the process transparently and inform you clearly upfront — duties are the client's responsibility." } },
+        { "type": "qa", "settings": { "question": "Are returns possible?", "answer": "The boutiques' return policies apply. For a wrong size or colour we do our utmost to find the best solution with you." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

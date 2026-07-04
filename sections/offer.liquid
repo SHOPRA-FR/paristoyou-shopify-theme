@@ -1,0 +1,49 @@
+<section class="section {% if section.settings.alt %}section-alt{% endif %}" id="offer">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    <div class="card-grid cols-{{ section.settings.columns }}">
+      {%- for block in section.blocks -%}
+        <article class="feature-card" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != blank -%}<span class="feature-ic">{{ block.settings.icon }}</span>{%- endif -%}
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature grid",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "What I offer" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Everything handled, end to end" },
+    { "type": "checkbox", "id": "alt", "label": "Alternate background", "default": true },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns", "default": 4 }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon (emoji/char)", "default": "◆" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Feature" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Describe the feature." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature grid",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "❶", "title": "120+ brands, 2 centres", "text": "La Vallée Village (luxury outlet) and Val d'Europe: Gucci, Moncler, Chloé, Sephora, Nike, Apple and more." } },
+        { "type": "feature", "settings": { "icon": "❷", "title": "Live shopping", "text": "Real-time photos of every item and your validation before I pay at the till." } },
+        { "type": "feature", "settings": { "icon": "❸", "title": "Secure delivery", "text": "Careful packaging and tracked Colissimo shipping straight to your address in Turkey." } },
+        { "type": "feature", "settings": { "icon": "❹", "title": "100% authentic", "text": "Bought directly in official boutiques — guaranteed genuine, with receipts." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

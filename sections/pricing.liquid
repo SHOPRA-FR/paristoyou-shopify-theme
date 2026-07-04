@@ -1,0 +1,56 @@
+<section class="section section-dark" id="pricing">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center accent">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    <div class="pricing-grid">
+      <div class="price-hero">
+        <span class="price-big">{{ settings.commission_rate }}%</span>
+        <span class="price-label">{{ section.settings.rate_label }}</span>
+        <p class="price-incl">{{ section.settings.rate_note }}</p>
+      </div>
+      <ul class="price-list">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}{% if block.settings.muted %} class="muted"{% endif %}>
+            <span>{{ block.settings.label }}</span><strong>{{ block.settings.value }}</strong>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pricing",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Pricing" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Simple, all-inclusive" },
+    { "type": "text", "id": "rate_label", "label": "Rate label", "default": "commission on total purchases" },
+    { "type": "textarea", "id": "rate_note", "label": "Rate note", "default": "Includes travel to the outlets, in-store sourcing, photos, secure packaging and handling." }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Price row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Label" },
+        { "type": "text", "id": "value", "label": "Value", "default": "Value" },
+        { "type": "checkbox", "id": "muted", "label": "Muted style", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pricing",
+      "blocks": [
+        { "type": "row", "settings": { "label": "Minimum order", "value": "500 €" } },
+        { "type": "row", "settings": { "label": "Minimum commission", "value": "150 €" } },
+        { "type": "row", "settings": { "label": "Live shopping option", "value": "+10% (40% total)" } },
+        { "type": "row", "settings": { "label": "Delivery · Colissimo Zone C (by weight)", "value": "from 35,19 €" } },
+        { "type": "row", "settings": { "label": "Payment", "value": "100% upfront · Wise / PayPal" } },
+        { "type": "row", "settings": { "label": "Turkish customs duties", "value": "client's responsibility (~20%)", "muted": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}
