@@ -3,12 +3,29 @@
     "hero": {
       "type": "hero",
       "blocks": {
-        "sl1": { "type": "slide", "settings": {} },
-        "sl2": { "type": "slide", "settings": {} },
-        "sl3": { "type": "slide", "settings": {} },
-        "sl4": { "type": "slide", "settings": {} }
+        "sl1": {
+          "type": "slide",
+          "settings": {}
+        },
+        "sl2": {
+          "type": "slide",
+          "settings": {}
+        },
+        "sl3": {
+          "type": "slide",
+          "settings": {}
+        },
+        "sl4": {
+          "type": "slide",
+          "settings": {}
+        }
       },
-      "block_order": ["sl1", "sl2", "sl3", "sl4"],
+      "block_order": [
+        "sl1",
+        "sl2",
+        "sl3",
+        "sl4"
+      ],
       "settings": {
         "kicker": "PERSONAL SHOPPER · PARIS → WORLDWIDE",
         "title": "Paris Shopping, Done For You.",
@@ -23,37 +40,158 @@
     "why": {
       "type": "offer",
       "blocks": {
-        "w1": { "type": "feature", "settings": { "icon": "🛂", "title": "No visa, no trip", "text": "Shopping in Paris without a travel visa, without taking a week off work." } },
-        "w2": { "type": "feature", "settings": { "icon": "🏨", "title": "Zero travel costs", "text": "No flights, no week of hotel, no restaurants — your budget goes into the products, not the trip." } },
-        "w3": { "type": "feature", "settings": { "icon": "💶", "title": "2 – 2.5× cheaper", "text": "Luxury items are often 2 to 2.5 times cheaper than at home, where import taxes and duties inflate prices." } },
-        "w4": { "type": "feature", "settings": { "icon": "📦", "title": "Delivered to your door", "text": "Outlet prices (-30% to -70%), tracked parcels shipped across Europe and worldwide." } }
+        "w1": {
+          "type": "feature",
+          "settings": {
+            "icon": "🛂",
+            "title": "No visa, no trip",
+            "text": "Shopping in Paris without a travel visa, without taking a week off work."
+          }
+        },
+        "w2": {
+          "type": "feature",
+          "settings": {
+            "icon": "🏨",
+            "title": "Zero travel costs",
+            "text": "No flights, no week of hotel, no restaurants — your budget goes into the products, not the trip."
+          }
+        },
+        "w3": {
+          "type": "feature",
+          "settings": {
+            "icon": "💶",
+            "title": "2 – 2.5× cheaper",
+            "text": "Luxury items are often 2 to 2.5 times cheaper than at home, where import taxes and duties inflate prices."
+          }
+        },
+        "w4": {
+          "type": "feature",
+          "settings": {
+            "icon": "📦",
+            "title": "Delivered to your door",
+            "text": "Outlet prices (-30% to -70%), tracked parcels shipped across Europe and worldwide."
+          }
+        }
       },
-      "block_order": ["w1", "w2", "w3", "w4"],
-      "settings": { "kicker": "Why my service", "title": "Paris luxury, without the Paris trip", "alt": true, "columns": 4 }
+      "block_order": [
+        "w1",
+        "w2",
+        "w3",
+        "w4"
+      ],
+      "settings": {
+        "kicker": "Why my service",
+        "title": "Paris luxury, without the Paris trip",
+        "alt": true,
+        "columns": 4
+      }
     },
     "how": {
       "type": "how-it-works",
       "blocks": {
-        "s1": { "type": "step", "settings": { "title": "Create your account", "text": "Sign up with your delivery address and contact details — everything stays saved for your orders." } },
-        "s2": { "type": "step", "settings": { "title": "Send your shopping list", "text": "Build your list on the My List page: paste the links of the items you want, with sizes and prices." } },
-        "s3": { "type": "step", "settings": { "title": "Pay the deposit", "text": "A deposit matching the estimated total of your shopping + my provisional fee, validated together." } },
-        "s4": { "type": "step", "settings": { "title": "Book a call", "text": "Tell me your date and time availability for a phone exchange about your list." } },
-        "s5": { "type": "step", "settings": { "title": "I scout, you validate, I buy", "text": "After our call I go to the boutiques, report back on the items found matching your request — and buy them upon your validation." } },
-        "s6": { "type": "step", "settings": { "title": "Tracked delivery", "text": "Carefully packed and shipped with tracking to the address from your account — Europe & worldwide." } }
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Create your account",
+            "text": "Sign up with your delivery address and contact details — everything stays saved for your orders."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Send your shopping list",
+            "text": "Build your list on the My List page: paste the links of the items you want, with sizes and prices."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Pay the deposit",
+            "text": "A deposit matching the estimated total of your shopping + my provisional fee, validated together."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "title": "Book a call",
+            "text": "Tell me your date and time availability for a phone exchange about your list."
+          }
+        },
+        "s5": {
+          "type": "step",
+          "settings": {
+            "title": "I scout, you validate, I buy",
+            "text": "After our call I go to the boutiques, report back on the items found matching your request — and buy them upon your validation."
+          }
+        },
+        "s6": {
+          "type": "step",
+          "settings": {
+            "title": "Tracked delivery",
+            "text": "Carefully packed and shipped with tracking to the address from your account — Europe & worldwide."
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3", "s4", "s5", "s6"],
-      "settings": { "kicker": "How it works", "title": "Six simple steps" }
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6"
+      ],
+      "settings": {
+        "kicker": "How it works",
+        "title": "Six simple steps"
+      }
     },
     "pricing": {
       "type": "pricing",
       "blocks": {
-        "r1": { "type": "row", "settings": { "label": "Minimum purchase", "value": "None" } },
-        "r2": { "type": "row", "settings": { "label": "Minimum commission", "value": "300 €" } },
-        "r3": { "type": "row", "settings": { "label": "Deposit", "value": "Purchases + provisional fee, validated together" } },
-        "r4": { "type": "row", "settings": { "label": "Delivery", "value": "Tracked parcel · Europe & worldwide" } },
-        "r5": { "type": "row", "settings": { "label": "Destination customs duties", "value": "client's responsibility", "muted": true } }
+        "r1": {
+          "type": "row",
+          "settings": {
+            "label": "Minimum purchase",
+            "value": "None"
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "label": "Minimum commission",
+            "value": "300 €"
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "label": "Deposit",
+            "value": "Purchases + provisional fee, validated together"
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "label": "Delivery",
+            "value": "Tracked parcel · Europe & worldwide"
+          }
+        },
+        "r5": {
+          "type": "row",
+          "settings": {
+            "label": "Destination customs duties",
+            "value": "client's responsibility",
+            "muted": true
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3", "r4", "r5"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5"
+      ],
       "settings": {
         "kicker": "Pricing",
         "title": "Simple, transparent fees",
@@ -64,30 +202,151 @@
     "selection": {
       "type": "featured-brands",
       "blocks": {
-        "i1": { "type": "item", "settings": { "brand": "Gucci", "item": "GG Marmont shoulder bag", "price": "1 290 €", "compare": "1 980 €", "discount": "-35%" } },
-        "i2": { "type": "item", "settings": { "brand": "Moncler", "item": "Maya down jacket", "price": "840 €", "compare": "1 450 €", "discount": "-42%" } },
-        "i3": { "type": "item", "settings": { "brand": "Saint Laurent", "item": "Loulou medium bag", "price": "1 450 €", "compare": "2 300 €", "discount": "-37%" } },
-        "i4": { "type": "item", "settings": { "brand": "Christian Louboutin", "item": "So Kate 120 pumps", "price": "495 €", "compare": "795 €", "discount": "-38%" } },
-        "i5": { "type": "item", "settings": { "brand": "Burberry", "item": "Check cashmere scarf", "price": "290 €", "compare": "470 €", "discount": "-38%" } },
-        "i6": { "type": "item", "settings": { "brand": "Sephora", "item": "Luxury beauty set", "price": "120 €", "compare": "180 €", "discount": "-33%" } }
+        "i1": {
+          "type": "item",
+          "settings": {
+            "brand": "Gucci",
+            "item": "GG Marmont shoulder bag",
+            "price": "1 290 €",
+            "compare": "1 980 €",
+            "discount": "-35%",
+            "image_asset": "sel-gucci.jpg"
+          }
+        },
+        "i2": {
+          "type": "item",
+          "settings": {
+            "brand": "Moncler",
+            "item": "Maya down jacket",
+            "price": "840 €",
+            "compare": "1 450 €",
+            "discount": "-42%",
+            "image_asset": "sel-moncler.jpg"
+          }
+        },
+        "i3": {
+          "type": "item",
+          "settings": {
+            "brand": "Balenciaga",
+            "item": "Le City small bag",
+            "price": "1 190 €",
+            "compare": "1 900 €",
+            "discount": "-37%",
+            "image_asset": "sel-balenciaga.jpg"
+          }
+        },
+        "i4": {
+          "type": "item",
+          "settings": {
+            "brand": "Christian Louboutin",
+            "item": "So Kate 120 pumps",
+            "price": "495 €",
+            "compare": "795 €",
+            "discount": "-38%",
+            "image_asset": "sel-louboutin.jpg"
+          }
+        },
+        "i5": {
+          "type": "item",
+          "settings": {
+            "brand": "Burberry",
+            "item": "Check cashmere scarf",
+            "price": "290 €",
+            "compare": "470 €",
+            "discount": "-38%",
+            "image_asset": "sel-burberry.jpg"
+          }
+        },
+        "i6": {
+          "type": "item",
+          "settings": {
+            "brand": "Longchamp",
+            "item": "Le Pliage original",
+            "price": "95 €",
+            "compare": "145 €",
+            "discount": "-34%",
+            "image_asset": "sel-longchamp.jpg"
+          }
+        }
       },
-      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6"],
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6"
+      ],
       "settings": {}
     },
-    "brands": { "type": "brands", "settings": {} },
+    "brands": {
+      "type": "brands",
+      "settings": {}
+    },
     "faq": {
       "type": "faq",
       "blocks": {
-        "q1": { "type": "qa", "settings": { "question": "How does payment work?", "answer": "After we validate your list together, you pay a deposit covering the estimated purchases + my provisional fee (Wise, PayPal or bank transfer)." } },
-        "q2": { "type": "qa", "settings": { "question": "How do I know it's authentic?", "answer": "All products are bought in the official boutiques of the Paris outlets. Original invoice, receipt and photos are sent with every purchase." } },
-        "q3": { "type": "qa", "settings": { "question": "Where do you deliver?", "answer": "Across Europe and worldwide, with a tracked parcel to the address on your account." } },
-        "q4": { "type": "qa", "settings": { "question": "Are there customs duties?", "answer": "Depending on your country, import duties may apply on arrival — they remain the client's responsibility. I manage the process transparently and inform you upfront." } },
-        "q5": { "type": "qa", "settings": { "question": "Are returns possible?", "answer": "The boutiques' return policies apply. For a wrong size or colour we do our utmost to find the best solution with you." } }
+        "q1": {
+          "type": "qa",
+          "settings": {
+            "question": "How does payment work?",
+            "answer": "After we validate your list together, you pay a deposit covering the estimated purchases + my provisional fee (Wise, PayPal or bank transfer)."
+          }
+        },
+        "q2": {
+          "type": "qa",
+          "settings": {
+            "question": "How do I know it's authentic?",
+            "answer": "All products are bought in the official boutiques of the Paris outlets. Original invoice, receipt and photos are sent with every purchase."
+          }
+        },
+        "q3": {
+          "type": "qa",
+          "settings": {
+            "question": "Where do you deliver?",
+            "answer": "Across Europe and worldwide, with a tracked parcel to the address on your account."
+          }
+        },
+        "q4": {
+          "type": "qa",
+          "settings": {
+            "question": "Are there customs duties?",
+            "answer": "Depending on your country, import duties may apply on arrival — they remain the client's responsibility. I manage the process transparently and inform you upfront."
+          }
+        },
+        "q5": {
+          "type": "qa",
+          "settings": {
+            "question": "Are returns possible?",
+            "answer": "The boutiques' return policies apply. For a wrong size or colour we do our utmost to find the best solution with you."
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5"],
-      "settings": { "kicker": "FAQ", "title": "Frequently asked questions" }
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "settings": {
+        "kicker": "FAQ",
+        "title": "Frequently asked questions"
+      }
     },
-    "contact": { "type": "contact-cta", "settings": {} }
+    "contact": {
+      "type": "contact-cta",
+      "settings": {}
+    }
   },
-  "order": ["hero", "why", "how", "pricing", "selection", "brands", "faq", "contact"]
+  "order": [
+    "hero",
+    "why",
+    "how",
+    "pricing",
+    "selection",
+    "brands",
+    "faq",
+    "contact"
+  ]
 }

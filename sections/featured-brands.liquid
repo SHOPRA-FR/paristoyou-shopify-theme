@@ -17,6 +17,10 @@
           <div class="sel-media">
             {%- if s.image != blank -%}
               <img src="{{ s.image | image_url: width: 640 }}" alt="{{ s.item | escape }}" width="640" height="640" loading="lazy">
+            {%- elsif s.image_asset != blank -%}
+              <img src="{{ s.image_asset | asset_url }}" alt="{{ s.item | escape }}" width="640" height="640" loading="lazy">
+            {%- elsif s.image_url != blank -%}
+              <img src="{{ s.image_url }}" alt="{{ s.item | escape }}" width="640" height="640" loading="lazy">
             {%- else -%}
               {{ 'product-1' | placeholder_svg_tag: 'sel-ph' }}
             {%- endif -%}
@@ -57,7 +61,9 @@
       "type": "item",
       "name": "Item",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "image_picker", "id": "image", "label": "Photo (uploadée — prioritaire)" },
+        { "type": "text", "id": "image_asset", "label": "Ou fichier dans assets/ (ex. sel-gucci.jpg)" },
+        { "type": "text", "id": "image_url", "label": "Ou URL d'image externe (fallback)" },
         { "type": "text", "id": "brand", "label": "Brand", "default": "Gucci" },
         { "type": "text", "id": "item", "label": "Item name", "default": "GG Marmont bag" },
         { "type": "text", "id": "price", "label": "Outlet unit price", "default": "1 290 €" },

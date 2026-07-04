@@ -52,18 +52,16 @@
   <script>
     (function(){
       var items=[
-        ["Gucci","GG Marmont shoulder bag","1 290 €","1 980 €","-35%","sel-gucci"],
-        ["Moncler","Maya down jacket","840 €","1 450 €","-42%","sel-moncler"],
-        ["Saint Laurent","Loulou medium bag","1 450 €","2 300 €","-37%","sel-ysl"],
-        ["Christian Louboutin","So Kate 120 pumps","495 €","795 €","-38%","sel-loub"],
-        ["Burberry","Check cashmere scarf","290 €","470 €","-38%","sel-burb"],
-        ["Sephora","Luxury beauty set","120 €","180 €","-33%","sel-seph"],
-        ["Longchamp","Le Pliage XL","95 €","145 €","-34%","sel-long"],
-        ["Polo Ralph Lauren","Cable-knit sweater","89 €","159 €","-44%","sel-polo"]
+        ["Gucci","GG Marmont shoulder bag","1 290 €","1 980 €","-35%","assets/sel-gucci.jpg"],
+        ["Moncler","Maya down jacket","840 €","1 450 €","-42%","assets/sel-moncler.jpg"],
+        ["Balenciaga","Le City small bag","1 190 €","1 900 €","-37%","assets/sel-balenciaga.jpg"],
+        ["Christian Louboutin","So Kate 120 pumps","495 €","795 €","-38%","assets/sel-louboutin.jpg"],
+        ["Burberry","Check cashmere scarf","290 €","470 €","-38%","assets/sel-burberry.jpg"],
+        ["Longchamp","Le Pliage original","95 €","145 €","-34%","assets/sel-longchamp.jpg"]
       ];
       document.getElementById("SelGrid").innerHTML=items.map(function(it){
         return '<article class="sel-card"><div class="sel-media">'+
-          '<img src="https://picsum.photos/seed/'+it[5]+'/640/640" alt="'+it[1]+'" width="640" height="640" loading="lazy">'+
+          '<img src="'+it[5]+'" alt="'+it[1]+'"width="640" height="640">'+
           '<span class="sel-badge">'+it[4]+'</span></div>'+
           '<div class="sel-info"><span class="sel-brand">'+it[0]+'</span><span class="sel-item">'+it[1]+'</span>'+
           '<span class="sel-price"><s>'+it[3]+'</s>'+it[2]+'</span>'+
