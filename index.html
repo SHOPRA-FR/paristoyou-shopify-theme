@@ -16,7 +16,7 @@
       --dark:#0f1512; --accent:#12b886; --accent-soft:#a7e8d0;
     }
   </style>
-  <link rel="stylesheet" href="assets/base.css?v=2">
+  <link rel="stylesheet" href="assets/base.css?v=3">
 </head>
 <body class="template-index">
 
@@ -97,7 +97,9 @@
     </section>
 
     <!-- section: pricing + simulateur -->
-    <section class="section section-dark" id="pricing" data-sim-rate="20" data-sim-min="300">
+    <section class="section section-dark" id="pricing" data-sim-rate="20" data-sim-min="300"
+      data-night-price="150" data-save-label="You save"
+      data-save-suffix="vs travelling to Paris yourself — plus the visa, the week off and the restaurants.">
       <div class="container">
         <p class="kicker center">Pricing</p>
         <h2 class="center">Simple, transparent fees</h2>
@@ -132,8 +134,44 @@
               <button type="button" data-amount="1500">1 500 € → 300 €</button>
               <button type="button" data-amount="2000">2 000 € → 400 €</button>
             </div>
+
+            <div class="sim-divider"><span>vs. a shopping trip to Paris</span></div>
+            <div class="sim-slider-row">
+              <label for="SimFlight">Round-trip flight</label>
+              <strong id="SimFlightVal">—</strong>
+            </div>
+            <input type="range" id="SimFlight" min="0" max="2000" step="10" value="300">
+            <div class="sim-slider-row">
+              <label for="SimNights">Hotel nights · <span id="SimNightsN">3</span> × 150 €</label>
+              <strong id="SimHotelVal">—</strong>
+            </div>
+            <input type="range" id="SimNights" min="0" max="14" step="1" value="3">
+            <div class="sim-row"><span>Trip cost you avoid</span><strong id="SimTravel">—</strong></div>
+            <div class="sim-save" id="SimSave" hidden></div>
+
             <p class="sim-note">Indicative estimate before delivery. A firm quote is validated together before any deposit.</p>
           </aside>
+        </div>
+
+        <div class="versus-strip">
+          <p class="versus-title">Real example — the same designer jeans</p>
+          <div class="versus-tiles">
+            <div class="versus-tile">
+              <span class="v-label">In Turkey (import taxes)</span>
+              <strong>180 €</strong>
+              <span class="v-note">typical local price</span>
+            </div>
+            <div class="versus-tile">
+              <span class="v-label">Europe boutique price</span>
+              <strong>100 €</strong>
+              <span class="v-note">regular retail</span>
+            </div>
+            <div class="versus-tile is-me">
+              <span class="v-label">My outlet price</span>
+              <strong>50 – 70 €</strong>
+              <span class="v-note">−30% to −50% in boutique</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -256,6 +294,6 @@
       }
     })();
   </script>
-  <script src="assets/theme.js?v=2"></script>
+  <script src="assets/theme.js?v=3"></script>
 </body>
 </html>

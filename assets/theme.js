@@ -59,17 +59,53 @@
     if (simLabel) simLabel.textContent = simLabel.textContent.split(" · ")[0] +
       " · " + Math.round(simRate * 100) + "% (min " + simFmt(simMin) + ")";
 
+    // Comparaison voyage : billet A/R (curseur) + nuits d'hôtel (curseur × prix/nuit)
+    var simFlight = document.getElementById("SimFlight");
+    var simNights = document.getElementById("SimNights");
+    var nightPrice = parseFloat(simSection.dataset.nightPrice || "150");
+    var lastCommission = 0;
+
+    var refreshTravel = function () {
+      if (!simFlight || !simNights) return;
+      var flight = parseFloat(simFlight.value) || 0;
+      var nights = parseInt(simNights.value, 10) || 0;
+      var hotel = nights * nightPrice;
+      var travel = flight + hotel;
+      document.getElementById("SimFlightVal").textContent = simFmt(flight);
+      document.getElementById("SimNightsN").textContent = nights;
+      document.getElementById("SimHotelVal").textContent = simFmt(hotel);
+      document.getElementById("SimTravel").textContent = simFmt(travel);
+      var save = travel - lastCommission;
+      var box = document.getElementById("SimSave");
+      if (box) {
+        box.hidden = false;
+        if (save >= 0) {
+          box.classList.remove("neg");
+          box.textContent = (simSection.dataset.saveLabel || "You save") + " " + simFmt(save) + " " +
+            (simSection.dataset.saveSuffix || "vs travelling yourself.");
+        } else {
+          box.classList.add("neg");
+          box.textContent = (simSection.dataset.saveLabel || "You save") + " — " +
+            simFmt(lastCommission) + " commission vs " + simFmt(travel) + " trip";
+        }
+      }
+    };
+
     var simUpdate = function (val, from) {
       var a = Math.max(0, parseFloat(val) || 0);
       if (from !== "range") simRange.value = Math.min(a, parseFloat(simRange.max));
       if (from !== "num") simNum.value = a;
       var commission = a > 0 ? Math.max(a * simRate, simMin) : 0;
+      lastCommission = commission;
       document.getElementById("SimPurchases").textContent = simFmt(a);
       document.getElementById("SimCommission").textContent = simFmt(commission);
       document.getElementById("SimTotal").textContent = simFmt(a + commission);
+      refreshTravel();
     };
     simRange.addEventListener("input", function (e) { simUpdate(e.target.value, "range"); });
     simNum.addEventListener("input", function (e) { simUpdate(e.target.value, "num"); });
+    if (simFlight) simFlight.addEventListener("input", refreshTravel);
+    if (simNights) simNights.addEventListener("input", refreshTravel);
     var simEx = document.getElementById("SimExamples");
     if (simEx) simEx.querySelectorAll("button").forEach(function (b) {
       b.addEventListener("click", function () { simUpdate(b.dataset.amount, ""); });

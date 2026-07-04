@@ -62,7 +62,10 @@ templates/   index, product, collection, cart, page, 404, search, blog, article,
 ## Notes
 
 - Tarification affichée : commission 20 % (min 300 €), AUCUN minimum d'achat,
-  simulateur de commission intégré (100 €→300 € · 1 500 €→300 € · 2 000 €→400 €),
+  simulateur de commission intégré (100 €→300 € · 1 500 €→300 € · 2 000 €→400 €)
+  avec comparateur de voyage (billet A/R réglable au curseur, défaut 300 € + nuits
+  d'hôtel × 150 €/nuit, défaut 3 → « You save X € vs un voyage à Paris »)
+  et exemple concret du jean (Turquie 180 € / Europe 100 € / mon prix outlet 50–70 €),
   livraison Colissimo dès 35,19 €, douane du pays de destination à charge client.
 - Positionnement : Europe & international (sans visa, sans frais de voyage,
   produits souvent 2 à 2,5× moins chers qu'au pays).

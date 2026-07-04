@@ -7,7 +7,10 @@
 
 <section class="section section-dark" id="pricing"
   data-sim-rate="{{ settings.commission_rate | default: 20 }}"
-  data-sim-min="{{ settings.commission_min | default: 300 }}">
+  data-sim-min="{{ settings.commission_min | default: 300 }}"
+  data-night-price="{{ section.settings.night_price | default: 150 }}"
+  data-save-label="{{ section.settings.save_label | escape }}"
+  data-save-suffix="{{ section.settings.save_suffix | escape }}">
   <div class="container">
     {%- if section.settings.kicker != blank -%}<p class="kicker center accent">{{ section.settings.kicker }}</p>{%- endif -%}
     {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
@@ -44,8 +47,44 @@
           <button type="button" data-amount="1500">1 500 € → 300 €</button>
           <button type="button" data-amount="2000">2 000 € → 400 €</button>
         </div>
+
+        <div class="sim-divider"><span>{{ section.settings.travel_title }}</span></div>
+        <div class="sim-slider-row">
+          <label for="SimFlight">{{ section.settings.flight_label }}</label>
+          <strong id="SimFlightVal">—</strong>
+        </div>
+        <input type="range" id="SimFlight" min="0" max="2000" step="10" value="{{ section.settings.flight_default | default: 300 }}">
+        <div class="sim-slider-row">
+          <label for="SimNights">{{ section.settings.hotel_label }} · <span id="SimNightsN">{{ section.settings.nights_default | default: 3 }}</span> × {{ section.settings.night_price | default: 150 }} €</label>
+          <strong id="SimHotelVal">—</strong>
+        </div>
+        <input type="range" id="SimNights" min="0" max="14" step="1" value="{{ section.settings.nights_default | default: 3 }}">
+        <div class="sim-row"><span>{{ section.settings.travel_total_label }}</span><strong id="SimTravel">—</strong></div>
+        <div class="sim-save" id="SimSave" hidden></div>
+
         <p class="sim-note">{{ section.settings.sim_note }}</p>
       </aside>
+    </div>
+
+    <div class="versus-strip">
+      <p class="versus-title">{{ section.settings.jeans_title }}</p>
+      <div class="versus-tiles">
+        <div class="versus-tile">
+          <span class="v-label">{{ section.settings.jeans_l1 }}</span>
+          <strong>{{ section.settings.jeans_v1 }}</strong>
+          <span class="v-note">{{ section.settings.jeans_n1 }}</span>
+        </div>
+        <div class="versus-tile">
+          <span class="v-label">{{ section.settings.jeans_l2 }}</span>
+          <strong>{{ section.settings.jeans_v2 }}</strong>
+          <span class="v-note">{{ section.settings.jeans_n2 }}</span>
+        </div>
+        <div class="versus-tile is-me">
+          <span class="v-label">{{ section.settings.jeans_l3 }}</span>
+          <strong>{{ section.settings.jeans_v3 }}</strong>
+          <span class="v-note">{{ section.settings.jeans_n3 }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -63,7 +102,28 @@
     { "type": "text", "id": "sim_purchases", "label": "Purchases row label", "default": "Your purchases" },
     { "type": "text", "id": "sim_commission", "label": "Commission row label", "default": "My commission" },
     { "type": "text", "id": "sim_total", "label": "Total row label", "default": "Estimated total" },
-    { "type": "textarea", "id": "sim_note", "label": "Simulator note", "default": "Indicative estimate before delivery. A firm quote is validated together before any deposit." }
+    { "type": "textarea", "id": "sim_note", "label": "Simulator note", "default": "Indicative estimate before delivery. A firm quote is validated together before any deposit." },
+    { "type": "header", "content": "Travel comparison" },
+    { "type": "text", "id": "travel_title", "label": "Divider title", "default": "vs. a shopping trip to Paris" },
+    { "type": "text", "id": "flight_label", "label": "Flight slider label", "default": "Round-trip flight" },
+    { "type": "range", "id": "flight_default", "min": 0, "max": 1000, "step": 50, "unit": "€", "label": "Flight default", "default": 300 },
+    { "type": "text", "id": "hotel_label", "label": "Hotel slider label", "default": "Hotel nights" },
+    { "type": "range", "id": "nights_default", "min": 0, "max": 10, "step": 1, "label": "Nights default", "default": 3 },
+    { "type": "range", "id": "night_price", "min": 50, "max": 400, "step": 10, "unit": "€", "label": "Price per night", "default": 150 },
+    { "type": "text", "id": "travel_total_label", "label": "Travel total label", "default": "Trip cost you avoid" },
+    { "type": "text", "id": "save_label", "label": "Savings label", "default": "You save" },
+    { "type": "text", "id": "save_suffix", "label": "Savings suffix", "default": "vs travelling to Paris yourself — plus the visa, the week off and the restaurants." },
+    { "type": "header", "content": "Real example (jeans)" },
+    { "type": "text", "id": "jeans_title", "label": "Example title", "default": "Real example — the same designer jeans" },
+    { "type": "text", "id": "jeans_l1", "label": "Tile 1 label", "default": "In Turkey (import taxes)" },
+    { "type": "text", "id": "jeans_v1", "label": "Tile 1 value", "default": "180 €" },
+    { "type": "text", "id": "jeans_n1", "label": "Tile 1 note", "default": "typical local price" },
+    { "type": "text", "id": "jeans_l2", "label": "Tile 2 label", "default": "Europe boutique price" },
+    { "type": "text", "id": "jeans_v2", "label": "Tile 2 value", "default": "100 €" },
+    { "type": "text", "id": "jeans_n2", "label": "Tile 2 note", "default": "regular retail" },
+    { "type": "text", "id": "jeans_l3", "label": "Tile 3 label", "default": "My outlet price" },
+    { "type": "text", "id": "jeans_v3", "label": "Tile 3 value", "default": "50 – 70 €" },
+    { "type": "text", "id": "jeans_n3", "label": "Tile 3 note", "default": "−30% to −50% in boutique" }
   ],
   "blocks": [
     {
