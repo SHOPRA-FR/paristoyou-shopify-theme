@@ -30,6 +30,35 @@ et réglages de la section (tout est éditable sans code).
 
 Aperçu local : `liste.html` (hors zip).
 
+## Catalogue & banderole en PRODUITS SHOPIFY RÉELS (mode recommandé)
+
+Les sections « Brand catalog » (page Catalogue) et « Price ticker » (banderole home)
+fonctionnent en **2 modes** : produits Shopify réels (prioritaire) ou saisie texte
+(repli automatique tant qu'aucune collection n'est choisie/remplie).
+
+**Convention produit** (le modèle de données du service) :
+- **Vendor** = la marque (« Gucci ») · **Type** = la catégorie standard
+  (chemise, pantalon, robe, chaussures, accessoires, lunettes de soleil, sac,
+  sous-vêtements, pantoufle, basket, montre, téléphone, ordinateur, tablette,
+  montre connectée, parfum)
+- **Tags** = audience (`homme` / `femme` / `enfant` / `mixte`) + `phare`
+  + **date de constatation** `vu:AAAA-MM-JJ`
+- **Prix** = prix outlet constaté · **Prix comparé** = prix public Europe
+  (→ le −% s'affiche automatiquement partout)
+- **Photo** = ta photo prise en boutique
+
+**Mise en service (10 min)** :
+1. Admin → Produits → **Importer** → `products-import.csv` (à la racine de ce repo :
+   16 produits de démarrage pré-remplis, images des 6 premiers via GitHub).
+2. Admin → Produits → Collections → **Créer une collection** « Phares »
+   (handle `phares`), type **automatisée** : condition *Tag égal à* `phare`.
+3. C'est tout : les templates pointent déjà sur `phares` — la page Catalogue et
+   la banderole basculent d'elles-mêmes sur les vrais produits (filtres marque/
+   audience/catégorie alimentés par Vendor/tags/Type, fiches cliquables → achat).
+4. À chaque relevé en boutique : nouveau produit (ou édition en masse) avec photo,
+   prix, prix comparé et tag `vu:` à jour. La date affichée sert de repère de
+   réactualisation et de source pour les posts réseaux sociaux.
+
 ## Après l'upload — 4 réglages dans l'admin
 
 1. **Menus** (Contenu → Menus) : `main-menu` (Brands `#brands`, How it works `#how`,

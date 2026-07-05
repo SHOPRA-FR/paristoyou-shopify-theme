@@ -11,6 +11,34 @@
   {%- endif -%}
   <div class="ticker-viewport">
     <div class="ticker-track">
+      {%- assign coll = collections[section.settings.collection] -%}
+      {%- if coll != blank and coll.products_count > 0 -%}
+        {%- comment -%} MODE PRODUITS SHOPIFY : price = prix constaté,
+            compare_at_price = prix public EU, tag vu:YYYY-MM-DD = date. {%- endcomment -%}
+        {%- for rep in (1..2) -%}
+          {%- for product in coll.products limit: 30 -%}
+            {%- assign datec = '' -%}
+            {%- for t in product.tags -%}
+              {%- assign tl = t | downcase | strip -%}
+              {%- if tl contains 'vu:' -%}{%- assign datec = tl | remove: 'vu:' -%}{%- endif -%}
+            {%- endfor -%}
+            {%- if product.metafields.custom.date_constat != blank -%}{%- assign datec = product.metafields.custom.date_constat -%}{%- endif -%}
+            <a class="ticker-item" href="{{ product.url }}">
+              <strong>{{ product.vendor }}</strong> {{ product.title }}
+              <em>{{ product.price | money }}</em>
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                <span class="ticker-pct">−{{ pct }}% vs EU</span>
+              {%- endif -%}
+              {%- if datec != blank -%}
+                {%- assign d = datec | split: '-' -%}
+                <span class="ticker-date">{{ section.settings.seen_label }} {{ d[2] }}/{{ d[1] }}</span>
+              {%- endif -%}
+            </a>
+            <span class="ticker-sep" aria-hidden="true">◆</span>
+          {%- endfor -%}
+        {%- endfor -%}
+      {%- else -%}
       {%- capture nl %}
 {% endcapture -%}
       {%- assign lines = section.settings.items | strip | split: nl -%}
@@ -35,6 +63,7 @@
           <span class="ticker-sep" aria-hidden="true">◆</span>
         {%- endfor -%}
       {%- endfor -%}
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -43,6 +72,7 @@
 {
   "name": "Price ticker",
   "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection de produits réels (prioritaire — ex. Phares)" },
     { "type": "text", "id": "label", "label": "Badge label", "default": "LATEST PRICES SPOTTED" },
     { "type": "text", "id": "seen_label", "label": "Date prefix", "default": "seen" },
     { "type": "range", "id": "speed", "min": 20, "max": 120, "step": 5, "unit": "s", "label": "Scroll duration", "default": 60 },

@@ -23,7 +23,54 @@
     </div>
     <p class="catalog-count"><span id="CatCount">0</span> {{ section.settings.count_label }}</p>
 
+    {%- assign coll = collections[section.settings.collection] -%}
     <div class="sel-grid catalog-grid" id="CatGrid">
+      {%- if coll != blank and coll.products_count > 0 -%}
+        {%- comment -%} MODE PRODUITS SHOPIFY : Vendor=marque, Type=catégorie,
+            tags homme/femme/enfant/mixte + vu:YYYY-MM-DD (date de constatation,
+            ou metafield custom.date_constat), compare_at_price = prix public EU. {%- endcomment -%}
+        {%- for product in coll.products limit: 250 -%}
+          {%- assign aud = 'mixte' -%}
+          {%- assign datec = '' -%}
+          {%- for t in product.tags -%}
+            {%- assign tl = t | downcase | strip -%}
+            {%- if tl == 'homme' or tl == 'femme' or tl == 'enfant' or tl == 'mixte' -%}{%- assign aud = tl -%}{%- endif -%}
+            {%- if tl contains 'vu:' -%}{%- assign datec = tl | remove: 'vu:' -%}{%- endif -%}
+          {%- endfor -%}
+          {%- if product.metafields.custom.date_constat != blank -%}
+            {%- assign datec = product.metafields.custom.date_constat -%}
+          {%- endif -%}
+          {%- assign cat = product.type | downcase | default: 'accessoires' -%}
+          <article class="sel-card cat-card" data-brand="{{ product.vendor | escape }}" data-aud="{{ aud }}" data-cat="{{ cat }}"
+                   data-search="{{ product.vendor | downcase }} {{ product.title | downcase }} {{ cat }}">
+            <a href="{{ product.url }}" class="sel-media">
+              {%- if product.featured_image -%}
+                <img src="{{ product.featured_image | image_url: width: 640 }}" alt="{{ product.title | escape }}" width="640" height="640" loading="lazy">
+              {%- else -%}
+                <div class="cat-noimg"><span>📷</span>{{ section.settings.photo_soon }}</div>
+              {%- endif -%}
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                <span class="sel-badge">−{{ pct }}%</span>
+              {%- endif -%}
+            </a>
+            <div class="sel-info">
+              <span class="sel-brand">{{ product.vendor }}</span>
+              <span class="sel-item">{{ product.title }}</span>
+              <span class="cat-chips"><span class="cat-chip">{{ aud }}</span><span class="cat-chip">{{ cat }}</span></span>
+              <span class="sel-price">
+                {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+                {{ product.price | money }}
+              </span>
+              {%- if datec != blank -%}
+                {%- assign d = datec | split: '-' -%}
+                <span class="cat-date">{{ section.settings.seen_label }} {{ d[2] }}/{{ d[1] }}/{{ d[0] }}</span>
+              {%- endif -%}
+              <a href="{{ product.url }}" class="sel-link">{{ section.settings.card_cta }}</a>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
       {%- capture nl %}
 {% endcapture -%}
       {%- assign lines = section.settings.items | strip | split: nl -%}
@@ -69,6 +116,7 @@
           </div>
         </article>
       {%- endfor -%}
+      {%- endif -%}
     </div>
     <p class="brands-none" id="CatNone" hidden>{{ section.settings.none_label }}</p>
 
@@ -82,6 +130,8 @@
 {
   "name": "Brand catalog",
   "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection de produits réels (prioritaire — ex. Phares)" },
+    { "type": "text", "id": "card_cta", "label": "Card CTA (mode produits)", "default": "View & order →" },
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Reference catalogue" },
     { "type": "text", "id": "title", "label": "Title", "default": "Spotted in boutique, price-checked" },
     { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Flagship products I identified in the Paris outlets — photographed in boutique with the price and the date it was checked. Ask for any of them, or anything similar." },

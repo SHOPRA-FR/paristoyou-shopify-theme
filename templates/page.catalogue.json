@@ -1,6 +1,13 @@
 {
   "sections": {
-    "main": { "type": "brand-catalog", "settings": {} }
+    "main": {
+      "type": "brand-catalog",
+      "settings": {
+        "collection": "phares"
+      }
+    }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

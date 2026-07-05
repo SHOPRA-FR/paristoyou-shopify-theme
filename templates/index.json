@@ -340,7 +340,9 @@
     },
     "ticker": {
       "type": "price-ticker",
-      "settings": {}
+      "settings": {
+        "collection": "phares"
+      }
     }
   },
   "order": [
