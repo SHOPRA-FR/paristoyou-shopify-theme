@@ -389,6 +389,25 @@ h3{font-size:1.4rem}
 .wl-actions .btn-ghost{color:#fff;border-color:rgba(255,255,255,.3)}
 .wl-actions .btn-ghost:hover{border-color:var(--accent)}
 
+/* ---------- Social Studio ---------- */
+.studio-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:44px;align-items:start}
+.studio-form{display:grid;gap:14px}
+.studio-photo{display:flex;align-items:center;justify-content:center;padding:26px;border:2px dashed rgba(0,0,0,.18);border-radius:14px;background:var(--surface);cursor:pointer;font-weight:600;color:var(--muted);transition:border-color .2s,color .2s}
+.studio-photo:hover{border-color:var(--accent);color:var(--text)}
+.studio-form .field-label{display:block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+.studio-form input,.studio-form select,.studio-caption{width:100%;padding:12px 14px;border:1px solid rgba(0,0,0,.14);border-radius:10px;font-family:inherit;font-size:.95rem;background:var(--surface);color:var(--text)}
+.studio-form input:focus,.studio-form select:focus,.studio-caption:focus{outline:none;border-color:var(--accent)}
+.studio-caption{resize:vertical;line-height:1.5}
+.studio-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.studio-preview{position:sticky;top:88px;text-align:center}
+#StCanvas{width:100%;max-width:420px;height:auto;border-radius:16px;box-shadow:0 24px 60px -28px rgba(0,0,0,.5);background:var(--dark)}
+.st-muted{color:var(--muted);font-size:.8rem;margin-top:12px}
+.st-recent{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.st-recent-item{width:70px;text-align:center}
+.st-recent-item img{width:70px;height:70px;object-fit:cover;border-radius:10px;border:1px solid rgba(0,0,0,.1)}
+.st-recent-item span{display:block;font-size:.6rem;color:var(--muted);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:900px){.studio-grid{grid-template-columns:1fr}.studio-preview{position:static;order:-1}#StCanvas{max-width:300px}}
+
 /* ---------- Password page ---------- */
 .password-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);color:#fff;padding:40px 24px;position:relative;overflow:hidden}
 .password-page::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 80% -10%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 60%)}

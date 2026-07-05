@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "main": { "type": "social-studio", "settings": {} }
+  },
+  "order": ["main"]
+}

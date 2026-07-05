@@ -1,0 +1,103 @@
+{%- comment -%}
+  Social Studio — back-office : capture photo produit → visuel IG/TikTok brandé
+  + légende/hashtags + partage natif. 100% navigateur (assets/studio.js).
+  Page dédiée (template page.studio), non listée dans le menu client.
+{%- endcomment -%}
+
+<section class="section" id="StudioApp"
+  data-wordmark="{{ settings.logo_text | escape }}"
+  data-handle="{{ section.settings.handle | escape }}"
+  data-whatsapp="{{ settings.whatsapp_number | remove: '+' | remove: ' ' }}"
+  data-accent="{{ settings.color_accent }}"
+  data-dark="{{ settings.color_dark }}">
+  <div class="container">
+    <p class="kicker center">{{ section.settings.kicker }}</p>
+    <h1 class="center">{{ section.settings.title }}</h1>
+    <p class="lead center">{{ section.settings.subtitle }}</p>
+
+    <div class="studio-grid">
+      <div class="studio-form">
+        <label class="studio-photo">
+          <input type="file" id="StPhoto" accept="image/*" capture="environment" hidden>
+          <span>{{ section.settings.photo_label }}</span>
+        </label>
+
+        <div class="field-row">
+          <label><span class="field-label">{{ section.settings.l_brand }}</span><input id="StBrand" placeholder="Gucci"></label>
+          <label><span class="field-label">{{ section.settings.l_audience }}</span>
+            <select id="StAud"><option value="">—</option><option>femme</option><option>homme</option><option>enfant</option><option>mixte</option></select>
+          </label>
+        </div>
+        <label><span class="field-label">{{ section.settings.l_item }}</span><input id="StItem" placeholder="GG Marmont shoulder bag"></label>
+        <div class="field-row">
+          <label><span class="field-label">{{ section.settings.l_category }}</span>
+            <select id="StCat"><option value="">—</option>
+              <option>sac</option><option>chaussures</option><option>basket</option><option>chemise</option><option>pantalon</option>
+              <option>robe</option><option>accessoires</option><option>lunettes de soleil</option><option>sous-vêtements</option>
+              <option>pantoufle</option><option>montre</option><option>montre connectée</option><option>parfum</option>
+              <option>téléphone</option><option>ordinateur</option><option>tablette</option>
+            </select>
+          </label>
+          <label><span class="field-label">{{ section.settings.l_lang }}</span>
+            <select id="StLang"><option value="fr">Français</option><option value="tr">Türkçe</option><option value="en">English</option></select>
+          </label>
+        </div>
+        <div class="field-row">
+          <label><span class="field-label">{{ section.settings.l_outlet }}</span><input id="StPrice" inputmode="decimal" placeholder="1290"></label>
+          <label><span class="field-label">{{ section.settings.l_eu }}</span><input id="StCompare" inputmode="decimal" placeholder="1980"></label>
+        </div>
+
+        <span class="field-label">{{ section.settings.l_format }}</span>
+        <div class="filters" id="StFormat">
+          <button type="button" data-format="post" class="active">Instagram post (1:1)</button>
+          <button type="button" data-format="story">Story / TikTok / Reel (9:16)</button>
+        </div>
+
+        <span class="field-label" style="margin-top:18px">{{ section.settings.l_caption }}</span>
+        <textarea id="StCaption" rows="8" class="studio-caption"></textarea>
+
+        <div class="studio-actions">
+          <button class="btn btn-accent" id="StShare">{{ section.settings.btn_share }}</button>
+          <button class="btn btn-dark" id="StDownload">{{ section.settings.btn_download }}</button>
+          <button class="btn btn-ghost" id="StCopy">{{ section.settings.btn_copy }}</button>
+        </div>
+        <p class="st-muted">{{ section.settings.note }}</p>
+      </div>
+
+      <div class="studio-preview">
+        <canvas id="StCanvas" width="1080" height="1080"></canvas>
+        <p class="st-muted">{{ section.settings.preview_note }}</p>
+        <div class="st-recent" id="StRecent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'studio.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Social Studio",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Back-office · Social Studio" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Photograph → post to Instagram & TikTok" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "In-store: snap the product and its price, fill the details, and generate a branded post ready to share in one tap." },
+    { "type": "text", "id": "handle", "label": "Social handle", "default": "@paristoyou" },
+    { "type": "text", "id": "photo_label", "label": "Photo button", "default": "📷 Take / choose product photo" },
+    { "type": "text", "id": "l_brand", "label": "Brand label", "default": "Brand" },
+    { "type": "text", "id": "l_audience", "label": "Audience label", "default": "Audience" },
+    { "type": "text", "id": "l_item", "label": "Product label", "default": "Product name" },
+    { "type": "text", "id": "l_category", "label": "Category label", "default": "Category" },
+    { "type": "text", "id": "l_lang", "label": "Language label", "default": "Caption language" },
+    { "type": "text", "id": "l_outlet", "label": "Outlet price label", "default": "Outlet price (€)" },
+    { "type": "text", "id": "l_eu", "label": "EU price label", "default": "EU price (€)" },
+    { "type": "text", "id": "l_format", "label": "Format label", "default": "Format" },
+    { "type": "text", "id": "l_caption", "label": "Caption label", "default": "Caption & hashtags" },
+    { "type": "text", "id": "btn_share", "label": "Share button", "default": "Share to Instagram / TikTok" },
+    { "type": "text", "id": "btn_download", "label": "Download button", "default": "Download image" },
+    { "type": "text", "id": "btn_copy", "label": "Copy button", "default": "Copy caption" },
+    { "type": "text", "id": "note", "label": "Note", "default": "Tip: on your phone, Share opens Instagram/TikTok directly. On desktop, it downloads the image and copies the caption." },
+    { "type": "text", "id": "preview_note", "label": "Preview note", "default": "Live preview · 1080px, export-ready" }
+  ]
+}
+{% endschema %}
