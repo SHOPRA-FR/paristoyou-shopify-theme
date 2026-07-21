@@ -1,57 +1,70 @@
-<header class="site-header">
-  <div class="container header-inner">
+<header class="site-header" id="SiteHeader">
+  {%- assign links = linklists[section.settings.menu].links -%}
+
+  {%- comment -%} Ligne 1 : burger (mobile) · logo centré · compte + panier {%- endcomment -%}
+  <div class="header-bar">
+    <button class="burger" id="Burger" aria-label="Menu" aria-expanded="false" aria-controls="MainNav">
+      <span></span><span></span><span></span>
+    </button>
+
     <a href="{{ routes.root_url }}" class="logo">
       {%- if settings.logo_image != blank -%}
-        <img src="{{ settings.logo_image | image_url: width: 320 }}" alt="{{ shop.name | escape }}" width="160" height="40" loading="eager">
+        <img src="{{ settings.logo_image | image_url: width: 320 }}" alt="{{ shop.name | escape }}" width="160" height="34" loading="eager">
       {%- else -%}
         {{ settings.logo_text }}
       {%- endif -%}
     </a>
 
-    <nav class="main-nav" id="MainNav">
-      {%- for link in linklists[section.settings.menu].links -%}
-        <a href="{{ link.url }}">{{ link.title }}</a>
-      {%- endfor -%}
-    </nav>
-
     <div class="header-actions">
-      {%- if section.settings.show_locale and localization.available_languages.size > 1 -%}
-        {%- form 'localization', class: 'locale-form' -%}
-          <select name="locale_code" onchange="this.form.submit()" aria-label="Language">
-            {%- for lang in localization.available_languages -%}
-              <option value="{{ lang.iso_code }}" {% if lang.iso_code == localization.language.iso_code %}selected{% endif %}>{{ lang.endonym_name }}</option>
-            {%- endfor -%}
-          </select>
-        {%- endform -%}
-      {%- endif -%}
-
-      {%- if section.settings.cta_link != blank -%}
-        <a href="{{ section.settings.cta_link }}" class="btn btn-accent btn-sm">{{ section.settings.cta_label | default: 'Contact' }}</a>
-      {%- endif -%}
-
-      {%- if shop.customer_accounts_enabled -%}
-        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="account-link" aria-label="Account">
-          {% if customer %}{{ customer.first_name | default: 'Account' }}{% else %}Sign in{% endif %}
+      {%- comment -%} Icône compte : uniquement quand le client est connecté {%- endcomment -%}
+      {%- if customer -%}
+        <a href="{{ routes.account_url }}" class="header-account-link" title="{{ 'customer.account.title' | t }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
       {%- endif -%}
 
-      <a href="{{ routes.cart_url }}" class="cart-link" aria-label="Cart">
-        {{ 'cart.general.title' | t }} <span class="cart-count">{{ cart.item_count }}</span>
+      <a href="{{ routes.cart_url }}" class="header-cart" aria-label="{{ 'cart.general.title' | t }}">
+        <span class="header-cart-label">{{ 'cart.general.title' | t }}</span>
+        <svg class="header-cart-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count">({{ cart.item_count }})</span>
       </a>
-
-      <button class="burger" id="Burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </div>
+
+  {%- comment -%} Ligne 2 : barre de navigation dédiée, tous les liens centrés {%- endcomment -%}
+  <nav class="main-nav" id="MainNav">
+    {%- for link in links -%}
+      {%- comment -%} Client connecté : on masque le lien d'inscription/compte (Sign Up) {%- endcomment -%}
+      {%- if customer -%}
+        {%- assign lurl = link.url | downcase -%}
+        {%- assign sm = section.settings.signup_match | downcase | strip -%}
+        {%- if lurl contains '/account' -%}{% continue %}{%- endif -%}
+        {%- if sm != blank and lurl contains sm -%}{% continue %}{%- endif -%}
+      {%- endif -%}
+      <a href="{{ link.url }}"{% if link.active %} class="is-active" aria-current="page"{% endif %}>{{ link.title }}</a>
+    {%- endfor -%}
+    {%- comment -%} Accès compte dans le menu déroulant mobile : seulement si connecté {%- endcomment -%}
+    {%- if customer -%}
+      <a href="{{ routes.account_url }}" class="nav-account-mobile">{{ 'customer.account.title' | t }}</a>
+    {%- endif -%}
+  </nav>
 </header>
+
+<script>
+  (function(){
+    var h = document.getElementById('SiteHeader');
+    window.addEventListener('scroll', function(){
+      h.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  })();
+</script>
 
 {% schema %}
 {
   "name": "Header",
   "settings": [
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
-    { "type": "checkbox", "id": "show_locale", "label": "Show language selector", "default": true },
-    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Contact" },
-    { "type": "url", "id": "cta_link", "label": "CTA link" }
+    { "type": "text", "id": "signup_match", "label": "Lien Sign Up — masqué une fois connecté (fragment d'URL)", "info": "Le lien du menu dont l'URL contient ce texte disparaît quand le client est connecté. Ex. « profil » pour /pages/profil.", "default": "profil" }
   ]
 }
 {% endschema %}

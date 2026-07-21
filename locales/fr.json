@@ -1,0 +1,51 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Aller au contenu"
+    },
+    "search": {
+      "search": "Rechercher"
+    },
+    "404": {
+      "title": "Page introuvable",
+      "subtext": "La page que vous cherchez n'existe pas.",
+      "link": "Retour à l'accueil"
+    },
+    "pagination": {
+      "previous": "Précédent",
+      "next": "Suivant"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Ajouter au panier",
+      "sold_out": "Épuisé",
+      "unavailable": "Indisponible",
+      "vendor": "Marque",
+      "quantity": "Quantité"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Ma liste",
+      "empty": "Votre liste est vide",
+      "subtotal": "Sous-total",
+      "checkout": "Commander",
+      "remove": "Retirer",
+      "continue_shopping": "Continuer mes achats",
+      "note": "Ajouter une note à votre commande"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Compte"
+    },
+    "login": {
+      "sign_in": "Se connecter"
+    }
+  },
+  "onboarding": {
+    "product_title": "Titre du produit exemple",
+    "collection_title": "Collection exemple"
+  }
+}

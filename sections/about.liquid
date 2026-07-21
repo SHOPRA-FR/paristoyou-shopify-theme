@@ -1,0 +1,60 @@
+{%- comment -%}
+  Section About — photo portrait + texte, layout éditorial.
+{%- endcomment -%}
+
+<section class="section">
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-media">
+        {%- if section.settings.photo != blank -%}
+          <img src="{{ section.settings.photo | image_url: width: 600 }}"
+               alt="{{ section.settings.name | escape }}"
+               width="600" height="750" loading="eager"
+               class="about-photo">
+        {%- endif -%}
+      </div>
+
+      <div class="about-content">
+        {%- if section.settings.kicker != blank -%}
+          <p class="kicker">{{ section.settings.kicker }}</p>
+        {%- endif -%}
+
+        <h2>{{ section.settings.name }}</h2>
+
+        {%- if section.settings.bio != blank -%}
+          <div class="about-bio rte">{{ section.settings.bio }}</div>
+        {%- endif -%}
+
+        <div class="about-cta" style="margin-top:32px;">
+          <a href="{{ section.settings.cta_link | default: '#contact' }}" class="btn">
+            {{ section.settings.cta_label }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Your personal shopper" },
+    { "type": "text", "id": "name", "label": "Name", "default": "Arsel" },
+    { "type": "image_picker", "id": "photo", "label": "Portrait photo" },
+    { "type": "richtext", "id": "bio", "label": "Bio", "default": "<p>Based in Paris, I hand-pick luxury items from the city's most exclusive outlet boutiques — La Vallée Village and Val d'Europe. Every piece is sourced directly from official stores, authenticated, and shipped to you with the original receipt.</p><p>I started this service because I believe everyone should have access to Parisian luxury at fair prices, without the cost and hassle of travelling. No middlemen, no markups — just a personal shopper who treats every order like their own.</p>" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Book your appointment" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "presets": [
+    {
+      "name": "About",
+      "settings": {
+        "kicker": "Your personal shopper",
+        "name": "Arsel",
+        "cta_label": "Book your appointment"
+      }
+    }
+  ]
+}
+{% endschema %}

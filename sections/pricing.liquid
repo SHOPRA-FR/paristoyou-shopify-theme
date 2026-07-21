@@ -5,7 +5,7 @@
   Le simulateur (assets/theme.js) lit les data-attributes ci-dessous.
 {%- endcomment -%}
 
-<section class="section section-dark" id="pricing"
+<section class="section pricing-section" id="pricing"
   data-sim-rate="{{ settings.commission_rate | default: 20 }}"
   data-sim-min="{{ settings.commission_min | default: 300 }}"
   data-night-price="{{ section.settings.night_price | default: 150 }}"
@@ -14,40 +14,60 @@
   <div class="container">
     {%- if section.settings.kicker != blank -%}<p class="kicker center accent">{{ section.settings.kicker }}</p>{%- endif -%}
     {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    {%- if section.settings.subtitle != blank -%}<p class="lead center">{{ section.settings.subtitle }}</p>{%- endif -%}
 
-    <div class="pricing-grid">
-      <div>
+    <div class="pricing-grid{% unless section.settings.show_simulator %} pricing-grid--solo{% endunless %}">
+      <div class="pricing-main">
         <div class="price-hero">
           <span class="price-big">{{ settings.commission_rate }}%</span>
           <span class="price-label">{{ section.settings.rate_label }}</span>
-          <p class="price-incl">{{ section.settings.rate_note }}</p>
+          {%- if section.settings.rate_note != blank -%}<p class="price-incl">{{ section.settings.rate_note }}</p>{%- endif -%}
         </div>
-        <ul class="price-list">
-          {%- for block in section.blocks -%}
-            <li {{ block.shopify_attributes }}{% if block.settings.muted %} class="muted"{% endif %}>
-              <span>{{ block.settings.label }}</span><strong>{{ block.settings.value }}</strong>
-            </li>
-          {%- endfor -%}
-        </ul>
+
+        {%- assign inc = section.settings.included | strip | split: '|' -%}
+        {%- if inc.first != blank -%}
+          <ul class="fee-included">
+            {%- for i in inc -%}{%- assign it = i | strip -%}{%- if it != blank -%}<li>{{ it }}</li>{%- endif -%}{%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- assign exs = section.settings.example_amounts | default: '500,1500,3000' | split: ',' -%}
+        {%- if exs.first != blank -%}
+          {%- assign r = settings.commission_rate | default: 20 | plus: 0 -%}
+          {%- assign m = settings.commission_min | default: 300 | plus: 0 -%}
+          <div class="fee-examples">
+            {%- for a in exs -%}
+              {%- assign amt = a | strip | plus: 0 -%}
+              {%- assign c = amt | times: r | divided_by: 100 -%}
+              {%- if c < m -%}{%- assign c = m -%}{%- endif -%}
+              <div class="fee-ex"><span>{{ section.settings.ex_prefix }} {{ amt }} €</span><strong>{{ section.settings.ex_fee_prefix }} {{ c }} €</strong></div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="price-list">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}{% if block.settings.muted %} class="muted"{% endif %}>
+                <span>{{ block.settings.label }}</span><strong>{{ block.settings.value }}</strong>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
       </div>
 
+      {%- if section.settings.show_simulator -%}
       <aside class="sim-card">
         <h3>{{ section.settings.sim_title }}</h3>
-        <label class="sim-label" for="SimAmountNum">{{ section.settings.sim_label }}</label>
-        <input type="range" id="SimAmount" min="0" max="10000" step="100" value="1500">
-        <input type="number" id="SimAmountNum" min="0" step="50" value="1500" inputmode="numeric">
+        <input type="range" id="SimAmount" min="0" max="10000" step="100" value="1500" aria-label="{{ section.settings.sim_label }}">
+        <div class="sim-amount-val"><span id="SimAmountVal">1 500 €</span></div>
         <div class="sim-rows">
           <div class="sim-row"><span>{{ section.settings.sim_purchases }}</span><strong id="SimPurchases">—</strong></div>
           <div class="sim-row"><span id="SimCommissionLabel">{{ section.settings.sim_commission }}</span><strong id="SimCommission">—</strong></div>
           <div class="sim-row sim-total"><span>{{ section.settings.sim_total }}</span><strong id="SimTotal">—</strong></div>
         </div>
-        <div class="sim-examples" id="SimExamples">
-          <button type="button" data-amount="100">100 € → 300 €</button>
-          <button type="button" data-amount="1000">1 000 € → 300 €</button>
-          <button type="button" data-amount="1500">1 500 € → 300 €</button>
-          <button type="button" data-amount="2000">2 000 € → 400 €</button>
-        </div>
 
+        {%- if section.settings.show_travel -%}
         <div class="sim-divider"><span>{{ section.settings.travel_title }}</span></div>
         <div class="sim-slider-row">
           <label for="SimFlight">{{ section.settings.flight_label }}</label>
@@ -61,11 +81,14 @@
         <input type="range" id="SimNights" min="0" max="14" step="1" value="{{ section.settings.nights_default | default: 3 }}">
         <div class="sim-row"><span>{{ section.settings.travel_total_label }}</span><strong id="SimTravel">—</strong></div>
         <div class="sim-save" id="SimSave" hidden></div>
+        {%- endif -%}
 
         <p class="sim-note">{{ section.settings.sim_note }}</p>
       </aside>
+      {%- endif -%}
     </div>
 
+    {%- if section.settings.show_versus -%}
     <div class="versus-strip">
       <p class="versus-title">{{ section.settings.jeans_title }}</p>
       <div class="versus-tiles">
@@ -86,6 +109,7 @@
         </div>
       </div>
     </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -94,9 +118,17 @@
   "name": "Pricing + simulator",
   "settings": [
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Pricing" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Simple, transparent fees" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Simple, transparent pricing" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "20% commission on your purchases (minimum 300 €), and no minimum spend. That commission covers the outlet trips, the scouting, the photos, the packing and the shipping — nothing hidden." },
     { "type": "text", "id": "rate_label", "label": "Rate label", "default": "commission on your purchases" },
+    { "type": "textarea", "id": "included", "label": "What's included (separate with |)", "default": "Outlet trips & in-store scouting|Real-time photos & a quick debrief before I buy|Secure packing & tracked shipping|One person, start to finish" },
+    { "type": "text", "id": "example_amounts", "label": "Example amounts (comma-separated €)", "default": "500,1500,3000" },
+    { "type": "text", "id": "ex_prefix", "label": "Example — amount prefix", "default": "You spend" },
+    { "type": "text", "id": "ex_fee_prefix", "label": "Example — commission prefix", "default": "commission" },
     { "type": "textarea", "id": "rate_note", "label": "Rate note", "default": "Minimum commission 300 €. No minimum purchase. Includes outlet trips, in-store scouting, photos & phone debrief, secure packing and shipment handling." },
+    { "type": "checkbox", "id": "show_simulator", "label": "Show commission simulator", "default": true },
+    { "type": "checkbox", "id": "show_travel", "label": "Show travel comparison inside simulator", "default": true },
+    { "type": "checkbox", "id": "show_versus", "label": "Show versus comparison tiles", "default": true },
     { "type": "text", "id": "sim_title", "label": "Simulator title", "default": "Commission simulator" },
     { "type": "text", "id": "sim_label", "label": "Simulator input label", "default": "Amount of your purchases (€)" },
     { "type": "text", "id": "sim_purchases", "label": "Purchases row label", "default": "Your purchases" },
@@ -142,7 +174,7 @@
       "blocks": [
         { "type": "row", "settings": { "label": "Minimum purchase", "value": "None" } },
         { "type": "row", "settings": { "label": "Minimum commission", "value": "300 €" } },
-        { "type": "row", "settings": { "label": "Deposit", "value": "Purchases + provisional fee, validated together" } },
+        { "type": "row", "settings": { "label": "Deposit", "value": "Purchases + provisional commission, validated together" } },
         { "type": "row", "settings": { "label": "Delivery", "value": "Tracked parcel · Europe & worldwide" } },
         { "type": "row", "settings": { "label": "Destination customs duties", "value": "client's responsibility", "muted": true } }
       ]

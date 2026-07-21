@@ -1,14 +1,54 @@
-<section class="section {% if section.settings.alt %}section-alt{% endif %}" id="offer">
+{%- comment -%}
+  Why my service — 3 features en line art.
+{%- endcomment -%}
+
+<section class="section" id="offer">
   <div class="container">
     {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
     {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
-    <div class="card-grid cols-{{ section.settings.columns }}">
+
+    <div class="offer-grid">
       {%- for block in section.blocks -%}
-        <article class="feature-card" {{ block.shopify_attributes }}>
-          {%- if block.settings.icon != blank -%}<span class="feature-ic">{{ block.settings.icon }}</span>{%- endif -%}
+        <div class="offer-card" {{ block.shopify_attributes }}>
+          <div class="offer-card-bubble">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 160 }}" alt="{{ block.settings.title | escape }}" class="offer-card-icon offer-card-img" width="80" height="80" loading="lazy">
+            {%- else -%}
+              {%- assign idx = forloop.index -%}
+              {%- case idx -%}
+                {%- when 1 -%}
+                  <svg class="offer-lineart" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 55V42a8 8 0 018-8h24a8 8 0 018 8v13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                    <path d="M14 55h52" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                    <path d="M28 34v-8a12 12 0 0124 0v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="40" cy="18" r="3" stroke="currentColor" stroke-width="1.2"/>
+                    <path d="M62 18l4-4m-4 0l4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <path d="M18 18l-4-4m4 0l-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <rect x="26" y="40" width="28" height="18" rx="2" stroke="currentColor" stroke-width="1.2"/>
+                  </svg>
+                {%- when 2 -%}
+                  <svg class="offer-lineart" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M40 14L18 28v32h44V28L40 14z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M40 14v46" stroke="currentColor" stroke-width="1.2"/>
+                    <path d="M18 40h44" stroke="currentColor" stroke-width="1.2"/>
+                    <circle cx="40" cy="40" r="8" stroke="currentColor" stroke-width="1.2"/>
+                    <path d="M40 36v4l3 3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                  </svg>
+                {%- when 3 -%}
+                  <svg class="offer-lineart" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="22" y="26" width="36" height="28" rx="3" stroke="currentColor" stroke-width="1.2"/>
+                    <path d="M22 34h36" stroke="currentColor" stroke-width="1.2"/>
+                    <path d="M34 34v20m12-20v20" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <circle cx="52" cy="48" r="2" stroke="currentColor" stroke-width="1"/>
+                    <path d="M14 66c0-6 6-10 14-14m38 14c0-6-6-10-14-14" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <circle cx="40" cy="58" r="1.5" stroke="currentColor" stroke-width="1"/>
+                  </svg>
+              {%- endcase -%}
+            {%- endif -%}
+          </div>
           <h3>{{ block.settings.title }}</h3>
           <p>{{ block.settings.text }}</p>
-        </article>
+        </div>
       {%- endfor -%}
     </div>
   </div>
@@ -16,19 +56,17 @@
 
 {% schema %}
 {
-  "name": "Feature grid",
+  "name": "Why my service",
   "settings": [
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "What I offer" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Everything handled, end to end" },
-    { "type": "checkbox", "id": "alt", "label": "Alternate background", "default": true },
-    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns", "default": 4 }
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Why my service" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Paris luxury, without the Paris trip" }
   ],
   "blocks": [
     {
       "type": "feature",
       "name": "Feature",
       "settings": [
-        { "type": "text", "id": "icon", "label": "Icon (emoji/char)", "default": "◆" },
+        { "type": "image_picker", "id": "image", "label": "Image (remplace le line art)" },
         { "type": "text", "id": "title", "label": "Title", "default": "Feature" },
         { "type": "textarea", "id": "text", "label": "Text", "default": "Describe the feature." }
       ]
@@ -36,12 +74,11 @@
   ],
   "presets": [
     {
-      "name": "Feature grid",
+      "name": "Why my service",
       "blocks": [
-        { "type": "feature", "settings": { "icon": "❶", "title": "120+ brands, 2 centres", "text": "La Vallée Village (luxury outlet) and Val d'Europe: Gucci, Moncler, Chloé, Sephora, Nike, Apple and more." } },
-        { "type": "feature", "settings": { "icon": "❷", "title": "Live shopping", "text": "Real-time photos of every item and your validation before I pay at the till." } },
-        { "type": "feature", "settings": { "icon": "❸", "title": "Secure delivery", "text": "Careful packaging and tracked Colissimo shipping straight to your address in Turkey." } },
-        { "type": "feature", "settings": { "icon": "❹", "title": "100% authentic", "text": "Bought directly in official boutiques — guaranteed genuine, with receipts." } }
+        { "type": "feature", "settings": { "title": "No travel needed", "text": "Shop Paris from your phone. No visa, no flights, no hotel." } },
+        { "type": "feature", "settings": { "title": "Outlet prices, always", "text": "All items sourced from La Vallée Village & Val d'Europe outlets." } },
+        { "type": "feature", "settings": { "title": "Delivered worldwide", "text": "Tracked Colissimo to Europe, Turkey, and beyond. Secure packing." } }
       ]
     }
   ]

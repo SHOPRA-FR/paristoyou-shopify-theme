@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "brand-directory",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

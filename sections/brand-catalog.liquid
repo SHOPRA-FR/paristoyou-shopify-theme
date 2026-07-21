@@ -16,15 +16,23 @@
     <p class="lead center">{{ section.settings.subtitle }}</p>
 
     <div class="catalog-toolbar" id="CatToolbar">
-      <input type="search" id="CatSearch" placeholder="{{ section.settings.search_ph }}" aria-label="Search">
-      <select id="CatBrand" aria-label="Brand"><option value="">{{ section.settings.all_brands }}</option></select>
-      <select id="CatAudience" aria-label="Audience"><option value="">{{ section.settings.all_audiences }}</option></select>
-      <select id="CatCategory" aria-label="Category"><option value="">{{ section.settings.all_categories }}</option></select>
+      <input type="search" id="CatSearch" placeholder="{{ section.settings.search_ph }}" aria-label="Search" class="catalog-search">
+      <div class="catalog-filters">
+        <select id="CatBrand" aria-label="Brand" class="catalog-select"><option value="">{{ section.settings.all_brands }}</option></select>
+        <div class="catalog-pills" id="CatAudience">
+          <button type="button" data-val="" class="active">{{ section.settings.all_audiences }}</button>
+          <button type="button" data-val="femme">Femme</button>
+          <button type="button" data-val="homme">Homme</button>
+          <button type="button" data-val="enfant">Enfant</button>
+          <button type="button" data-val="mixte">Mixte</button>
+        </div>
+        <select id="CatCategory" aria-label="Category" class="catalog-select"><option value="">{{ section.settings.all_categories }}</option></select>
+      </div>
     </div>
     <p class="catalog-count"><span id="CatCount">0</span> {{ section.settings.count_label }}</p>
 
     {%- assign coll = collections[section.settings.collection] -%}
-    <div class="sel-grid catalog-grid" id="CatGrid">
+    <div class="catalog-grid" id="CatGrid">
       {%- if coll != blank and coll.products_count > 0 -%}
         {%- comment -%} MODE PRODUITS SHOPIFY : Vendor=marque, Type=catégorie,
             tags homme/femme/enfant/mixte + vu:YYYY-MM-DD (date de constatation,

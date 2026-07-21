@@ -1,0 +1,96 @@
+{%- comment -%}
+  How it works page — Timeline avec images, layout alterné.
+{%- endcomment -%}
+
+<section class="section" id="how">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}
+      <p class="kicker center">{{ section.settings.kicker }}</p>
+    {%- endif -%}
+    {%- if section.settings.title != blank -%}
+      <h2 class="center">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <div class="timeline-page" id="TimelinePage">
+      {%- for block in section.blocks -%}
+        {%- assign is_even = forloop.index | modulo: 2 -%}
+        <div class="timeline-page-step{% if is_even == 0 %} timeline-page-alt{% endif %}" {{ block.shopify_attributes }}>
+          <div class="timeline-page-visual">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 900 }}"
+                   alt="{{ block.settings.title | escape }}"
+                   width="900" height="491" loading="lazy" class="timeline-page-img">
+            {%- elsif block.settings.image_asset != blank -%}
+              <img src="{{ block.settings.image_asset | asset_url }}"
+                   alt="{{ block.settings.title | escape }}"
+                   width="1400" height="763" loading="lazy" class="timeline-page-img">
+            {%- else -%}
+              <div class="timeline-page-placeholder">
+                <span>0{{ forloop.index }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="timeline-page-content">
+            <span class="timeline-page-num">0{{ forloop.index }}</span>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var steps = document.querySelectorAll('.timeline-page-step');
+  if (!steps.length) return;
+
+  steps.forEach(function(step, i){
+    step.style.transitionDelay = (i * 0.12) + 's';
+  });
+
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+
+  steps.forEach(function(step){ observer.observe(step); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "How it works — page",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "How it works" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Three simple steps" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Step" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Describe the step." },
+        { "type": "text", "id": "image_asset", "label": "Image file in assets/ (e.g. how-1.jpg) — never resets on theme update" },
+        { "type": "image_picker", "id": "image", "label": "Or upload an image (optional — resets on theme update)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How it works — page",
+      "blocks": [
+        { "type": "step", "settings": { "image_asset": "how-1.jpg", "title": "Send your wishlist", "text": "Paste the links of the items you want, with sizes, colors and preferences." } },
+        { "type": "step", "settings": { "image_asset": "how-2.jpg", "title": "I scout, you validate", "text": "I go to the Paris outlets, send you real-time photos and prices. You validate before I buy." } },
+        { "type": "step", "settings": { "image_asset": "how-3.jpg", "title": "We settle & ship", "text": "Final payment, careful packing and tracked delivery to your address." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

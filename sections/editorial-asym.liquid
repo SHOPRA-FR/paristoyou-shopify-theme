@@ -1,0 +1,79 @@
+{%- comment -%}
+  The service — bloc éditorial. Avec image : layout deux colonnes, image encadrée
+  d'un filet doré. Sans image : version centrée (pas de placeholder).
+{%- endcomment -%}
+
+{%- assign has_image = false -%}
+{%- if section.settings.image != blank or section.settings.image_asset != blank -%}{%- assign has_image = true -%}{%- endif -%}
+
+{%- capture service_body -%}
+  {%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+  {%- if section.settings.title != blank -%}<h2>{{ section.settings.title | newline_to_br }}</h2>{%- endif -%}
+  <hr class="service-rule" aria-hidden="true">
+  {%- if section.settings.text != blank -%}<p class="service-text">{{ section.settings.text }}</p>{%- endif -%}
+
+  {%- assign points = section.settings.points | strip | split: '|' -%}
+  {%- if points.size > 0 and points.first != blank -%}
+    <ul class="service-points">
+      {%- for p in points -%}
+        {%- assign pt = p | strip -%}
+        {%- if pt != blank -%}<li>{{ pt }}</li>{%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  {%- if section.settings.cta_label != blank -%}
+    <a href="{{ section.settings.cta_link | default: '#pricing' }}" class="btn-paren">{{ section.settings.cta_label }}</a>
+  {%- endif -%}
+{%- endcapture -%}
+
+<section class="section service-section">
+  <div class="container">
+    {%- if has_image -%}
+      <div class="service-grid">
+        <div class="service-visual">
+          <div class="service-img">
+            {%- if section.settings.image != blank -%}
+              <img src="{{ section.settings.image | image_url: width: 900 }}"
+                   srcset="{{ section.settings.image | image_url: width: 500 }} 500w, {{ section.settings.image | image_url: width: 900 }} 900w"
+                   sizes="(max-width: 820px) 90vw, 44vw"
+                   alt="{{ section.settings.image.alt | default: section.settings.kicker | escape }}"
+                   width="900" height="{{ 900 | divided_by: section.settings.image.aspect_ratio | round }}" loading="lazy">
+            {%- else -%}
+              <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ section.settings.kicker | escape }}" width="900" height="1125" loading="lazy">
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="service-content">{{ service_body }}</div>
+      </div>
+    {%- else -%}
+      <div class="service-centered center">{{ service_body }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "The service",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The service" },
+    { "type": "textarea", "id": "title", "label": "Title", "default": "Parisian elegance,\nwithout the journey." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Every piece is hand-selected in the Paris outlets, authenticated, and shipped to your doorstep — no markup games, no compromise on quality. Just the best of French luxury at prices that finally make sense." },
+    { "type": "text", "id": "points", "label": "Reassurance points (separate with |)", "default": "Hand-selected & authenticated|Real outlet prices|Tracked worldwide delivery" },
+    { "type": "text", "id": "cta_label", "label": "CTA", "default": "See pricing" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "header", "content": "Image" },
+    { "type": "text", "id": "image_asset", "label": "Image file in assets/ (e.g. service.jpg) — survives theme updates", "default": "service.jpg" },
+    { "type": "image_picker", "id": "image", "label": "Or upload an image (resets on theme update)" }
+  ],
+  "presets": [
+    {
+      "name": "The service",
+      "settings": {
+        "kicker": "The service",
+        "title": "Parisian elegance,\nwithout the journey."
+      }
+    }
+  ]
+}
+{% endschema %}

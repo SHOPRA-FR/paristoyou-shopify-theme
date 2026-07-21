@@ -1,0 +1,51 @@
+{%- comment -%}
+  This week — derniers produits ajoutés (triés par date de publication, plus récents
+  d'abord). Collection optionnelle ; sinon tous les produits.
+{%- endcomment -%}
+
+{%- assign coll = section.settings.collection -%}
+{%- if coll == blank -%}{%- assign coll = collections.all -%}{%- endif -%}
+{%- comment -%}Derniers produits d'abord (tri par date de création){%- endcomment -%}
+{%- assign latest = coll.products | sort: 'created_at' | reverse -%}
+
+<section class="section" id="offers">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
+    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
+    {%- if section.settings.subtitle != blank -%}<p class="lead center">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+    {%- if latest.size > 0 -%}
+      <div class="product-grid">
+        {%- for product in latest limit: section.settings.count -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="offers-note center">{{ section.settings.empty_note }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.note != blank -%}<p class="offers-note center">{{ section.settings.note }}</p>{%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <p class="center sel-cta"><a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn-ghost">{{ section.settings.cta_label }}</a></p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "This week (latest)",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "This week" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Just added, at outlet price" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "The latest pieces spotted and price-checked in the Paris outlets." },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Empty = all products. Newest published shown first." },
+    { "type": "range", "id": "count", "min": 3, "max": 12, "step": 1, "label": "Number of products", "default": 4 },
+    { "type": "text", "id": "note", "label": "Bottom note", "default": "Offers vary daily — sign in and send your list to check what's available today." },
+    { "type": "text", "id": "empty_note", "label": "Empty note", "default": "New arrivals coming soon." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "See the full catalog" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "presets": [{ "name": "This week (latest)" }]
+}
+{% endschema %}

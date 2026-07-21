@@ -113,7 +113,9 @@
     return lines.join("\n");
   }
 
-  $("WlSendWa").addEventListener("click", function () {
+  // Invités : les boutons d'envoi n'existent pas (compte requis) — on ne bind que s'ils sont là
+  var sendBtn = $("WlSendWa");
+  if (sendBtn) sendBtn.addEventListener("click", function () {
     if (!items.length) return;
     var url = CFG.whatsapp
       ? "https://wa.me/" + CFG.whatsapp + "?text=" + encodeURIComponent(buildText())
@@ -121,7 +123,8 @@
     window.open(url, "_blank", "noopener");
   });
 
-  $("WlCopy").addEventListener("click", function () {
+  var copyBtn = $("WlCopy");
+  if (copyBtn) copyBtn.addEventListener("click", function () {
     if (!items.length) return;
     var btn = this, prev = btn.textContent;
     navigator.clipboard.writeText(buildText()).then(function () {

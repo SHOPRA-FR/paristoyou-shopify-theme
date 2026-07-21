@@ -1,0 +1,48 @@
+{%- comment -%}
+  Section artistique — grandes lettres flottantes + deux images asymétriques.
+{%- endcomment -%}
+
+<section class="letters-section">
+  <div class="container">
+    {%- if section.settings.letters != blank -%}
+      <div class="floating-letters" aria-hidden="true">
+        {{ section.settings.letters }}
+      </div>
+    {%- endif -%}
+
+    <div class="letters-images">
+      {%- if section.settings.image_left != blank -%}
+        <div class="letters-img">
+          <img src="{{ section.settings.image_left | image_url: width: 700 }}"
+               alt="{{ section.settings.image_left.alt | escape }}"
+               width="700" height="875" loading="lazy">
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.image_right != blank -%}
+        <div class="letters-img">
+          <img src="{{ section.settings.image_right | image_url: width: 700 }}"
+               alt="{{ section.settings.image_right.alt | escape }}"
+               width="700" height="875" loading="lazy">
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lettres flottantes",
+  "settings": [
+    { "type": "text", "id": "letters", "label": "Lettres à afficher", "default": "PARIS", "info": "Grandes lettres décoratives en filigrane." },
+    { "type": "image_picker", "id": "image_left", "label": "Image de gauche" },
+    { "type": "image_picker", "id": "image_right", "label": "Image de droite (décalée vers le bas)" }
+  ],
+  "presets": [
+    {
+      "name": "Lettres flottantes",
+      "settings": { "letters": "PARIS" }
+    }
+  ]
+}
+{% endschema %}

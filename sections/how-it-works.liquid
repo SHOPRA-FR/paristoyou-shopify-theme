@@ -1,25 +1,60 @@
+{%- comment -%}
+  How it works — Scroll timeline simple (homepage).
+{%- endcomment -%}
+
 <section class="section" id="how">
-  <div class="container">
-    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
-    {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
-    <div class="steps cols-{{ section.blocks.size | at_most: 6 }}">
+  <div class="container container-narrow">
+    {%- if section.settings.kicker != blank -%}
+      <p class="kicker center">{{ section.settings.kicker }}</p>
+    {%- endif -%}
+    {%- if section.settings.title != blank -%}
+      <h2 class="center">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <div class="timeline" id="Timeline">
       {%- for block in section.blocks -%}
-        <article class="step" {{ block.shopify_attributes }}>
-          <div class="step-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
-          <h3>{{ block.settings.title }}</h3>
-          <p>{{ block.settings.text }}</p>
-        </article>
+        <div class="timeline-step" {{ block.shopify_attributes }}>
+          <div class="timeline-marker">
+            <span class="timeline-num">0{{ forloop.index }}</span>
+            <span class="timeline-dot"></span>
+          </div>
+          <div class="timeline-body">
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        </div>
       {%- endfor -%}
     </div>
   </div>
 </section>
+
+<script>
+(function(){
+  var steps = document.querySelectorAll('#Timeline .timeline-step');
+  if (!steps.length) return;
+
+  steps.forEach(function(step, i){
+    step.style.transitionDelay = (i * 0.15) + 's';
+  });
+
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+
+  steps.forEach(function(step){ observer.observe(step); });
+})();
+</script>
 
 {% schema %}
 {
   "name": "How it works",
   "settings": [
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "How it works" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Six simple steps" }
+    { "type": "text", "id": "title", "label": "Title", "default": "Three simple steps" }
   ],
   "blocks": [
     {
@@ -35,12 +70,9 @@
     {
       "name": "How it works",
       "blocks": [
-        { "type": "step", "settings": { "title": "Create your account", "text": "Sign up with your delivery address and contact details — everything stays saved for your orders." } },
-        { "type": "step", "settings": { "title": "Send your shopping list", "text": "Build your list on the My List page: paste the links of the items you want, with sizes and prices." } },
-        { "type": "step", "settings": { "title": "Pay the deposit", "text": "A deposit matching the estimated total of your shopping + my provisional fee, validated together." } },
-        { "type": "step", "settings": { "title": "Book a call", "text": "Tell me your date and time availability for a phone exchange about your list." } },
-        { "type": "step", "settings": { "title": "I scout, you validate, I buy", "text": "After our call I go to the boutiques, report back on the items found matching your request — and buy them upon your validation." } },
-        { "type": "step", "settings": { "title": "Tracked delivery", "text": "Carefully packed and shipped with tracking to the address from your account — Europe & worldwide." } }
+        { "type": "step", "settings": { "title": "Send your wishlist", "text": "Paste the links of the items you want, with sizes, colors and preferences. Everything stays saved on your account." } },
+        { "type": "step", "settings": { "title": "I scout, you validate", "text": "I go to the Paris outlets, send you real-time photos and prices of each item found. You validate before I buy — total control." } },
+        { "type": "step", "settings": { "title": "We settle & ship", "text": "Final payment after validation, then careful packing and tracked Colissimo delivery to your address — Europe & worldwide." } }
       ]
     }
   ]

@@ -1,22 +1,58 @@
-{%- comment -%} Usage: {% render 'product-card', product: product %} {%- endcomment -%}
-<a class="product-card" href="{{ product.url }}">
+{%- comment -%}
+  Carte produit réutilisable.
+  Usage : {% render 'product-card', product: product %}
+  Émet des attributs data-* (marque / audience / type / prix / remise / recherche)
+  exploités par le filtre client du catalogue (voir theme.js, bloc CollGrid).
+{%- endcomment -%}
+{%- liquid
+  assign aud = ''
+  for t in product.tags
+    assign tl = t | downcase | strip
+    if tl == 'homme' or tl == 'femme' or tl == 'enfant' or tl == 'mixte'
+      assign aud = tl
+    endif
+  endfor
+  assign disc = 0
+  if product.compare_at_price > product.price
+    assign disc = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+  endif
+  assign search_blob = product.vendor | append: ' ' | append: product.title | append: ' ' | append: product.type | downcase
+  comment
+    Évite « Polo Ralph Lauren / Polo Ralph Lauren Green » : retire la marque du titre si elle y figure en tête.
+  endcomment
+  assign display_title = product.title
+  if product.vendor != blank and product.title contains product.vendor
+    assign stripped = product.title | remove_first: product.vendor | strip
+    if stripped != blank
+      assign display_title = stripped
+    endif
+  endif
+-%}
+<a class="product-card" href="{{ product.url }}"
+   data-search="{{ search_blob | escape }}"
+   data-brand="{{ product.vendor | escape }}"
+   data-aud="{{ aud }}"
+   data-type="{{ product.type | downcase | escape }}"
+   data-price="{{ product.price }}"
+   data-disc="{{ disc }}">
   <div class="product-card-media">
     {%- if product.featured_image -%}
       <img src="{{ product.featured_image | image_url: width: 600 }}"
+           srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 900 }} 900w"
+           sizes="(max-width: 520px) 45vw, (max-width: 900px) 45vw, 280px"
            alt="{{ product.featured_image.alt | default: product.title | escape }}"
            width="600" height="{{ 600 | divided_by: product.featured_image.aspect_ratio | round }}" loading="lazy">
     {%- else -%}
       <div class="product-card-placeholder">{{ product.title | slice: 0, 1 }}</div>
     {%- endif -%}
+    {%- if disc > 0 -%}<span class="badge discount">−{{ disc }}%</span>{%- endif -%}
     {%- unless product.available -%}<span class="badge sold-out">{{ 'products.product.sold_out' | t }}</span>{%- endunless -%}
   </div>
   <div class="product-card-info">
-    <span class="product-card-vendor">{{ product.vendor }}</span>
-    <span class="product-card-title">{{ product.title }}</span>
+    {%- if product.vendor != blank -%}<span class="product-card-vendor">{{ product.vendor }}</span>{%- endif -%}
+    <span class="product-card-title">{{ display_title }}</span>
     <span class="product-card-price">
-      {%- if product.compare_at_price > product.price -%}
-        <s>{{ product.compare_at_price | money }}</s>
-      {%- endif -%}
+      {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
       {{ product.price | money }}{% if product.price_varies %}+{% endif %}
     </span>
   </div>

@@ -36,6 +36,14 @@
       "note": "Add a note to your order"
     }
   },
+  "customer": {
+    "account": {
+      "title": "Account"
+    },
+    "login": {
+      "sign_in": "Sign in"
+    }
+  },
   "onboarding": {
     "product_title": "Example product title",
     "collection_title": "Example collection"

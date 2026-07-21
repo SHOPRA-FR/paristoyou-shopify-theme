@@ -1,0 +1,13 @@
+{
+  "name": "paristoyou-scraper",
+  "version": "1.0.0",
+  "description": "Scrape La Vallée Village brands & products → Shopify CSV",
+  "type": "module",
+  "scripts": {
+    "scrape": "node index.mjs",
+    "setup": "npm install"
+  },
+  "dependencies": {
+    "puppeteer": "^24.0.0"
+  }
+}

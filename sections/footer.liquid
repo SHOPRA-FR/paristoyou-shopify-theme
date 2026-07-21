@@ -1,30 +1,58 @@
 <footer class="site-footer">
-  <div class="container footer-inner">
+  <div class="container footer-top">
     <div class="footer-brand">
-      <span class="logo">{{ settings.logo_text }}</span>
-      <p>{{ settings.tagline }}</p>
+      <a href="{{ routes.root_url }}" class="footer-logo">
+        {%- if settings.logo_image != blank -%}
+          <img src="{{ settings.logo_image | image_url: width: 240 }}" alt="{{ shop.name | escape }}" width="120" height="26" loading="lazy">
+        {%- else -%}
+          {{ settings.logo_text }}
+        {%- endif -%}
+      </a>
+      {%- if section.settings.description != blank -%}<p class="footer-desc">{{ section.settings.description }}</p>{%- endif -%}
+      <div class="footer-social">
+        {%- if settings.instagram_url != blank -%}<a href="{{ settings.instagram_url }}" target="_blank" rel="noopener">Instagram ↗</a>{%- endif -%}
+      </div>
     </div>
 
-    {%- if section.settings.menu != blank -%}
-      <nav class="footer-nav">
-        {%- for link in linklists[section.settings.menu].links -%}
-          <a href="{{ link.url }}">{{ link.title }}</a>
-        {%- endfor -%}
+    {%- if section.settings.menu != blank and linklists[section.settings.menu].links.size > 0 -%}
+      <nav class="footer-col">
+        {%- if section.settings.menu_title != blank -%}<h4>{{ section.settings.menu_title }}</h4>{%- endif -%}
+        <ul>
+          {%- for link in linklists[section.settings.menu].links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+        </ul>
       </nav>
     {%- endif -%}
 
-    <div class="footer-social">
-      {%- assign wa = settings.whatsapp_number | remove: '+' | remove: ' ' -%}
-      {%- if wa != blank -%}<a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">WhatsApp</a>{%- endif -%}
-      {%- if settings.instagram_url != blank -%}<a href="{{ settings.instagram_url }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
-      {%- if settings.contact_email != blank -%}<a href="mailto:{{ settings.contact_email }}">Email</a>{%- endif -%}
-    </div>
-
-    {%- if section.settings.legal != blank -%}
-      <p class="footer-legal">{{ section.settings.legal }}</p>
+    {%- if section.settings.legal_menu != blank and linklists[section.settings.legal_menu].links.size > 0 -%}
+      <nav class="footer-col">
+        {%- if section.settings.legal_title != blank -%}<h4>{{ section.settings.legal_title }}</h4>{%- endif -%}
+        <ul>
+          {%- for link in linklists[section.settings.legal_menu].links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+        </ul>
+      </nav>
     {%- endif -%}
 
-    <p class="footer-rights">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+    {%- if section.settings.help_title != blank -%}
+      <div class="footer-col">
+        <h4>{{ section.settings.help_title }}</h4>
+        {%- if section.settings.help_text != blank -%}<p class="footer-help">{{ section.settings.help_text }}</p>{%- endif -%}
+        {%- if section.settings.contact_link != blank -%}
+          <a href="{{ section.settings.contact_link }}" class="footer-help-link">{{ section.settings.contact_label }} ↗</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="container footer-bottom">
+    <div class="footer-bottom-left">
+      {%- if section.settings.legal != blank -%}<div class="footer-legal">{{ section.settings.legal }}</div>{%- endif -%}
+      <p class="footer-rights">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}{% if section.settings.rights_note != blank %} · {{ section.settings.rights_note }}{% endif %}</p>
+    </div>
+    {%- if section.settings.show_payments and shop.enabled_payment_types.size > 0 -%}
+      <div class="footer-pay">
+        {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag }}{%- endfor -%}
+      </div>
+    {%- endif -%}
   </div>
 </footer>
 
@@ -32,8 +60,22 @@
 {
   "name": "Footer",
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Footer menu", "default": "footer" },
-    { "type": "richtext", "id": "legal", "label": "Legal / disclaimer text", "default": "<p>Independent personal shopping service. No official affiliation with the brands listed; products are purchased on the client's behalf. Turkish customs duties are the client's responsibility.</p>" }
+    { "type": "textarea", "id": "description", "label": "Brand description", "default": "Your personal shopper in Paris. Hand-picked luxury from the outlets of La Vallée Village & Val d'Europe, shipped to your door — Europe & worldwide." },
+    { "type": "header", "content": "Column 1 — Explore" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "text", "id": "menu_title", "label": "Column title", "default": "Explore" },
+    { "type": "header", "content": "Column 2 — Legal" },
+    { "type": "link_list", "id": "legal_menu", "label": "Legal menu", "default": "footer" },
+    { "type": "text", "id": "legal_title", "label": "Column title", "default": "Legal & info" },
+    { "type": "header", "content": "Column 3 — Contact" },
+    { "type": "text", "id": "help_title", "label": "Column title", "default": "Need a hand?" },
+    { "type": "textarea", "id": "help_text", "label": "Text", "default": "A question before you order? Members get a direct line to me." },
+    { "type": "text", "id": "contact_link", "label": "Contact link (path or URL)", "default": "/pages/contact" },
+    { "type": "text", "id": "contact_label", "label": "Contact label", "default": "Contact me" },
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "richtext", "id": "legal", "label": "Legal mentions", "default": "<p>Independent personal shopping service. Not affiliated with the brands sold. Prices include the personal shopper commission; destination customs duties are the client's responsibility.</p>" },
+    { "type": "text", "id": "rights_note", "label": "Rights note", "default": "All rights reserved" },
+    { "type": "checkbox", "id": "show_payments", "label": "Show payment icons", "default": true }
   ]
 }
 {% endschema %}

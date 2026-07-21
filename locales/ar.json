@@ -1,0 +1,51 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "تخطي إلى المحتوى"
+    },
+    "search": {
+      "search": "بحث"
+    },
+    "404": {
+      "title": "الصفحة غير موجودة",
+      "subtext": "الصفحة التي تبحث عنها غير موجودة.",
+      "link": "العودة إلى الصفحة الرئيسية"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "أضف إلى السلة",
+      "sold_out": "نفذت الكمية",
+      "unavailable": "غير متوفر",
+      "vendor": "العلامة التجارية",
+      "quantity": "الكمية"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "قائمتي",
+      "empty": "قائمتك فارغة",
+      "subtotal": "المجموع الفرعي",
+      "checkout": "إتمام الطلب",
+      "remove": "إزالة",
+      "continue_shopping": "متابعة التسوق",
+      "note": "أضف ملاحظة إلى طلبك"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "الحساب"
+    },
+    "login": {
+      "sign_in": "تسجيل الدخول"
+    }
+  },
+  "onboarding": {
+    "product_title": "عنوان منتج تجريبي",
+    "collection_title": "مجموعة تجريبية"
+  }
+}

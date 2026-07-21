@@ -14,12 +14,22 @@
         "type": "text",
         "id": "logo_text",
         "label": "Logo text (wordmark)",
-        "default": "paristoyou"
+        "default": "ParisToYou"
       },
       {
         "type": "image_picker",
         "id": "logo_image",
         "label": "Logo image (optional — replaces text)"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon (square, 96×96 px or larger)"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Social share image (1200×630 — link previews on WhatsApp & social)"
       },
       {
         "type": "text",

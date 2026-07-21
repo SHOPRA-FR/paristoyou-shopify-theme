@@ -1,0 +1,56 @@
+{
+  "sections": {
+    "main": {
+      "type": "pricing",
+      "blocks": {
+        "r1": {
+          "type": "row",
+          "settings": {
+            "label": "Minimum purchase",
+            "value": "None"
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "label": "Minimum commission",
+            "value": "300 €"
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "label": "Deposit",
+            "value": "Purchases + provisional commission, validated together"
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "label": "Delivery",
+            "value": "Tracked parcel · Europe & worldwide"
+          }
+        },
+        "r5": {
+          "type": "row",
+          "settings": {
+            "label": "Destination customs duties",
+            "value": "client's responsibility",
+            "muted": true
+          }
+        }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5"],
+      "settings": {
+        "kicker": "Pricing",
+        "title": "Simple, transparent pricing",
+        "rate_label": "commission on your purchases",
+        "rate_note": "Minimum commission 300 €. No minimum purchase. Includes outlet trips, in-store scouting, photos & phone debrief, secure packing and shipment handling.",
+        "show_simulator": true,
+        "show_travel": false,
+        "show_versus": true
+      }
+    }
+  },
+  "order": ["main"]
+}

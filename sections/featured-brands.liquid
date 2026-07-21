@@ -1,90 +1,72 @@
 {%- comment -%}
-  Sélection — exemples d'articles par marque : photo + prix unitaire.
-  Chaque block = un article (image, marque, nom, prix outlet, prix comparé,
-  lien optionnel). Sert de vitrine « marques sélectionnées ».
+  The selection — vrais produits Shopify dans le carousel (image, marque, nom, prix).
+  Collection optionnelle ; sinon tous les produits. Fini les placeholders.
 {%- endcomment -%}
+
+{%- assign coll = section.settings.collection -%}
+{%- if coll == blank -%}{%- assign coll = collections.all -%}{%- endif -%}
 
 <section class="section" id="selection">
   <div class="container">
     {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
     {%- if section.settings.title != blank -%}<h2 class="center">{{ section.settings.title }}</h2>{%- endif -%}
     {%- if section.settings.subtitle != blank -%}<p class="lead center">{{ section.settings.subtitle }}</p>{%- endif -%}
-
-    <div class="sel-grid">
-      {%- for block in section.blocks -%}
-        {%- assign s = block.settings -%}
-        <article class="sel-card" {{ block.shopify_attributes }}>
-          <div class="sel-media">
-            {%- if s.image != blank -%}
-              <img src="{{ s.image | image_url: width: 640 }}" alt="{{ s.item | escape }}" width="640" height="640" loading="lazy">
-            {%- elsif s.image_asset != blank -%}
-              <img src="{{ s.image_asset | asset_url }}" alt="{{ s.item | escape }}" width="640" height="640" loading="lazy">
-            {%- elsif s.image_url != blank -%}
-              <img src="{{ s.image_url }}" alt="{{ s.item | escape }}" width="640" height="640" loading="lazy">
-            {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'sel-ph' }}
-            {%- endif -%}
-            {%- if s.discount != blank -%}<span class="sel-badge">{{ s.discount }}</span>{%- endif -%}
-          </div>
-          <div class="sel-info">
-            <span class="sel-brand">{{ s.brand }}</span>
-            <span class="sel-item">{{ s.item }}</span>
-            <span class="sel-price">
-              {%- if s.compare != blank -%}<s>{{ s.compare }}</s>{%- endif -%}
-              {{ s.price }}
-            </span>
-            {%- if s.link != blank -%}<a href="{{ s.link }}" class="sel-link">{{ section.settings.card_cta }}</a>{%- endif -%}
-          </div>
-        </article>
-      {%- endfor -%}
-    </div>
-
-    {%- if section.settings.cta_label != blank -%}
-      <p class="center sel-cta"><a href="{{ section.settings.cta_link | default: '/pages/my-list' }}" class="btn btn-dark">{{ section.settings.cta_label }}</a></p>
-    {%- endif -%}
   </div>
+
+  {%- assign sel_count = coll.products_count | default: 0 | plus: 0 -%}
+  {%- if sel_count > 0 -%}
+    <div class="sel-carousel" id="SelCarousel" data-speed="{{ section.settings.carousel_speed }}">
+      <div class="sel-track" id="SelTrack">
+        {%- for product in coll.products limit: section.settings.count -%}
+          <article class="sel-card">
+            <a href="{{ product.url }}" class="sel-media">
+              {%- if product.featured_image -%}
+                <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title | escape }}" width="800" height="800" loading="lazy">
+              {%- else -%}
+                <div class="cat-noimg"><span>📷</span></div>
+              {%- endif -%}
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                <span class="sel-badge">−{{ pct }}%</span>
+              {%- endif -%}
+            </a>
+            <div class="sel-info">
+              {%- if product.vendor != blank -%}<span class="sel-brand">{{ product.vendor }}</span>{%- endif -%}
+              <span class="sel-item">{{ product.title }}</span>
+              <span class="sel-price">
+                {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+                {{ product.price | money }}
+              </span>
+              <span class="sel-link">{{ section.settings.card_cta }}</span>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="container"><p class="offers-note center">{{ section.settings.empty_note }}</p></div>
+  {%- endif -%}
+
+  {%- if section.settings.cta_label != blank -%}
+    <div class="container"><p class="center sel-cta"><a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="btn btn-dark">{{ section.settings.cta_label }}</a></p></div>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
-  "name": "Selection (examples)",
+  "name": "Selection (products)",
   "settings": [
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "The selection" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Examples by brand, at outlet price" },
-    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "A glimpse of what I find at the Paris outlets — unit prices seen in boutique. Your wishlist can be anything from these brands." },
-    { "type": "text", "id": "card_cta", "label": "Card link label", "default": "Ask for this item →" },
-    { "type": "text", "id": "cta_label", "label": "Bottom CTA label", "default": "Build my shopping list" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Handpicked, at outlet price" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "A glimpse of what I find in the Paris outlets. Ask for any of these — or anything similar." },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Empty = all products. Point to a curated collection (e.g. flagships) to highlight specific pieces." },
+    { "type": "range", "id": "count", "min": 4, "max": 16, "step": 1, "label": "Number of products", "default": 10 },
+    { "type": "range", "id": "carousel_speed", "min": 1, "max": 8, "step": 1, "unit": "s", "label": "Pause between cards (seconds)", "default": 2 },
+    { "type": "text", "id": "card_cta", "label": "Card link label", "default": "View & order →" },
+    { "type": "text", "id": "empty_note", "label": "Empty note", "default": "Selection coming soon." },
+    { "type": "text", "id": "cta_label", "label": "Bottom CTA label", "default": "Browse the full catalog" },
     { "type": "url", "id": "cta_link", "label": "Bottom CTA link" }
   ],
-  "blocks": [
-    {
-      "type": "item",
-      "name": "Item",
-      "settings": [
-        { "type": "image_picker", "id": "image", "label": "Photo (uploadée — prioritaire)" },
-        { "type": "text", "id": "image_asset", "label": "Ou fichier dans assets/ (ex. sel-gucci.jpg)" },
-        { "type": "text", "id": "image_url", "label": "Ou URL d'image externe (fallback)" },
-        { "type": "text", "id": "brand", "label": "Brand", "default": "Gucci" },
-        { "type": "text", "id": "item", "label": "Item name", "default": "GG Marmont bag" },
-        { "type": "text", "id": "price", "label": "Outlet unit price", "default": "1 290 €" },
-        { "type": "text", "id": "compare", "label": "Regular price (optional)", "default": "1 980 €" },
-        { "type": "text", "id": "discount", "label": "Badge (optional)", "default": "-35%" },
-        { "type": "url", "id": "link", "label": "Link (optional)" }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Selection (examples)",
-      "blocks": [
-        { "type": "item", "settings": { "brand": "Gucci", "item": "GG Marmont shoulder bag", "price": "1 290 €", "compare": "1 980 €", "discount": "-35%" } },
-        { "type": "item", "settings": { "brand": "Moncler", "item": "Maya down jacket", "price": "840 €", "compare": "1 450 €", "discount": "-42%" } },
-        { "type": "item", "settings": { "brand": "Saint Laurent", "item": "Loulou medium bag", "price": "1 450 €", "compare": "2 300 €", "discount": "-37%" } },
-        { "type": "item", "settings": { "brand": "Christian Louboutin", "item": "So Kate 120 pumps", "price": "495 €", "compare": "795 €", "discount": "-38%" } },
-        { "type": "item", "settings": { "brand": "Burberry", "item": "Check cashmere scarf", "price": "290 €", "compare": "470 €", "discount": "-38%" } },
-        { "type": "item", "settings": { "brand": "Sephora", "item": "Luxury beauty set", "price": "120 €", "compare": "180 €", "discount": "-33%" } }
-      ]
-    }
-  ]
+  "presets": [{ "name": "Selection (products)" }]
 }
 {% endschema %}

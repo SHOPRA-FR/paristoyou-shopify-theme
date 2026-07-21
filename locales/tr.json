@@ -1,0 +1,51 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "İçeriğe geç"
+    },
+    "search": {
+      "search": "Ara"
+    },
+    "404": {
+      "title": "Sayfa bulunamadı",
+      "subtext": "Aradığınız sayfa mevcut değil.",
+      "link": "Ana sayfaya dön"
+    },
+    "pagination": {
+      "previous": "Önceki",
+      "next": "Sonraki"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Sepete ekle",
+      "sold_out": "Tükendi",
+      "unavailable": "Mevcut değil",
+      "vendor": "Marka",
+      "quantity": "Adet"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Listem",
+      "empty": "Listeniz boş",
+      "subtotal": "Ara toplam",
+      "checkout": "Siparişi tamamla",
+      "remove": "Kaldır",
+      "continue_shopping": "Alışverişe devam",
+      "note": "Siparişinize not ekleyin"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Hesap"
+    },
+    "login": {
+      "sign_in": "Giriş yap"
+    }
+  },
+  "onboarding": {
+    "product_title": "Örnek ürün başlığı",
+    "collection_title": "Örnek koleksiyon"
+  }
+}

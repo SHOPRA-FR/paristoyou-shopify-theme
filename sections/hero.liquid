@@ -1,52 +1,126 @@
 {%- comment -%}
-  Hero « filmstrip » : images en translation continue (blocks image),
-  bandeau titre superposé + CTA création de compte / connexion (comptes Shopify).
+  Hero — Éditorial luxe. Titre massif + composition image (arche + collage).
 {%- endcomment -%}
 
-<section class="hero-strip">
-  <div class="hero-strip-track" style="--slides:{{ section.blocks.size | at_least: 1 }};--speed:{{ section.settings.speed }}s">
-    {%- for i in (1..2) -%}
-      {%- for block in section.blocks -%}
-        <div class="hero-slide" {{ block.shopify_attributes }}>
-          {%- if block.settings.image != blank -%}
-            <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.image.alt | escape }}"
-                 width="900" height="620" loading="{% if forloop.first and i == 1 %}eager{% else %}lazy{% endif %}">
-          {%- else -%}
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slide-ph' }}
-          {%- endif -%}
+<section class="hero">
+  {%- if section.settings.show_products_bg -%}
+    {%- assign bgcoll = section.settings.bg_collection -%}
+    {%- if bgcoll == blank -%}{%- assign bgcoll = collections.all -%}{%- endif -%}
+    {%- if bgcoll.products_count > 0 -%}
+      <div class="hero-bg" aria-hidden="true">
+        {%- assign products1 = bgcoll.products | sort: 'published_at' | reverse -%}
+        {%- assign products2 = bgcoll.products | sort: 'published_at' -%}
+        <div class="hero-bg-track" style="--marquee-speed:{{ section.settings.marquee_speed }}s">
+          {%- for i in (1..2) -%}
+            {%- for product in products1 limit: 8 -%}
+              {%- if product.featured_image -%}
+                <span class="hero-bg-item"><img src="{{ product.featured_image | image_url: width: 240 }}" alt="" width="160" height="213" loading="lazy"></span>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
         </div>
-      {%- endfor -%}
-      {%- if section.blocks.size == 0 -%}
-        <div class="hero-slide">{{ 'lifestyle-1' | placeholder_svg_tag: 'hero-slide-ph' }}</div>
-        <div class="hero-slide">{{ 'lifestyle-2' | placeholder_svg_tag: 'hero-slide-ph' }}</div>
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
-
-  <div class="hero-band">
-    <div class="container center">
-      {%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}
-      <h1>{{ section.settings.title }}</h1>
-      {%- if section.settings.subtitle != blank -%}<p class="hero-band-sub">{{ section.settings.subtitle }}</p>{%- endif -%}
-      <div class="hero-band-cta">
-        {%- if section.settings.show_account -%}
-          <a href="{{ routes.account_register_url }}" class="btn btn-accent">{{ section.settings.cta_register }}</a>
-          <a href="{{ routes.account_login_url }}" class="btn btn-ghost-light">{{ section.settings.cta_login }}</a>
-        {%- endif -%}
-        {%- if section.settings.cta_extra_label != blank -%}
-          <a href="{{ section.settings.cta_extra_link | default: '#brands' }}" class="btn btn-ghost-light">{{ section.settings.cta_extra_label }}</a>
-        {%- endif -%}
+        <div class="hero-bg-track hero-bg-track--rev" style="--marquee-speed:{{ section.settings.marquee_speed | times: 1.3 }}s">
+          {%- for i in (1..2) -%}
+            {%- for product in products2 limit: 8 -%}
+              {%- if product.featured_image -%}
+                <span class="hero-bg-item"><img src="{{ product.featured_image | image_url: width: 240 }}" alt="" width="160" height="213" loading="lazy"></span>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
       </div>
-    </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  <div class="hero-inner">
+    {%- if section.settings.kicker != blank -%}
+      <p class="kicker center">{{ section.settings.kicker }}</p>
+    {%- endif -%}
+
+    {%- assign title_formatted = section.settings.title | replace: 'Paris', '<span class="hero-title-accent">Paris</span>' | replace: 'to you.', '<span class="hero-title-accent">to you.</span>' | replace: 'to you', '<span class="hero-title-accent">to you</span>' -%}
+    <h1 class="hero-title">{{ title_formatted | newline_to_br }}</h1>
+
+    <hr class="hero-rule" aria-hidden="true">
+
+    {%- if section.settings.subtitle != blank -%}
+      <p class="hero-subtitle">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <a
+        href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}"
+        class="hero-cta-btn"
+      >
+        {{- section.settings.cta_label -}}
+        <svg class="hero-cta-arrow" viewBox="0 0 16 16" width="16" height="16"
+             fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M6 3l5 5-5 5"/>
+        </svg>
+      </a>
+    {%- endif -%}
   </div>
 
-  {%- if section.settings.show_stats -%}
-    <div class="hero-strip-stats">
-      <div class="container hero-stats">
-        <div><strong>120+</strong><span>{{ section.settings.stat1 }}</span></div>
-        <div><strong>-30% / -70%</strong><span>{{ section.settings.stat2 }}</span></div>
-        <div><strong>2 – 2.5×</strong><span>{{ section.settings.stat3 }}</span></div>
-        <div><strong>🌍</strong><span>{{ section.settings.stat4 }}</span></div>
+  {%- if section.settings.show_brands_marquee and section.settings.brands_list != blank -%}
+    <div class="hero-marquee" aria-hidden="true">
+      <div class="hero-marquee-track" style="--marquee-speed:{{ section.settings.marquee_speed }}s">
+        {%- capture nl %}
+{% endcapture -%}
+        {%- comment -%} Format partagé avec la page Brands : Nom|host|logo
+             (logo vide = favicon Google auto · '-' = pas de logo · URL = logo explicite). {%- endcomment -%}
+        {%- assign brand_lines = section.settings.brands_list | strip | split: nl -%}
+        {%- for i in (1..2) -%}
+          {%- for line in brand_lines -%}
+            {%- assign parts = line | strip | split: '|' -%}
+            {%- assign bname = parts[0] | strip -%}
+            {%- if bname == blank -%}{% continue %}{%- endif -%}
+            {%- assign bhost = parts[1] | strip -%}
+            {%- assign blogo = parts[2] | strip -%}
+            {%- if blogo == '-' -%}
+              {%- assign logo_src = '' -%}
+            {%- elsif blogo != blank -%}
+              {%- assign logo_src = blogo -%}
+            {%- elsif bhost != blank -%}
+              {%- assign logo_src = 'https://www.google.com/s2/favicons?domain=' | append: bhost | append: '&sz=64' -%}
+            {%- else -%}
+              {%- assign logo_src = '' -%}
+            {%- endif -%}
+            <a class="hero-marquee-brand" href="{% if bhost != blank %}https://{{ bhost }}{% else %}#{% endif %}" target="_blank" rel="noopener nofollow">
+              {%- if logo_src != blank -%}
+                <img class="hero-marquee-logo" src="{{ logo_src | escape }}" alt="" width="22" height="22" loading="lazy" onerror="this.style.display='none'">
+              {%- endif -%}
+              {{ bname }}
+            </a>
+            <span class="hero-marquee-sep" aria-hidden="true">·</span>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+      <div class="hero-marquee-track hero-marquee-track--rev" style="--marquee-speed:{{ section.settings.marquee_speed | times: 1.3 }}s">
+        {%- assign brand_lines_rev = section.settings.brands_list | strip | split: nl | reverse -%}
+        {%- for i in (1..2) -%}
+          {%- for line in brand_lines_rev -%}
+            {%- assign parts = line | strip | split: '|' -%}
+            {%- assign bname = parts[0] | strip -%}
+            {%- if bname == blank -%}{% continue %}{%- endif -%}
+            {%- assign bhost = parts[1] | strip -%}
+            {%- assign blogo = parts[2] | strip -%}
+            {%- if blogo == '-' -%}
+              {%- assign logo_src = '' -%}
+            {%- elsif blogo != blank -%}
+              {%- assign logo_src = blogo -%}
+            {%- elsif bhost != blank -%}
+              {%- assign logo_src = 'https://www.google.com/s2/favicons?domain=' | append: bhost | append: '&sz=64' -%}
+            {%- else -%}
+              {%- assign logo_src = '' -%}
+            {%- endif -%}
+            <a class="hero-marquee-brand" href="{% if bhost != blank %}https://{{ bhost }}{% else %}#{% endif %}" target="_blank" rel="noopener nofollow">
+              {%- if logo_src != blank -%}
+                <img class="hero-marquee-logo" src="{{ logo_src | escape }}" alt="" width="22" height="22" loading="lazy" onerror="this.style.display='none'">
+              {%- endif -%}
+              {{ bname }}
+            </a>
+            <span class="hero-marquee-sep" aria-hidden="true">·</span>
+          {%- endfor -%}
+        {%- endfor -%}
       </div>
     </div>
   {%- endif -%}
@@ -54,32 +128,27 @@
 
 {% schema %}
 {
-  "name": "Hero filmstrip",
+  "name": "Hero",
   "settings": [
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "PERSONAL SHOPPER · PARIS → WORLDWIDE" },
-    { "type": "textarea", "id": "title", "label": "Title", "default": "Paris Shopping, Done For You." },
-    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Luxury brands at Paris outlet prices — hand-picked for you and shipped across Europe and worldwide." },
-    { "type": "checkbox", "id": "show_account", "label": "Show account buttons", "default": true },
-    { "type": "text", "id": "cta_register", "label": "Register button", "default": "Create my account" },
-    { "type": "text", "id": "cta_login", "label": "Login button", "default": "Sign in" },
-    { "type": "text", "id": "cta_extra_label", "label": "Extra button label", "default": "Browse brands" },
-    { "type": "url", "id": "cta_extra_link", "label": "Extra button link" },
-    { "type": "range", "id": "speed", "min": 20, "max": 80, "step": 5, "unit": "s", "label": "Scroll speed (lower = faster)", "default": 45 },
-    { "type": "checkbox", "id": "show_stats", "label": "Show stats bar", "default": true },
-    { "type": "text", "id": "stat1", "label": "Stat 1 label", "default": "Luxury brands" },
-    { "type": "text", "id": "stat2", "label": "Stat 2 label", "default": "Outlet prices" },
-    { "type": "text", "id": "stat3", "label": "Stat 3 label", "default": "Cheaper than at home" },
-    { "type": "text", "id": "stat4", "label": "Stat 4 label", "default": "Europe & worldwide" }
-  ],
-  "blocks": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Personal Shopper · Paris" },
+    { "type": "textarea", "id": "title", "label": "Titre (une ligne par rangée)", "default": "Paris luxury,\ndelivered to you." },
+    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Hand-picked from Paris outlets, shipped worldwide with care." },
+    { "type": "text", "id": "cta_label", "label": "CTA", "default": "Explore the collection" },
+    { "type": "url", "id": "cta_link", "label": "Lien du CTA" },
     {
-      "type": "slide",
-      "name": "Image",
-      "settings": [ { "type": "image_picker", "id": "image", "label": "Image" } ]
-    }
+      "type": "header",
+      "content": "Fond produits"
+    },
+    { "type": "checkbox", "id": "show_products_bg", "label": "Produits qui défilent en fond", "default": true },
+    { "type": "collection", "id": "bg_collection", "label": "Collection (vide = tous les produits)" },
+    {
+      "type": "header",
+      "content": "Bandeau de marques"
+    },
+    { "type": "checkbox", "id": "show_brands_marquee", "label": "Afficher le ruban de marques", "default": true },
+    { "type": "range", "id": "marquee_speed", "min": 40, "max": 180, "step": 5, "unit": "s", "label": "Vitesse du ruban (plus haut = plus lent)", "default": 100 },
+    { "type": "textarea", "id": "brands_list", "label": "Marques (Nom|host|logo — synchro avec la page Brands)", "default": "Acne Studios|acnestudios.com|\nAmi Paris|amiparis.com|\nAnne Fontaine|annefontaine.com|-\nApple|apple.com|\nArmani|armani.com|\nAxel Arigato|axelarigato.com|\nba&sh|ba-sh.com|\nBaccarat|baccarat.com|\nBalenciaga|balenciaga.com|\nBalmain|balmain.com|\nBerenice|berenice.net|-\nBEXLEY|bexley.com|\nBIRKENSTOCK|www.birkenstock.com|\nBonpoint|bonpoint.com|\nBOSS|hugoboss.com|\nBrunello Cucinelli|www.brunellocucinelli.com|\nBurberry|burberry.com|\nBYREDO|byredo.com|\nCalvin Klein|www.calvinklein.com|\nCalzedonia|www.calzedonia.com|https://icons.duckduckgo.com/ip3/www.calzedonia.com.ico\nCharles Tyrwhitt|charlestyrwhitt.com|\nChloé|chloe.com|\nChristian Louboutin|christianlouboutin.com|\nClarins|clarins.com|https://icons.duckduckgo.com/ip3/clarins.com.ico\nClaudie Pierlot|claudiepierlot.com|https://claudiepierlot.com/favicon.ico\nDiesel|diesel.com|\nDiptyque|diptyqueparis.com|\nDolce & Gabbana|dolcegabbana.com|\nFATHER & SONS|fatherandsons.fr|\nFendi|www.fendi.com|https://icons.duckduckgo.com/ip3/www.fendi.com.ico\nFerragamo|www.ferragamo.com|https://www.ferragamo.com/favicon.ico\nFigaret|figaret.com|\nFred Perry|fredperry.com|\nFurla|furla.com|https://icons.duckduckgo.com/ip3/furla.com.ico\nFusalp|fusalp.com|\nGerard Darel|gerarddarel.com|https://icons.duckduckgo.com/ip3/gerarddarel.com.ico\nGivenchy|givenchy.com|https://givenchy.com/favicon.ico\nGolden Goose|goldengoose.com|https://icons.duckduckgo.com/ip3/goldengoose.com.ico\nGucci|www.gucci.com|\nHackett London|hackett.com|\nHamilton|www.hamiltonwatch.com|\nHORACE|horace.com|\nIntimissimi|www.intimissimi.com|https://icons.duckduckgo.com/ip3/www.intimissimi.com.ico\nIsabel Marant|isabelmarant.com|https://icons.duckduckgo.com/ip3/isabelmarant.com.ico\nIssey Miyake|isseymiyake.com|\nJ.M. Weston|jmweston.com|\nJacquemus|jacquemus.com|-\nJimmy Choo|jimmychoo.com|\nK-Way|k-way.com|\nKARL LAGERFELD|karllagerfeld.com|\nKENZO|kenzo.com|\nL'Artisan Parfumeur|artisanparfumeur.com|\nL'Occitane en Provence|loccitane.com|\nLacoste|lacoste.com|\nLancel|lancel.com|https://icons.duckduckgo.com/ip3/lancel.com.ico\nLevi's|levi.com|\nLOEWE|loewe.com|\nLongchamp|longchamp.com|\nLongines|www.longines.com|\nLoro Piana|loropiana.com|\nlululemon|lululemon.com|\nMaje|maje.com|\nMarc Jacobs|marcjacobs.com|\nMarni|marni.com|\nMauboussin|mauboussin.com|-\nMax Mara|maxmara.com|\nMcQueen|alexandermcqueen.com|https://www.google.com/s2/favicons?domain=www.alexandermcqueen.com&sz=128\nMichael Kors|michaelkors.com|\nMiu Miu|miumiu.com|https://miumiu.com/favicon.ico\nMoncler|moncler.com|\nMontblanc|montblanc.com|-\nNike|nike.com|\nOn|on.com|\nPolo Ralph Lauren|ralphlauren.com|\nPrada|prada.com|https://icons.duckduckgo.com/ip3/prada.com.ico\nRabanne|rabanne.com|\nRado|www.rado.com|\nRepetto|repetto.com|https://icons.duckduckgo.com/ip3/repetto.com.ico\nSaint Laurent|ysl.com|\nSandro|sandro-paris.com|\nStone Island|stoneisland.com|\nThe North Face|thenorthface.com|\nTimberland|timberland.com|\nTissot|tissotwatches.com|https://icons.duckduckgo.com/ip3/tissotwatches.com.ico\nTod's|tods.com|\nTommy Hilfiger|www.tommy.com|-\nTory Burch|toryburch.com|\nUGG|ugg.com|\nValentino|valentino.com|\nVEJA|veja-store.com|\nVersace|www.versace.com|\nVilebrequin|www.vilebrequin.com|\nYves Salomon|yves-salomon.com|\nZadig&Voltaire|zadig-et-voltaire.com|\nZEGNA|zegna.com|-\nZIMMERMANN|zimmermann.com|" }
   ],
-  "presets": [
-    { "name": "Hero filmstrip", "blocks": [ { "type": "slide" }, { "type": "slide" }, { "type": "slide" }, { "type": "slide" } ] }
-  ]
+  "presets": [ { "name": "Hero" } ]
 }
 {% endschema %}

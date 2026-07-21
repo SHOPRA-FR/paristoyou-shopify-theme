@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "how-it-works-page",
+      "blocks": {
+        "s1": { "type": "step", "settings": { "image_asset": "how-1.jpg", "title": "Send your wishlist", "text": "Paste the links of the items you want, with sizes, colors and preferences. Everything stays saved on your account." } },
+        "s2": { "type": "step", "settings": { "image_asset": "how-2.jpg", "title": "I scout, you validate", "text": "I go to the Paris outlets, send you real-time photos and prices of each item found. You validate before I buy — total control." } },
+        "s3": { "type": "step", "settings": { "image_asset": "how-3.jpg", "title": "We settle & ship", "text": "Final payment after validation, then careful packing and tracked Colissimo delivery to your address — Europe & worldwide." } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {
+        "kicker": "How it works",
+        "title": "Three simple steps"
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,132 @@
+{%- comment -%}
+  Annuaire des marques disponibles — La Vallée Village & Val d'Europe.
+  Une ligne = Nom|lavallee/valdeurope|host|logo.
+  logo : vide = favicon Google (auto depuis le host) · "-" = initiales stylisées
+         · une URL = logo explicite (prioritaire). Voir scraper/build-brand-directory.py.
+  Recherche + filtre par centre gérés par theme.js (BrandsGrid/BrandSearch/BrandFilters).
+  Chaque carte ouvre le site officiel de la marque (nouvel onglet) : le client
+  y choisit ses articles puis colle les liens dans My List.
+{%- endcomment -%}
+
+{%- capture nl %}
+{% endcapture -%}
+{%- assign lines = section.settings.brands | strip | split: nl -%}
+
+{%- assign n_total = 0 -%}
+{%- assign n_lv = 0 -%}
+{%- assign n_ve = 0 -%}
+{%- for line in lines -%}
+  {%- assign parts = line | strip | split: '|' -%}
+  {%- if parts[0] == blank -%}{% continue %}{%- endif -%}
+  {%- assign n_total = n_total | plus: 1 -%}
+  {%- assign mall = parts[1] | strip | downcase -%}
+  {%- if mall == 'lavallee' -%}{%- assign n_lv = n_lv | plus: 1 -%}
+  {%- elsif mall == 'valdeurope' -%}{%- assign n_ve = n_ve | plus: 1 -%}{%- endif -%}
+{%- endfor -%}
+
+<section class="section brand-directory" id="brands">
+  <div class="container">
+    {%- if section.settings.kicker != blank -%}<p class="kicker center">{{ section.settings.kicker }}</p>{%- endif -%}
+    <h1 class="center">{{ section.settings.title }}</h1>
+    {%- if section.settings.subtitle != blank -%}<p class="lead center">{{ section.settings.subtitle }}</p>{%- endif -%}
+
+    <div class="catalog-toolbar">
+      <input type="search" id="BrandSearch" class="catalog-search" placeholder="{{ section.settings.search_ph | escape }}" aria-label="{{ section.settings.search_ph | escape }}">
+      <div class="catalog-pills" id="BrandFilters">
+        <button type="button" data-mall="all" class="active">{{ section.settings.label_all }} ({{ n_total }})</button>
+        <button type="button" data-mall="lavallee">{{ section.settings.label_lavallee }} ({{ n_lv }})</button>
+        <button type="button" data-mall="valdeurope">{{ section.settings.label_valdeurope }} ({{ n_ve }})</button>
+      </div>
+    </div>
+
+    <div class="brands-grid" id="BrandsGrid">
+      {%- for line in lines -%}
+        {%- assign parts = line | strip | split: '|' -%}
+        {%- assign bname = parts[0] | strip -%}
+        {%- if bname == blank -%}{% continue %}{%- endif -%}
+        {%- assign mall = parts[1] | strip | downcase -%}
+        {%- assign bdomain = parts[2] | strip -%}
+        {%- assign blogo = parts[3] | strip -%}
+        {%- comment -%} logo vide → favicon Google reconstruit depuis le host ; '-' → initiales ; sinon URL explicite {%- endcomment -%}
+        {%- if blogo == '-' -%}
+          {%- assign logo_src = '' -%}
+        {%- elsif blogo != blank -%}
+          {%- assign logo_src = blogo -%}
+        {%- elsif bdomain != blank -%}
+          {%- assign logo_src = 'https://www.google.com/s2/favicons?domain=' | append: bdomain | append: '&sz=128' -%}
+        {%- else -%}
+          {%- assign logo_src = '' -%}
+        {%- endif -%}
+        {%- if mall == 'valdeurope' -%}
+          {%- assign mall_label = section.settings.label_valdeurope -%}
+        {%- else -%}
+          {%- assign mall_label = section.settings.label_lavallee -%}
+        {%- endif -%}
+
+        {%- comment -%} Génère les initiales (2-3 lettres) à partir du nom {%- endcomment -%}
+        {%- assign words = bname | split: ' ' -%}
+        {%- assign initials = '' -%}
+        {%- for word in words limit: 3 -%}
+          {%- assign ch = word | slice: 0, 1 -%}
+          {%- if ch != '&' and ch != '-' and ch != ',' and ch != '.' and ch != '(' and ch != '·' -%}
+            {%- assign initials = initials | append: ch -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign mono_class = 'mono-' | append: initials.size -%}
+
+        {%- if bdomain != blank -%}
+          <a class="brand-card" href="https://{{ bdomain }}" target="_blank" rel="noopener nofollow"
+             data-mall="{{ mall }}" data-name="{{ bname | downcase | escape }}"
+             aria-label="{{ bname | escape }} — {{ section.settings.card_cta | escape }}">
+        {%- else -%}
+          <div class="brand-card" data-mall="{{ mall }}" data-name="{{ bname | downcase | escape }}">
+        {%- endif -%}
+            {%- if logo_src != blank -%}
+              <img class="brand-card-logo" src="{{ logo_src | escape }}" alt="{{ bname | escape }}" width="38" height="38" loading="lazy"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            {%- endif -%}
+            <span class="brand-card-mono {{ mono_class }}" aria-hidden="true"{% if logo_src != blank %} style="display:none;"{% endif %}>{{ initials }}</span>
+            <span class="brand-card-name">{{ bname }}</span>
+            <span class="brand-card-mall">{{ mall_label }}</span>
+            {%- if bdomain != blank -%}<span class="brand-card-site">{{ section.settings.card_cta }} ↗</span>{%- endif -%}
+        {%- if bdomain != blank -%}</a>{%- else -%}</div>{%- endif -%}
+      {%- endfor -%}
+    </div>
+    <p class="brands-none" id="BrandsNone" hidden>{{ section.settings.none_label }}</p>
+
+    {%- if section.settings.note != blank -%}
+      <p class="brands-wall-note center">{{ section.settings.note }}</p>
+    {%- endif -%}
+    {%- if section.settings.cta_label != blank -%}
+      <p class="center sel-cta"><a href="{{ section.settings.cta_link | default: '/pages/my-list' }}" class="btn btn-dark">{{ section.settings.cta_label }}</a></p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand directory",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The brands" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Every brand I can shop for you" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "All the boutiques of La Vallée Village (luxury outlet) and the Val d'Europe mall. Tap a brand to browse its official website, then paste the links of the items you want into your list." },
+    { "type": "text", "id": "search_ph", "label": "Search placeholder", "default": "Search a brand…" },
+    { "type": "text", "id": "label_all", "label": "Filter — all", "default": "All" },
+    { "type": "text", "id": "label_lavallee", "label": "Filter — La Vallée Village", "default": "La Vallée Village" },
+    { "type": "text", "id": "label_valdeurope", "label": "Filter — Val d'Europe", "default": "Val d'Europe" },
+    { "type": "text", "id": "card_cta", "label": "Card link label", "default": "Official site" },
+    { "type": "text", "id": "none_label", "label": "No result", "default": "No brand found — ask me anyway, I may still be able to source it." },
+    { "type": "textarea", "id": "note", "label": "Bottom note", "default": "No official affiliation — I buy on your behalf in the official boutiques. Original receipts provided with every purchase." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Build my shopping list" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    {
+      "type": "textarea",
+      "id": "brands",
+      "label": "Brands",
+      "info": "One per line: Name|mall|host|logo. mall = lavallee or valdeurope. logo: leave empty for auto favicon, '-' for initials, or paste an image URL.",
+      "default": "Acne Studios|lavallee|acnestudios.com|\nadidas|valdeurope|adidas.com|\nAmi Paris|lavallee|amiparis.com|\nAnne Fontaine|lavallee|annefontaine.com|-\nApple|valdeurope|apple.com|\nArmani|lavallee|armani.com|\nAxel Arigato|lavallee|axelarigato.com|\nba&sh|lavallee|ba-sh.com|\nBaccarat|lavallee|baccarat.com|\nBalenciaga|lavallee|balenciaga.com|\nBalmain|lavallee|balmain.com|\nBerenice|lavallee|berenice.net|-\nBEXLEY|valdeurope|bexley.com|\nBIRKENSTOCK|lavallee|www.birkenstock.com|\nBonpoint|lavallee|bonpoint.com|\nBOSS|lavallee|hugoboss.com|\nBrunello Cucinelli|lavallee|www.brunellocucinelli.com|\nBurberry|lavallee|burberry.com|\nBYREDO|lavallee|byredo.com|\nCalvin Klein|lavallee|www.calvinklein.com|\nCalzedonia|valdeurope|www.calzedonia.com|https://icons.duckduckgo.com/ip3/www.calzedonia.com.ico\nCharles Tyrwhitt|lavallee|charlestyrwhitt.com|\nChloé|lavallee|chloe.com|\nChristian Louboutin|lavallee|christianlouboutin.com|\nClarins|lavallee|clarins.com|https://icons.duckduckgo.com/ip3/clarins.com.ico\nClaudie Pierlot|lavallee|claudiepierlot.com|https://claudiepierlot.com/favicon.ico\nDiesel|lavallee|diesel.com|\nDiptyque|lavallee|diptyqueparis.com|\nDolce & Gabbana|lavallee|dolcegabbana.com|\nFATHER & SONS|valdeurope|fatherandsons.fr|\nFendi|lavallee|www.fendi.com|https://icons.duckduckgo.com/ip3/www.fendi.com.ico\nFerragamo|lavallee|www.ferragamo.com|https://www.ferragamo.com/favicon.ico\nFigaret|lavallee|figaret.com|\nFred Perry|lavallee|fredperry.com|\nFurla|lavallee|furla.com|https://icons.duckduckgo.com/ip3/furla.com.ico\nFusalp|lavallee|fusalp.com|\nGerard Darel|lavallee|gerarddarel.com|https://icons.duckduckgo.com/ip3/gerarddarel.com.ico\nGivenchy|lavallee|givenchy.com|https://givenchy.com/favicon.ico\nGolden Goose|lavallee|goldengoose.com|https://icons.duckduckgo.com/ip3/goldengoose.com.ico\nGucci|lavallee|www.gucci.com|\nHackett London|lavallee|hackett.com|\nHamilton|lavallee|www.hamiltonwatch.com|\nHORACE|valdeurope|horace.com|\nIntimissimi|valdeurope|www.intimissimi.com|https://icons.duckduckgo.com/ip3/www.intimissimi.com.ico\nIsabel Marant|lavallee|isabelmarant.com|https://icons.duckduckgo.com/ip3/isabelmarant.com.ico\nIssey Miyake|lavallee|isseymiyake.com|\nJ.M. Weston|lavallee|jmweston.com|\nJacquemus|lavallee|jacquemus.com|-\nJimmy Choo|lavallee|jimmychoo.com|\nK-Way|lavallee|k-way.com|\nKARL LAGERFELD|lavallee|karllagerfeld.com|\nKENZO|lavallee|kenzo.com|\nL'Artisan Parfumeur|lavallee|artisanparfumeur.com|\nL'Occitane en Provence|lavallee|loccitane.com|\nLacoste|lavallee|lacoste.com|\nLancel|lavallee|lancel.com|https://icons.duckduckgo.com/ip3/lancel.com.ico\nLevi's|lavallee|levi.com|\nLOEWE|lavallee|loewe.com|\nLongchamp|lavallee|longchamp.com|\nLongines|lavallee|www.longines.com|\nLoro Piana|lavallee|loropiana.com|\nlululemon|lavallee|lululemon.com|\nMaje|lavallee|maje.com|\nMarc Jacobs|lavallee|marcjacobs.com|\nMarni|lavallee|marni.com|\nMauboussin|valdeurope|mauboussin.com|-\nMax Mara|lavallee|maxmara.com|\nMcQueen|lavallee|alexandermcqueen.com|https://www.google.com/s2/favicons?domain=www.alexandermcqueen.com&sz=128\nMichael Kors|lavallee|michaelkors.com|\nMiu Miu|lavallee|miumiu.com|https://miumiu.com/favicon.ico\nMoncler|lavallee|moncler.com|\nMontblanc|lavallee|montblanc.com|-\nNike|valdeurope|nike.com|\nOn|lavallee|on.com|\nPolo Ralph Lauren|lavallee|ralphlauren.com|\nPrada|lavallee|prada.com|https://icons.duckduckgo.com/ip3/prada.com.ico\nRabanne|lavallee|rabanne.com|\nRado|lavallee|www.rado.com|\nRepetto|lavallee|repetto.com|https://icons.duckduckgo.com/ip3/repetto.com.ico\nSaint Laurent|lavallee|ysl.com|\nSandro|lavallee|sandro-paris.com|\nStone Island|lavallee|stoneisland.com|\nThe North Face|lavallee|thenorthface.com|\nTimberland|lavallee|timberland.com|\nTissot|lavallee|tissotwatches.com|https://icons.duckduckgo.com/ip3/tissotwatches.com.ico\nTod's|lavallee|tods.com|\nTommy Hilfiger|lavallee|www.tommy.com|-\nTory Burch|lavallee|toryburch.com|\nUGG|lavallee|ugg.com|\nValentino|lavallee|valentino.com|\nVEJA|lavallee|veja-store.com|\nVersace|lavallee|www.versace.com|\nVilebrequin|lavallee|www.vilebrequin.com|\nYves Salomon|lavallee|yves-salomon.com|\nZadig&Voltaire|lavallee|zadig-et-voltaire.com|\nZEGNA|lavallee|zegna.com|-\nZIMMERMANN|lavallee|zimmermann.com|"
+    }
+  ],
+  "presets": [{ "name": "Brand directory" }]
+}
+{% endschema %}

@@ -1,0 +1,48 @@
+{%- comment -%}
+  Open Graph / Twitter — aperçu des liens partagés (WhatsApp, Instagram, iMessage).
+  og:image : image de la page (produit, article, image sociale de l'admin),
+  sinon le réglage "share_image" du thème.
+  Note : Shopify injecte déjà un og:image sur les fiches produit ; le nôtre est
+  rendu avant et prend la priorité (même image, largeur maîtrisée).
+{%- endcomment -%}
+
+{%- liquid
+  assign og_title = page_title | default: shop.name
+  assign og_url = canonical_url | default: request.origin
+  assign og_type = 'website'
+  assign og_description = page_description | default: shop.description | default: settings.tagline
+
+  if request.page_type == 'product'
+    assign og_type = 'product'
+  elsif request.page_type == 'article'
+    assign og_type = 'article'
+  elsif request.page_type == 'password'
+    assign og_url = request.origin
+  endif
+
+  assign og_image = page_image | default: settings.share_image
+-%}
+
+<meta property="og:site_name" content="{{ shop.name | escape }}">
+<meta property="og:url" content="{{ og_url }}">
+<meta property="og:title" content="{{ og_title | escape }}">
+<meta property="og:type" content="{{ og_type }}">
+{% if og_description != blank %}<meta property="og:description" content="{{ og_description | escape }}">{% endif %}
+
+{%- if og_image -%}
+  {%- assign og_image_width = og_image.width | at_most: 1200 -%}
+  {%- assign og_image_height = og_image_width | divided_by: og_image.aspect_ratio | round -%}
+  <meta property="og:image" content="https:{{ og_image | image_url: width: og_image_width }}">
+  <meta property="og:image:secure_url" content="https:{{ og_image | image_url: width: og_image_width }}">
+  <meta property="og:image:width" content="{{ og_image_width }}">
+  <meta property="og:image:height" content="{{ og_image_height }}">
+{%- endif -%}
+
+{%- if request.page_type == 'product' -%}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+{%- endif -%}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title | escape }}">
+{% if og_description != blank %}<meta name="twitter:description" content="{{ og_description | escape }}">{% endif %}

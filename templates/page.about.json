@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "about": {
+      "type": "about",
+      "settings": {}
+    },
+    "contact": {
+      "type": "contact-cta",
+      "settings": {}
+    }
+  },
+  "order": ["about", "contact"]
+}
