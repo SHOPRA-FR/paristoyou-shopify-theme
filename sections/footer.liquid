@@ -12,6 +12,9 @@
       <div class="footer-social">
         {%- if settings.instagram_url != blank -%}<a href="{{ settings.instagram_url }}" target="_blank" rel="noopener">Instagram ↗</a>{%- endif -%}
       </div>
+      {%- if localization.available_languages.size > 1 -%}
+        <div class="footer-lang">{% render 'language-selector', place: 'footer' %}</div>
+      {%- endif -%}
     </div>
 
     {%- if section.settings.menu != blank and linklists[section.settings.menu].links.size > 0 -%}

@@ -3,7 +3,7 @@
     <div class="product-media">
       {%- if product.featured_media -%}
         <img id="ProductMainImage" src="{{ product.featured_media | image_url: width: 1200 }}"
-             alt="{{ product.featured_media.alt | default: product.title | escape }}" width="1200" height="1200" loading="eager">
+             alt="{{ product.featured_media.alt | default: product.title | escape }}" width="1200" height="1600" loading="eager">
       {%- else -%}
         <div class="product-card-placeholder xl">{{ product.title | slice: 0, 1 }}</div>
       {%- endif -%}
@@ -18,7 +18,7 @@
       {%- endif -%}
     </div>
 
-    <div class="product-info">
+    <div class="product-info" id="ProductInfo">
       <p class="kicker">{{ product.vendor }}</p>
       <h1>{{ product.title }}</h1>
 
@@ -28,28 +28,39 @@
         {{ current.price | money }}
       </p>
 
-      {%- form 'product', product -%}
-        {%- if product.variants.size > 1 -%}
-          <label class="field-label" for="VariantSelect">{{ product.options | join: ' / ' }}</label>
-          <select name="id" id="VariantSelect" class="variant-select">
-            {%- for variant in product.variants -%}
-              <option value="{{ variant.id }}"
-                      data-price="{{ variant.price | money }}"
-                      {% unless variant.available %}disabled{% endunless %}
-                      {% if variant == current %}selected{% endif %}>
-                {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} · {{ 'products.product.sold_out' | t }}{% endunless %}
-              </option>
-            {%- endfor -%}
-          </select>
-        {%- else -%}
-          <input type="hidden" name="id" value="{{ current.id }}">
-        {%- endif -%}
+      {%- form 'product', product, id: 'ProductForm' -%}
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign is_size = false -%}
+            {%- assign oname = option.name | downcase -%}
+            {%- if oname contains 'size' or oname contains 'taille' or oname contains 'pointure' -%}{%- assign is_size = true -%}{%- endif -%}
+            <div class="product-option" data-option-index="{{ forloop.index0 }}">
+              <div class="product-option-head">
+                <span class="field-label">{{ option.name }}: <em id="OptSel{{ forloop.index0 }}" class="opt-selected">{{ option.selected_value }}</em></span>
+                {%- if is_size and section.settings.size_guide != blank -%}
+                  <button type="button" class="size-guide-link" id="SizeGuideBtn">{{ section.settings.size_guide_label }}</button>
+                {%- endif -%}
+              </div>
+              <div class="option-pills">
+                {%- for value in option.values -%}
+                  <button type="button" class="option-pill{% if option.selected_value == value %} active{% endif %}"
+                          data-index="{{ forloop.parentloop.index0 }}" data-value="{{ value | escape }}">{{ value }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
 
-        <label class="field-label" for="Quantity">{{ 'products.product.quantity' | t }}</label>
-        <div class="qty-row">
-          <input type="number" id="Quantity" name="quantity" value="1" min="1" class="qty-input">
-          <button type="submit" name="add" class="btn btn-dark btn-block" {% unless product.available %}disabled{% endunless %}>
-            {% if product.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+        <input type="hidden" name="id" id="VariantId" value="{{ current.id }}">
+
+        <div class="product-buy">
+          <div class="qty-stepper" aria-label="{{ 'products.product.quantity' | t }}">
+            <button type="button" class="qty-btn" id="QtyMinus" aria-label="−">−</button>
+            <input type="number" id="Quantity" name="quantity" value="1" min="1" class="qty-input" aria-label="{{ 'products.product.quantity' | t }}">
+            <button type="button" class="qty-btn" id="QtyPlus" aria-label="+">+</button>
+          </div>
+          <button type="submit" name="add" id="AddToCart" class="btn btn-dark btn-block" {% unless current.available %}disabled{% endunless %}>
+            <span>{% if current.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
           </button>
         </div>
       {%- endform -%}
@@ -58,16 +69,127 @@
         <div class="service-note">{{ section.settings.service_note }}</div>
       {%- endif -%}
 
-      <div class="product-description rte">{{ product.description }}</div>
+      {%- if product.description != blank -%}
+        <div class="product-description rte">{{ product.description }}</div>
+      {%- endif -%}
     </div>
   </div>
 </section>
+
+{%- if section.settings.size_guide != blank -%}
+  <div class="size-guide-modal" id="SizeGuideModal" hidden>
+    <div class="size-guide-backdrop" data-close></div>
+    <div class="size-guide-panel" role="dialog" aria-modal="true" aria-label="{{ section.settings.size_guide_label | escape }}">
+      <button type="button" class="size-guide-close" data-close aria-label="Close">&times;</button>
+      <h3>{{ section.settings.size_guide_label }}</h3>
+      <div class="rte">{{ section.settings.size_guide }}</div>
+    </div>
+  </div>
+{%- endif -%}
+
+<script>
+(function(){
+  var form = document.getElementById('ProductForm');
+  if (!form) return;
+  var variants = {{ product.variants | json }};
+  var optionCount = {{ product.options.size }};
+  var idInput = document.getElementById('VariantId');
+  var priceEl = document.getElementById('ProductPrice');
+  var addBtn = document.getElementById('AddToCart');
+  var pills = [].slice.call(form.querySelectorAll('.option-pill'));
+
+  // Prix formatés par Shopify (évite de reformater la monnaie en JS)
+  var priceMap = {
+    {%- for v in product.variants -%}
+    "{{ v.id }}": {
+      html: {{ v.price | money | json }},
+      compare: {% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},
+      available: {{ v.available | json }}
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  };
+  var soldOutLabel = {{ 'products.product.sold_out' | t | json }};
+  var addLabel = {{ 'products.product.add_to_cart' | t | json }};
+
+  function selectedValues(){
+    var sel = [];
+    for (var i=0;i<optionCount;i++){
+      var active = form.querySelector('.option-pill.active[data-index="'+i+'"]');
+      sel.push(active ? active.dataset.value : null);
+    }
+    return sel;
+  }
+  function matchVariant(sel){
+    return variants.find(function(v){
+      for (var i=0;i<sel.length;i++){ if (sel[i]!=null && v.options[i]!==sel[i]) return false; }
+      return true;
+    });
+  }
+  function update(){
+    var sel = selectedValues();
+    var v = matchVariant(sel) || variants[0];
+    // maj disponibilité des pastilles : une valeur grisée si aucune variante dispo avec (les autres choix + cette valeur)
+    pills.forEach(function(p){
+      var idx = +p.dataset.index;
+      var test = sel.slice(); test[idx] = p.dataset.value;
+      var exists = variants.some(function(vr){
+        for (var i=0;i<test.length;i++){ if (i!==idx && test[i]!=null && vr.options[i]!==test[i]) return false; }
+        return vr.options[idx]===p.dataset.value && vr.available;
+      });
+      p.classList.toggle('unavailable', !exists);
+    });
+    if (v){
+      idInput.value = v.id;
+      var lbl = form.querySelector('#OptSel'+ (v.options.length-1));
+      // maj du libellé "sélectionné" par option
+      v.options.forEach(function(val,i){ var e=document.getElementById('OptSel'+i); if(e) e.textContent=val; });
+      var pd = priceMap[v.id];
+      if (pd){
+        priceEl.innerHTML = (pd.compare ? '<s>'+pd.compare+'</s> ' : '') + pd.html;
+        if (addBtn){
+          addBtn.disabled = !pd.available;
+          addBtn.querySelector('span').textContent = pd.available ? addLabel : soldOutLabel;
+        }
+      }
+    }
+  }
+
+  pills.forEach(function(p){
+    p.addEventListener('click', function(){
+      form.querySelectorAll('.option-pill[data-index="'+p.dataset.index+'"]').forEach(function(o){o.classList.remove('active');});
+      p.classList.add('active');
+      update();
+    });
+  });
+  if (pills.length) update();
+
+  // Stepper quantité
+  var qty = document.getElementById('Quantity');
+  var minus = document.getElementById('QtyMinus'), plus = document.getElementById('QtyPlus');
+  if (minus) minus.addEventListener('click', function(){ qty.value = Math.max(1, (parseInt(qty.value,10)||1)-1); });
+  if (plus) plus.addEventListener('click', function(){ qty.value = (parseInt(qty.value,10)||1)+1; });
+
+  // Guide des tailles (modale)
+  var modal = document.getElementById('SizeGuideModal');
+  var openBtn = document.getElementById('SizeGuideBtn');
+  if (modal && openBtn){
+    var open=function(){ modal.hidden=false; document.body.style.overflow='hidden'; };
+    var close=function(){ modal.hidden=true; document.body.style.overflow=''; };
+    openBtn.addEventListener('click', open);
+    modal.querySelectorAll('[data-close]').forEach(function(el){ el.addEventListener('click', close); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !modal.hidden) close(); });
+  }
+})();
+</script>
 
 {% schema %}
 {
   "name": "Product page",
   "settings": [
-    { "type": "richtext", "id": "service_note", "label": "Service note", "default": "<p>Price includes the 20% personal shopper commission (min. 300 €). Shipped from Paris via tracked Colissimo — destination customs duties are the client's responsibility.</p>" }
+    { "type": "richtext", "id": "service_note", "label": "Service note", "default": "<p>Price includes the 20% personal shopper commission (min. 300 €). Shipped from Paris via tracked Colissimo — destination customs duties are the client's responsibility.</p>" },
+    { "type": "header", "content": "Size guide" },
+    { "type": "text", "id": "size_guide_label", "label": "Size guide link label", "default": "Size guide" },
+    { "type": "richtext", "id": "size_guide", "label": "Size guide content (opens in a popup)" }
   ]
 }
 {% endschema %}

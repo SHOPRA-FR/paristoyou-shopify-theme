@@ -7,6 +7,9 @@
       <span></span><span></span><span></span>
     </button>
 
+    {%- comment -%} Sélecteur de langue tout à gauche (desktop) ; caché en mobile où il vit dans le menu {%- endcomment -%}
+    <div class="header-lang">{%- render 'language-selector', place: 'topbar' -%}</div>
+
     <a href="{{ routes.root_url }}" class="logo">
       {%- if settings.logo_image != blank -%}
         <img src="{{ settings.logo_image | image_url: width: 320 }}" alt="{{ shop.name | escape }}" width="160" height="34" loading="eager">
@@ -46,6 +49,10 @@
     {%- comment -%} Accès compte dans le menu déroulant mobile : seulement si connecté {%- endcomment -%}
     {%- if customer -%}
       <a href="{{ routes.account_url }}" class="nav-account-mobile">{{ 'customer.account.title' | t }}</a>
+    {%- endif -%}
+    {%- comment -%} Sélecteur de langue dans le menu mobile {%- endcomment -%}
+    {%- if localization.available_languages.size > 1 -%}
+      <div class="nav-lang-mobile">{% render 'language-selector', place: 'header' %}</div>
     {%- endif -%}
   </nav>
 </header>

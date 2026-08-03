@@ -1,0 +1,19 @@
+{%- comment -%}
+  Sélecteur de langue (Shopify Markets / Languages).
+  Ne s'affiche que si au moins 2 langues sont publiées dans l'admin.
+  Param : place (chaîne) pour rendre les id uniques (ex. 'header', 'footer').
+{%- endcomment -%}
+{%- if localization.available_languages.size > 1 -%}
+  {%- assign lang_form_id = 'LangForm-' | append: place | default: 'LangForm' -%}
+  {%- form 'localization', id: lang_form_id, class: 'lang-form' -%}
+    <div class="lang-select">
+      <svg class="lang-globe" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+      <select name="locale_code" aria-label="{{ 'general.search.search' | t | default: 'Language' }}" onchange="this.form.submit()">
+        {%- for language in localization.available_languages -%}
+          <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>{{ language.endonym_name | capitalize }}</option>
+        {%- endfor -%}
+      </select>
+      <svg class="lang-caret" width="10" height="7" viewBox="0 0 10 7" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg>
+    </div>
+  {%- endform -%}
+{%- endif -%}

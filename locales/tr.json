@@ -27,12 +27,12 @@
   },
   "cart": {
     "general": {
-      "title": "Listem",
+      "title": "Listeniz",
       "empty": "Listeniz boş",
       "subtotal": "Ara toplam",
-      "checkout": "Siparişi tamamla",
+      "checkout": "Ödeme",
       "remove": "Kaldır",
-      "continue_shopping": "Alışverişe devam",
+      "continue_shopping": "Alışverişe devam et",
       "note": "Siparişinize not ekleyin"
     }
   },
@@ -45,7 +45,7 @@
     }
   },
   "onboarding": {
-    "product_title": "Örnek ürün başlığı",
-    "collection_title": "Örnek koleksiyon"
+    "product_title": "Example product",
+    "collection_title": "Example collection"
   }
 }

@@ -1,0 +1,51 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Перейти к содержимому"
+    },
+    "search": {
+      "search": "Поиск"
+    },
+    "404": {
+      "title": "Страница не найдена",
+      "subtext": "Страница, которую вы искали, не существует.",
+      "link": "На главную"
+    },
+    "pagination": {
+      "previous": "Назад",
+      "next": "Далее"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "В корзину",
+      "sold_out": "Нет в наличии",
+      "unavailable": "Недоступно",
+      "vendor": "Бренд",
+      "quantity": "Количество"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Ваш список",
+      "empty": "Ваш список пуст",
+      "subtotal": "Промежуточный итог",
+      "checkout": "Оформить заказ",
+      "remove": "Удалить",
+      "continue_shopping": "Продолжить покупки",
+      "note": "Добавить примечание к заказу"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Аккаунт"
+    },
+    "login": {
+      "sign_in": "Войти"
+    }
+  },
+  "onboarding": {
+    "product_title": "Example product",
+    "collection_title": "Example collection"
+  }
+}

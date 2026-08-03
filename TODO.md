@@ -11,13 +11,13 @@ commission 20 % / min 300 € (fiche produit + wishlist), clés de traduction
 > - Les moyens de contact sont volontairement réservés aux comptes connectés
 >   (anti-spam) — le numéro ne doit pas être exposé publiquement.
 
-## 1. Langues TR / FR (cible Turquie & Europe)
+## 1. International (EN · TR · RU · ZH, cible Turquie/Russie/international)
 
-- [ ] Committer les fichiers `locales/` (fr, tr, ar, zh-CN) — actuellement non suivis par git
-- [ ] Activer les langues dans l'admin : Settings → Languages (+ Shopify Markets si tarification par zone)
-- [ ] Ajouter un sélecteur de langue dans le header ou le footer (`localization` form Liquid)
-- [ ] Traduire les contenus de sections via l'app **Translate & Adapt** (les réglages de sections ne se traduisent pas tout seuls — seuls les fichiers `locales/` couvrent les libellés du thème)
-- [ ] Vérifier les `hreflang` générés une fois les langues publiées (aujourd'hui : aucun)
+- [x] **Fichiers `locales/` complets & cohérents** (17/07/2026) : `en.default`, `fr`, `tr`, `ru`, `zh-CN` — toutes les clés `| t` du thème traduites (plus de « translation missing »). `ar.json` conservé.
+- [x] **Sélecteur de langue** (`snippets/language-selector.liquid`, form `localization`) posé dans le **footer** + le **menu mobile**. Ne s'affiche que si ≥ 2 langues publiées.
+- [ ] **ADMIN (Amir)** : Réglages → Langues → publier **English, Türkçe, Русский, 中文** (+ Français si voulu). Sinon le sélecteur reste caché (1 seule langue).
+- [ ] **ADMIN** : traduire les CONTENUS (titres/sous-titres de sections, produits, pages) via l'app **Translate & Adapt** — les fichiers `locales/` ne couvrent que les petits libellés d'UI, pas le marketing des sections.
+- [ ] Optionnel : Shopify Markets si tarification/devise par zone. Les `hreflang` sont générés automatiquement par Shopify une fois les langues publiées.
 
 ## 2. Footer & pages légales
 

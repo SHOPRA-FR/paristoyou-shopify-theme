@@ -8,7 +8,7 @@
     },
     "404": {
       "title": "页面未找到",
-      "subtext": "您要查找的页面不存在。",
+      "subtext": "您查找的页面不存在。",
       "link": "返回首页"
     },
     "pagination": {
@@ -18,8 +18,8 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "加入购物车",
-      "sold_out": "售罄",
+      "add_to_cart": "加入购物袋",
+      "sold_out": "已售罄",
       "unavailable": "不可用",
       "vendor": "品牌",
       "quantity": "数量"
@@ -27,13 +27,13 @@
   },
   "cart": {
     "general": {
-      "title": "我的清单",
-      "empty": "您的清单是空的",
+      "title": "您的清单",
+      "empty": "您的清单为空",
       "subtotal": "小计",
-      "checkout": "下单",
+      "checkout": "结账",
       "remove": "移除",
       "continue_shopping": "继续购物",
-      "note": "为您的订单添加备注"
+      "note": "为订单添加备注"
     }
   },
   "customer": {
@@ -45,7 +45,7 @@
     }
   },
   "onboarding": {
-    "product_title": "示例产品标题",
-    "collection_title": "示例系列"
+    "product_title": "Example product",
+    "collection_title": "Example collection"
   }
 }

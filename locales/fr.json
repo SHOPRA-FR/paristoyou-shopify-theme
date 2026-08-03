@@ -27,10 +27,10 @@
   },
   "cart": {
     "general": {
-      "title": "Ma liste",
+      "title": "Votre liste",
       "empty": "Votre liste est vide",
       "subtotal": "Sous-total",
-      "checkout": "Commander",
+      "checkout": "Paiement",
       "remove": "Retirer",
       "continue_shopping": "Continuer mes achats",
       "note": "Ajouter une note à votre commande"
@@ -45,7 +45,7 @@
     }
   },
   "onboarding": {
-    "product_title": "Titre du produit exemple",
-    "collection_title": "Collection exemple"
+    "product_title": "Example product",
+    "collection_title": "Example collection"
   }
 }
