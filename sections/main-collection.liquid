@@ -9,67 +9,84 @@
       {%- if collection.description != blank -%}<div class="lead rte">{{ collection.description }}</div>{%- endif -%}
     </header>
 
-    {%- paginate collection.products by 50 -%}
-      {%- if collection.products.size > 0 -%}
-        {%- if section.settings.show_audience -%}
-          <div class="cat-genders" id="CollAudience" role="tablist">
-            <button type="button" data-val="" class="active">{{ section.settings.all_audiences }}</button>
-            <button type="button" data-val="femme">{{ section.settings.label_women }}</button>
-            <button type="button" data-val="homme">{{ section.settings.label_men }}</button>
-            <button type="button" data-val="enfant">{{ section.settings.label_kids }}</button>
-            <button type="button" data-val="mixte">{{ section.settings.label_unisex }}</button>
-          </div>
-        {%- endif -%}
-
-        <div class="cat-bar">
-          <div class="cat-search">
-            {%- if section.settings.show_search -%}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-              <input type="search" id="CollSearch" placeholder="{{ section.settings.search_placeholder | escape }}" aria-label="{{ section.settings.search_placeholder | escape }}">
-            {%- endif -%}
-          </div>
-          <div class="cat-tools">
-            <span class="cat-count"><span id="CollCount">{{ collection.products.size }}</span> {{ section.settings.count_label }}</span>
-            <button type="button" id="CollReset" class="cat-reset" hidden>{{ section.settings.reset_label }}</button>
-            {%- if section.settings.show_brand -%}
-              <select id="CollBrand" class="cat-select" aria-label="{{ section.settings.all_brands | escape }}"><option value="">{{ section.settings.all_brands }}</option></select>
-            {%- endif -%}
-            {%- if section.settings.show_type -%}
-              <select id="CollType" class="cat-select" aria-label="{{ section.settings.all_types | escape }}"><option value="">{{ section.settings.all_types }}</option></select>
-            {%- endif -%}
-            {%- if section.settings.show_sort -%}
-              <select id="CollSort" class="cat-select" aria-label="{{ section.settings.sort_label | escape }}">
-                <option value="featured">{{ section.settings.sort_featured }}</option>
-                <option value="price-asc">{{ section.settings.sort_price_asc }}</option>
-                <option value="price-desc">{{ section.settings.sort_price_desc }}</option>
-                <option value="discount">{{ section.settings.sort_discount }}</option>
-              </select>
-            {%- endif -%}
-          </div>
-        </div>
-
-        <div class="product-grid" id="CollGrid">
-          {%- for product in collection.products -%}
-            {% render 'product-card', product: product %}
-          {%- endfor -%}
-        </div>
-
-        <p class="collection-none center lead" id="CollNone" hidden>{{ section.settings.none_label }}</p>
-
-        {%- if paginate.pages > 1 -%}
-          <nav class="pagination" aria-label="Pagination">
-            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="btn btn-ghost btn-sm">&larr; {{ 'general.pagination.previous' | t }}</a>{%- else -%}<span></span>{%- endif -%}
-            <span class="pagination-count">{{ paginate.current_page }} / {{ paginate.pages }}</span>
-            {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="btn btn-ghost btn-sm">{{ 'general.pagination.next' | t }} &rarr;</a>{%- else -%}<span></span>{%- endif -%}
-          </nav>
-        {%- endif -%}
-      {%- else -%}
+    {%- comment -%}
+      Filtres marque/type/tag = NATIFS Shopify (collection.filters) → toutes les valeurs, tous
+      comptés, filtrage serveur qui scale. Rehaussés en AJAX (Section Rendering API) dans theme.js
+      pour une mise à jour fluide sans rechargement ; sans JS le <form> se soumet normalement.
+      Recherche + tri restent client-side (affinent le résultat déjà filtré, gardent le tri « remise »).
+    {%- endcomment -%}
+    <div id="CollSection" data-section-id="{{ section.id }}" data-coll-url="{{ collection.url }}">
+      {%- if collection.all_products_count == 0 -%}
         <div class="empty-state center">
           <p class="lead">{{ section.settings.empty_label }}</p>
           <a href="{{ routes.all_products_collection_url }}" class="btn btn-dark">{{ section.settings.empty_cta }}</a>
         </div>
+      {%- else -%}
+        {%- paginate collection.products by 52 -%}
+          <div id="CollResults">
+            {%- assign has_active = false -%}
+            {%- for f in collection.filters -%}{%- if f.active_values.size > 0 -%}{%- assign has_active = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+
+            <div class="cat-bar">
+              {%- if section.settings.show_search -%}
+                <div class="cat-search">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                  <input type="search" id="CollSearch" placeholder="{{ section.settings.search_placeholder | escape }}" aria-label="{{ section.settings.search_placeholder | escape }}">
+                </div>
+              {%- endif -%}
+
+              <div class="cat-tools">
+                <span class="cat-count"><span id="CollCount">{{ paginate.items }}</span> {{ section.settings.count_label }}</span>
+
+                {%- comment -%} Facettes natives : marque, type, tag… (selon ce qui est activé dans Search & Discovery) {%- endcomment -%}
+                <form method="get" id="CollFilters" class="cat-filters">
+                  {%- for filter in collection.filters -%}
+                    {%- if filter.type == 'list' and filter.values.size > 0 -%}
+                      <select class="cat-select" name="{{ filter.param_name }}" data-native aria-label="{{ filter.label | escape }}" onchange="if(!window.__collAjax){this.form.submit();}">
+                        <option value="">{{ filter.label }}</option>
+                        {%- for v in filter.values -%}
+                          <option value="{{ v.value | escape }}"{% if v.active %} selected{% endif %}>{{ v.label }}{% if v.count > 0 %} ({{ v.count }}){% endif %}</option>
+                        {%- endfor -%}
+                      </select>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </form>
+
+                {%- if section.settings.show_sort -%}
+                  <select id="CollSort" class="cat-select" aria-label="{{ section.settings.sort_label | escape }}">
+                    <option value="featured">{{ section.settings.sort_featured }}</option>
+                    <option value="price-asc">{{ section.settings.sort_price_asc }}</option>
+                    <option value="price-desc">{{ section.settings.sort_price_desc }}</option>
+                    <option value="discount">{{ section.settings.sort_discount }}</option>
+                  </select>
+                {%- endif -%}
+
+                <a href="{{ collection.url }}" class="cat-reset" id="CollReset"{% unless has_active %} hidden{% endunless %}>{{ section.settings.reset_label }}</a>
+              </div>
+            </div>
+
+            {%- if collection.products.size > 0 -%}
+              <div class="product-grid" id="CollGrid">
+                {%- for product in collection.products -%}
+                  {% render 'product-card', product: product %}
+                {%- endfor -%}
+              </div>
+              <p class="collection-none center lead" id="CollNone" hidden>{{ section.settings.none_label }}</p>
+
+              {%- if paginate.pages > 1 -%}
+                <nav class="pagination" aria-label="Pagination">
+                  {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="btn btn-ghost btn-sm">&larr; {{ 'general.pagination.previous' | t }}</a>{%- else -%}<span></span>{%- endif -%}
+                  <span class="pagination-count">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+                  {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="btn btn-ghost btn-sm">{{ 'general.pagination.next' | t }} &rarr;</a>{%- else -%}<span></span>{%- endif -%}
+                </nav>
+              {%- endif -%}
+            {%- else -%}
+              <p class="collection-none center lead">{{ section.settings.none_label }} · <a href="{{ collection.url }}">{{ section.settings.reset_label }}</a></p>
+            {%- endif -%}
+          </div>
+        {%- endpaginate -%}
       {%- endif -%}
-    {%- endpaginate -%}
+    </div>
   </div>
 </section>
 
@@ -80,18 +97,9 @@
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Sourced in Paris" },
     { "type": "text", "id": "heading", "label": "Heading — only overrides the « all » catalogue title", "default": "The catalogue" },
     { "type": "header", "content": "Filters" },
+    { "type": "paragraph", "content": "Brand / type / tag filters are native Shopify filters — enable them in Online Store → Search & Discovery → Filters. Search & sort below stay instant (client-side)." },
     { "type": "checkbox", "id": "show_search", "label": "Search box", "default": true },
     { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search a product…" },
-    { "type": "checkbox", "id": "show_brand", "label": "Brand filter", "default": true },
-    { "type": "text", "id": "all_brands", "label": "All-brands label", "default": "All brands" },
-    { "type": "checkbox", "id": "show_type", "label": "Type filter", "default": true },
-    { "type": "text", "id": "all_types", "label": "All-types label", "default": "All types" },
-    { "type": "checkbox", "id": "show_audience", "label": "Audience filter", "default": true },
-    { "type": "text", "id": "all_audiences", "label": "All-audiences label", "default": "Everyone" },
-    { "type": "text", "id": "label_women", "label": "Women label", "default": "Women" },
-    { "type": "text", "id": "label_men", "label": "Men label", "default": "Men" },
-    { "type": "text", "id": "label_kids", "label": "Kids label", "default": "Kids" },
-    { "type": "text", "id": "label_unisex", "label": "Unisex label", "default": "Unisex" },
     { "type": "checkbox", "id": "show_sort", "label": "Sort dropdown", "default": true },
     { "type": "text", "id": "sort_label", "label": "Sort aria-label", "default": "Sort" },
     { "type": "text", "id": "sort_featured", "label": "Sort — featured", "default": "Featured" },

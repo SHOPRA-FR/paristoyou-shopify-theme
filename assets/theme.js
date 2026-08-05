@@ -180,106 +180,96 @@
 
   // Collection page — search filter
   // Catalogue — filtres marque / audience / type + recherche + tri
-  var collGrid = document.getElementById("CollGrid");
-  if (collGrid) {
-    var cCards = [].slice.call(collGrid.querySelectorAll(".product-card"));
-    var cSearch = document.getElementById("CollSearch");
-    var cBrand = document.getElementById("CollBrand");
-    var cType = document.getElementById("CollType");
-    var cSort = document.getElementById("CollSort");
-    var cAudWrap = document.getElementById("CollAudience");
-    var cCount = document.getElementById("CollCount");
-    var cNone = document.getElementById("CollNone");
-    var cReset = document.getElementById("CollReset");
-    var cAud = "";
+  var collSection = document.getElementById("CollSection");
+  if (collSection) {
+    var sectionId = collSection.dataset.sectionId;
+    var collUrl = collSection.dataset.collUrl || location.pathname;
+    window.__collAjax = true; // désactive le submit() natif inline : on gère en AJAX
 
-    // ordre d'origine (tri « featured »)
-    cCards.forEach(function (c, i) { c.dataset.i = i; });
+    // Recherche + tri = client-side, sur les cartes du résultat déjà filtré côté serveur.
+    var initRefine = function () {
+      var grid = document.getElementById("CollGrid");
+      if (!grid) return;
+      var search = document.getElementById("CollSearch");
+      var sort = document.getElementById("CollSort");
+      var count = document.getElementById("CollCount");
+      var none = document.getElementById("CollNone");
+      var cards = [].slice.call(grid.querySelectorAll(".product-card"));
+      cards.forEach(function (c, i) { c.dataset.i = i; }); // ordre serveur = « featured »
 
-    // remplit les selects marque + type à partir des cartes
-    var fill = function (sel, attr) {
-      if (!sel) return;
-      var vals = [];
-      cCards.forEach(function (c) {
-        var v = (c.dataset[attr] || "").trim();
-        if (v && vals.indexOf(v) === -1) vals.push(v);
-      });
-      vals.sort(function (a, b) { return a.localeCompare(b); });
-      vals.forEach(function (v) {
-        var o = document.createElement("option");
-        o.value = v.toLowerCase();
-        o.textContent = v.charAt(0).toUpperCase() + v.slice(1);
-        sel.appendChild(o);
-      });
-    };
-    fill(cBrand, "brand");
-    fill(cType, "type");
-
-    var apply = function () {
-      var b = cBrand ? cBrand.value.toLowerCase() : "";
-      var t = cType ? cType.value.toLowerCase() : "";
-      var q = cSearch ? (cSearch.value || "").trim().toLowerCase() : "";
-      var n = 0;
-      cCards.forEach(function (c) {
-        var show =
-          (!b || (c.dataset.brand || "").toLowerCase() === b) &&
-          (!cAud || (c.dataset.aud || "") === cAud) &&
-          (!t || (c.dataset.type || "") === t) &&
-          (!q || (c.dataset.search || "").indexOf(q) !== -1);
-        c.style.display = show ? "" : "none";
-        if (show) n++;
-      });
-      if (cCount) cCount.textContent = n;
-      if (cNone) cNone.hidden = n !== 0;
-      if (cReset) cReset.hidden = !(b || t || q || cAud);
+      var apply = function () {
+        var q = search ? (search.value || "").trim().toLowerCase() : "";
+        var n = 0;
+        cards.forEach(function (c) {
+          var show = !q || (c.dataset.search || "").indexOf(q) !== -1;
+          c.style.display = show ? "" : "none";
+          if (show) n++;
+        });
+        if (count) count.textContent = n;
+        if (none) none.hidden = n !== 0;
+      };
+      var doSort = function () {
+        if (!sort) return;
+        var mode = sort.value;
+        cards.slice().sort(function (a, b) {
+          if (mode === "price-asc") return (+a.dataset.price) - (+b.dataset.price);
+          if (mode === "price-desc") return (+b.dataset.price) - (+a.dataset.price);
+          if (mode === "discount") return (+b.dataset.disc) - (+a.dataset.disc);
+          return (+a.dataset.i) - (+b.dataset.i);
+        }).forEach(function (c) { grid.appendChild(c); });
+      };
+      if (search) search.addEventListener("input", apply);
+      if (sort) sort.addEventListener("change", doSort);
     };
 
-    var sortCards = function () {
-      if (!cSort) return;
-      var mode = cSort.value;
-      cCards.slice().sort(function (a, b) {
-        if (mode === "price-asc") return (+a.dataset.price) - (+b.dataset.price);
-        if (mode === "price-desc") return (+b.dataset.price) - (+a.dataset.price);
-        if (mode === "discount") return (+b.dataset.disc) - (+a.dataset.disc);
-        return (+a.dataset.i) - (+b.dataset.i);
-      }).forEach(function (c) { collGrid.appendChild(c); });
+    // Filtres natifs (marque/type/tag) + pagination + reset → AJAX via Section Rendering API.
+    var swap = function (url) {
+      var cur = document.getElementById("CollResults");
+      if (cur) cur.style.opacity = "0.45";
+      var sep = url.indexOf("?") === -1 ? "?" : "&";
+      fetch(url + sep + "section_id=" + sectionId)
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, "text/html");
+          var fresh = doc.getElementById("CollResults");
+          var old = document.getElementById("CollResults");
+          if (!fresh || !old) { window.location.href = url; return; }
+          old.replaceWith(fresh);
+          initRefine();
+          if (history.pushState) history.pushState({ coll: 1 }, "", url);
+          var top = collSection.getBoundingClientRect().top + window.pageYOffset - 90;
+          window.scrollTo({ top: top, behavior: "smooth" });
+        })
+        .catch(function () { window.location.href = url; });
     };
 
-    if (cSearch) cSearch.addEventListener("input", apply);
-    if (cBrand) cBrand.addEventListener("change", apply);
-    if (cType) cType.addEventListener("change", apply);
-    if (cSort) cSort.addEventListener("change", sortCards);
-    if (cAudWrap) cAudWrap.querySelectorAll("button").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        cAudWrap.querySelectorAll("button").forEach(function (x) { x.classList.remove("active"); });
-        btn.classList.add("active");
-        cAud = btn.dataset.val || "";
-        apply();
-      });
-    });
-    if (cReset) cReset.addEventListener("click", function () {
-      if (cBrand) cBrand.value = "";
-      if (cType) cType.value = "";
-      if (cSearch) cSearch.value = "";
-      cAud = "";
-      if (cAudWrap) {
-        cAudWrap.querySelectorAll("button").forEach(function (x) { x.classList.remove("active"); });
-        var first = cAudWrap.querySelector('button[data-val=""]') || cAudWrap.querySelector("button");
-        if (first) first.classList.add("active");
-      }
-      apply();
+    collSection.addEventListener("change", function (e) {
+      if (!e.target.matches("select[data-native]")) return;
+      var form = document.getElementById("CollFilters");
+      if (!form) return;
+      var clean = new URLSearchParams();
+      new URLSearchParams(new FormData(form)).forEach(function (v, k) { if (v) clean.append(k, v); });
+      var qs = clean.toString();
+      swap(collUrl + (qs ? "?" + qs : ""));
     });
 
-    apply();
+    collSection.addEventListener("click", function (e) {
+      var a = e.target.closest("#CollReset, .pagination a[href]");
+      if (!a) return;
+      var href = a.getAttribute("href");
+      if (!href || href.charAt(0) === "#") return;
+      e.preventDefault();
+      swap(href);
+    });
+
+    window.addEventListener("popstate", function (e) {
+      if (e.state && e.state.coll) swap(location.pathname + location.search);
+    });
+
+    initRefine();
   }
 
-  // Product: thumbnail gallery
-  var main = document.getElementById("ProductMainImage");
-  if (main) {
-    document.querySelectorAll(".product-thumbs .thumb").forEach(function (t) {
-      t.addEventListener("click", function () { main.src = t.dataset.src; });
-    });
-  }
+  // Product: gallery + lightbox — géré dans main-product.liquid (contexte Liquid des médias)
 
   // Product: variant select -> price update
   var sel = document.getElementById("VariantSelect");
