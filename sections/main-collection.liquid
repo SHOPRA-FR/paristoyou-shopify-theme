@@ -24,8 +24,27 @@
       {%- else -%}
         {%- paginate collection.products by 52 -%}
           <div id="CollResults">
+            {%- comment -%} Filtre marque = pastilles avec logo ; les autres filtres restent en select {%- endcomment -%}
+            {%- assign vendor_filter = null -%}
             {%- assign has_active = false -%}
-            {%- for f in collection.filters -%}{%- if f.active_values.size > 0 -%}{%- assign has_active = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
+            {%- for f in collection.filters -%}
+              {%- if f.param_name == 'filter.p.vendor' -%}{%- assign vendor_filter = f -%}{%- endif -%}
+              {%- if f.active_values.size > 0 -%}{%- assign has_active = true -%}{%- endif -%}
+            {%- endfor -%}
+            {%- assign active_vendor = '' -%}
+            {%- if vendor_filter -%}{%- for v in vendor_filter.values -%}{%- if v.active -%}{%- assign active_vendor = v.value -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+
+            {%- if vendor_filter and vendor_filter.values.size > 0 -%}
+              <div class="brand-chips" role="group" aria-label="{{ vendor_filter.label | escape }}">
+                {%- for v in vendor_filter.values -%}
+                  <button type="button" class="brand-chip{% if v.active %} active{% endif %}" data-vendor="{{ v.value | escape }}" aria-pressed="{% if v.active %}true{% else %}false{% endif %}">
+                    {% render 'brand-logo', brand: v.value, size: 26 %}
+                    <span class="brand-chip-name">{{ v.label }}</span>
+                    <span class="brand-chip-count">{{ v.count }}</span>
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
 
             <div class="cat-bar">
               {%- if section.settings.show_search -%}
@@ -40,8 +59,9 @@
 
                 {%- comment -%} Facettes natives : marque, type, tag… (selon ce qui est activé dans Search & Discovery) {%- endcomment -%}
                 <form method="get" id="CollFilters" class="cat-filters">
+                  {%- if vendor_filter -%}<input type="hidden" name="filter.p.vendor" id="VendorInput" value="{{ active_vendor | escape }}">{%- endif -%}
                   {%- for filter in collection.filters -%}
-                    {%- if filter.type == 'list' and filter.values.size > 0 -%}
+                    {%- if filter.param_name != 'filter.p.vendor' and filter.type == 'list' and filter.values.size > 0 -%}
                       <select class="cat-select" name="{{ filter.param_name }}" data-native aria-label="{{ filter.label | escape }}" onchange="if(!window.__collAjax){this.form.submit();}">
                         <option value="">{{ filter.label }}</option>
                         {%- for v in filter.values -%}

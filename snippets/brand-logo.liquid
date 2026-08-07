@@ -1,0 +1,56 @@
+{%- comment -%}
+  Logo d'une marque, à partir du nom de vendor.
+  Usage : {% render 'brand-logo', brand: product.vendor, size: 18 %}
+
+  Le nom est NORMALISÉ (minuscules, sans apostrophe/espace/accent/&/-/.) avant
+  comparaison → robuste aux variations (ex. « Church's » vs « Church’s », la
+  valeur du filtre Shopify pouvant différer de product.vendor).
+  Résolution : host connu → favicon Google auto ; si Google n'a pas la marque
+  (ex. Claudie Pierlot → 404), URL explicite vérifiée. Inconnu → aucun logo.
+{%- endcomment -%}
+{%- assign key = brand | downcase | strip | replace: "'", "" | replace: "’", "" | replace: " ", "" | replace: "&", "" | replace: "-", "" | replace: ".", "" | replace: "é", "e" | replace: "è", "e" -%}
+{%- assign host = '' -%}
+{%- assign logo = '' -%}
+{%- case key -%}
+  {%- when 'poloralphlauren', 'ralphlauren' -%}{%- assign host = 'ralphlauren.com' -%}
+  {%- when 'versace' -%}{%- assign host = 'versace.com' -%}
+  {%- when 'miumiu' -%}{%- assign host = 'miumiu.com' -%}
+  {%- when 'churchs' -%}{%- assign host = 'church-footwear.com' -%}
+  {%- when 'claudiepierlot' -%}{%- assign logo = 'https://claudiepierlot.com/favicon.ico' -%}
+  {%- when 'balenciaga' -%}{%- assign host = 'balenciaga.com' -%}
+  {%- when 'longchamp' -%}{%- assign host = 'longchamp.com' -%}
+  {%- when 'gucci' -%}{%- assign host = 'gucci.com' -%}
+  {%- when 'prada' -%}{%- assign logo = 'https://icons.duckduckgo.com/ip3/prada.com.ico' -%}
+  {%- when 'saintlaurent', 'yvessaintlaurent' -%}{%- assign host = 'ysl.com' -%}
+  {%- when 'balmain' -%}{%- assign host = 'balmain.com' -%}
+  {%- when 'givenchy' -%}{%- assign host = 'givenchy.com' -%}
+  {%- when 'fendi' -%}{%- assign logo = 'https://icons.duckduckgo.com/ip3/www.fendi.com.ico' -%}
+  {%- when 'burberry' -%}{%- assign host = 'burberry.com' -%}
+  {%- when 'moncler' -%}{%- assign host = 'moncler.com' -%}
+  {%- when 'loewe' -%}{%- assign host = 'loewe.com' -%}
+  {%- when 'valentino' -%}{%- assign host = 'valentino.com' -%}
+  {%- when 'dolcegabbana' -%}{%- assign host = 'dolcegabbana.com' -%}
+  {%- when 'jacquemus' -%}{%- assign host = 'jacquemus.com' -%}
+  {%- when 'isabelmarant' -%}{%- assign logo = 'https://icons.duckduckgo.com/ip3/isabelmarant.com.ico' -%}
+  {%- when 'chloe' -%}{%- assign host = 'chloe.com' -%}
+  {%- when 'marni' -%}{%- assign host = 'marni.com' -%}
+  {%- when 'kenzo' -%}{%- assign host = 'kenzo.com' -%}
+  {%- when 'tods' -%}{%- assign host = 'tods.com' -%}
+  {%- when 'goldengoose' -%}{%- assign logo = 'https://icons.duckduckgo.com/ip3/goldengoose.com.ico' -%}
+  {%- when 'sandro' -%}{%- assign host = 'sandro-paris.com' -%}
+  {%- when 'maje' -%}{%- assign host = 'maje.com' -%}
+  {%- when 'zadigvoltaire' -%}{%- assign host = 'zadig-et-voltaire.com' -%}
+  {%- when 'lacoste' -%}{%- assign host = 'lacoste.com' -%}
+  {%- when 'michaelkors' -%}{%- assign host = 'michaelkors.com' -%}
+  {%- when 'tommyhilfiger' -%}{%- assign host = 'tommy.com' -%}
+  {%- when 'boss', 'hugoboss' -%}{%- assign host = 'hugoboss.com' -%}
+  {%- when 'maxmara' -%}{%- assign host = 'maxmara.com' -%}
+  {%- when 'marcjacobs' -%}{%- assign host = 'marcjacobs.com' -%}
+{%- endcase -%}
+{%- if logo == blank and host != blank -%}
+  {%- assign logo = 'https://www.google.com/s2/favicons?domain=' | append: host | append: '&sz=64' -%}
+{%- endif -%}
+{%- if logo != blank -%}
+  {%- assign lsize = size | default: 18 -%}
+  <img class="brand-logo-img" src="{{ logo | escape }}" alt="{{ brand | escape }}" width="{{ lsize }}" height="{{ lsize }}" loading="lazy" onerror="this.style.display='none'">
+{%- endif -%}

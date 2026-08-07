@@ -97,7 +97,7 @@ img{max-width:100%;display:block}
 .site-header.scrolled .header-bar{height:60px}
 .logo{
   font-family:"Playfair Display",Georgia,serif;
-  font-weight:600;font-size:1.55rem;letter-spacing:.06em;line-height:1;
+  font-weight:600;font-size:1.95rem;letter-spacing:.06em;line-height:1;
   color:var(--text);grid-column:2;text-align:center;min-width:0;
 }
 .logo img{height:34px;width:auto;max-width:100%;object-fit:contain}
@@ -418,7 +418,9 @@ img{max-width:100%;display:block}
 .product-card-vendor{
   font-size:.57rem;text-transform:uppercase;letter-spacing:.17em;
   color:var(--muted);font-weight:400;
+  display:inline-flex;align-items:center;gap:6px;
 }
+.brand-logo-img{object-fit:contain;border-radius:3px;background:#fff;flex-shrink:0;vertical-align:middle}
 .product-card-title{font-weight:300;font-size:.86rem;line-height:1.35;color:var(--text);font-family:"Inter",system-ui,sans-serif;transition:color .3s}
 .product-card:hover .product-card-title{color:#000}
 .product-card-price{margin-top:auto;padding-top:6px;font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:.85rem;font-weight:400;color:var(--text)}
@@ -452,6 +454,15 @@ img{max-width:100%;display:block}
 .cat-select:focus{outline:none;color:#000}
 .cat-filters{display:contents} /* le <form> des filtres natifs ne casse pas le flex de .cat-tools */
 #CollResults{transition:opacity .2s ease}
+
+/* Filtre marque en pastilles avec logo */
+.brand-chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:36px 0 0}
+.brand-chip{display:inline-flex;align-items:center;gap:10px;padding:10px 20px 10px 14px;border:1px solid rgba(0,0,0,.16);border-radius:100px;background:transparent;cursor:pointer;font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:.84rem;letter-spacing:.02em;color:var(--text);transition:border-color .2s,background .2s,color .2s}
+.brand-chip:hover{border-color:var(--text)}
+.brand-chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.brand-chip-name{white-space:nowrap}
+.brand-chip-count{font-size:.7rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.brand-chip.active .brand-chip-count{color:rgba(255,255,255,.55)}
 
 .collection-none{padding:56px 0}
 .pagination{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:56px}
@@ -802,7 +813,7 @@ img{max-width:100%;display:block}
   .site-header.scrolled .header-bar{height:60px}
   .burger{display:flex}
   .header-lang{display:none} /* en mobile la langue est dans le menu (nav-lang-mobile) */
-  .logo{grid-column:2;font-size:1.35rem}
+  .logo{grid-column:2;font-size:1.6rem}
   .header-actions{grid-column:3}
   .header-account-link{display:none}
   .main-nav{

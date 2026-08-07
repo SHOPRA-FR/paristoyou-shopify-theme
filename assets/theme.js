@@ -243,17 +243,34 @@
         .catch(function () { window.location.href = url; });
     };
 
-    collSection.addEventListener("change", function (e) {
-      if (!e.target.matches("select[data-native]")) return;
+    // Construit l'URL filtrée depuis le <form> (marque cachée + type/tag) et met à jour.
+    function applyFilters(){
       var form = document.getElementById("CollFilters");
       if (!form) return;
       var clean = new URLSearchParams();
       new URLSearchParams(new FormData(form)).forEach(function (v, k) { if (v) clean.append(k, v); });
       var qs = clean.toString();
       swap(collUrl + (qs ? "?" + qs : ""));
+    }
+
+    collSection.addEventListener("change", function (e) {
+      if (e.target.matches("select[data-native]")) applyFilters();
     });
 
     collSection.addEventListener("click", function (e) {
+      // Pastille de marque → met à jour le champ vendor caché (toggle) puis refiltre
+      var chip = e.target.closest(".brand-chip");
+      if (chip) {
+        e.preventDefault();
+        var input = document.getElementById("VendorInput");
+        if (input) {
+          var val = chip.dataset.vendor || "";
+          input.value = (input.value === val) ? "" : val;
+        }
+        applyFilters();
+        return;
+      }
+      // Reset + pagination → AJAX vers l'URL du lien
       var a = e.target.closest("#CollReset, .pagination a[href]");
       if (!a) return;
       var href = a.getAttribute("href");

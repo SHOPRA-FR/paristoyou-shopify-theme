@@ -49,7 +49,7 @@
     {%- unless product.available -%}<span class="badge sold-out">{{ 'products.product.sold_out' | t }}</span>{%- endunless -%}
   </div>
   <div class="product-card-info">
-    {%- if product.vendor != blank -%}<span class="product-card-vendor">{{ product.vendor }}</span>{%- endif -%}
+    {%- if product.vendor != blank -%}<span class="product-card-vendor">{% render 'brand-logo', brand: product.vendor, size: 15 %}{{ product.vendor }}</span>{%- endif -%}
     <span class="product-card-title">{{ display_title }}</span>
     <span class="product-card-price">
       {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
