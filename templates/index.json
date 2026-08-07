@@ -1,29 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
         "kicker": "Personal Shopper · Paris",
-        "title": "Paris luxury,\ndelivered to you.",
+        "title": "Luxury Outlet\n\n\n\nParis to you.",
         "subtitle": "Hand-picked from Paris outlets, shipped worldwide with care.",
         "cta_label": "Explore the collection",
         "cta_link": "/collections/all",
-        "show_brands_marquee": true
+        "show_products_bg": true,
+        "bg_collection": "",
+        "show_brands_marquee": true,
+        "marquee_speed": 100,
+        "brands_list": "Acne Studios|acnestudios.com|\nAmi Paris|amiparis.com|\nAnne Fontaine|annefontaine.com|-\nApple|apple.com|\nArmani|armani.com|\nAxel Arigato|axelarigato.com|\nba&sh|ba-sh.com|\nBaccarat|baccarat.com|\nBalenciaga|balenciaga.com|\nBalmain|balmain.com|\nBerenice|berenice.net|-\nBEXLEY|bexley.com|\nBIRKENSTOCK|www.birkenstock.com|\nBonpoint|bonpoint.com|\nBOSS|hugoboss.com|\nBrunello Cucinelli|www.brunellocucinelli.com|\nBurberry|burberry.com|\nBYREDO|byredo.com|\nCalvin Klein|www.calvinklein.com|\nCalzedonia|www.calzedonia.com|https://icons.duckduckgo.com/ip3/www.calzedonia.com.ico\nCharles Tyrwhitt|charlestyrwhitt.com|\nChloé|chloe.com|\nChristian Louboutin|christianlouboutin.com|\nClarins|clarins.com|https://icons.duckduckgo.com/ip3/clarins.com.ico\nClaudie Pierlot|claudiepierlot.com|https://claudiepierlot.com/favicon.ico\nDiesel|diesel.com|\nDiptyque|diptyqueparis.com|\nDolce & Gabbana|dolcegabbana.com|\nFATHER & SONS|fatherandsons.fr|\nFendi|www.fendi.com|https://icons.duckduckgo.com/ip3/www.fendi.com.ico\nFerragamo|www.ferragamo.com|https://www.ferragamo.com/favicon.ico\nFigaret|figaret.com|\nFred Perry|fredperry.com|\nFurla|furla.com|https://icons.duckduckgo.com/ip3/furla.com.ico\nFusalp|fusalp.com|\nGerard Darel|gerarddarel.com|https://icons.duckduckgo.com/ip3/gerarddarel.com.ico\nGivenchy|givenchy.com|https://givenchy.com/favicon.ico\nGolden Goose|goldengoose.com|https://icons.duckduckgo.com/ip3/goldengoose.com.ico\nGucci|www.gucci.com|\nHackett London|hackett.com|\nHamilton|www.hamiltonwatch.com|\nHORACE|horace.com|\nIntimissimi|www.intimissimi.com|https://icons.duckduckgo.com/ip3/www.intimissimi.com.ico\nIsabel Marant|isabelmarant.com|https://icons.duckduckgo.com/ip3/isabelmarant.com.ico\nIssey Miyake|isseymiyake.com|\nJ.M. Weston|jmweston.com|\nJacquemus|jacquemus.com|-\nJimmy Choo|jimmychoo.com|\nK-Way|k-way.com|\nKARL LAGERFELD|karllagerfeld.com|\nKENZO|kenzo.com|\nL'Artisan Parfumeur|artisanparfumeur.com|\nL'Occitane en Provence|loccitane.com|\nLacoste|lacoste.com|\nLancel|lancel.com|https://icons.duckduckgo.com/ip3/lancel.com.ico\nLevi's|levi.com|\nLOEWE|loewe.com|\nLongchamp|longchamp.com|\nLongines|www.longines.com|\nLoro Piana|loropiana.com|\nlululemon|lululemon.com|\nMaje|maje.com|\nMarc Jacobs|marcjacobs.com|\nMarni|marni.com|\nMauboussin|mauboussin.com|-\nMax Mara|maxmara.com|\nMcQueen|alexandermcqueen.com|https://www.google.com/s2/favicons?domain=www.alexandermcqueen.com&sz=128\nMichael Kors|michaelkors.com|\nMiu Miu|miumiu.com|https://miumiu.com/favicon.ico\nMoncler|moncler.com|\nMontblanc|montblanc.com|-\nNike|nike.com|\nOn|on.com|\nPolo Ralph Lauren|ralphlauren.com|\nPrada|prada.com|https://icons.duckduckgo.com/ip3/prada.com.ico\nRabanne|rabanne.com|\nRado|www.rado.com|\nRepetto|repetto.com|https://icons.duckduckgo.com/ip3/repetto.com.ico\nSaint Laurent|ysl.com|\nSandro|sandro-paris.com|\nStone Island|stoneisland.com|\nThe North Face|thenorthface.com|\nTimberland|timberland.com|\nTissot|tissotwatches.com|https://icons.duckduckgo.com/ip3/tissotwatches.com.ico\nTod's|tods.com|\nTommy Hilfiger|www.tommy.com|-\nTory Burch|toryburch.com|\nUGG|ugg.com|\nValentino|valentino.com|\nVEJA|veja-store.com|\nVersace|www.versace.com|\nVilebrequin|www.vilebrequin.com|\nYves Salomon|yves-salomon.com|\nZadig&Voltaire|zadig-et-voltaire.com|\nZEGNA|zegna.com|-\nZIMMERMANN|zimmermann.com|"
       }
     },
     "offers": {
       "type": "weekly-offers",
-      "settings": {}
+      "settings": {
+        "kicker": "",
+        "title": "Just added, at outlet price",
+        "subtitle": "The latest pieces spotted and price-checked in the Paris outlets.",
+        "collection": "",
+        "count": 4,
+        "note": "Offers vary daily — sign in and send your list to check what's available today.",
+        "empty_note": "New arrivals coming soon.",
+        "cta_label": "See the full catalog",
+        "cta_link": "shopify://collections"
+      }
     },
     "asym": {
       "type": "editorial-asym",
+      "disabled": true,
       "settings": {
         "kicker": "The service",
         "title": "Parisian elegance,\nwithout the journey.",
         "text": "Every piece is hand-selected in the Paris outlets, authenticated, and shipped to your doorstep — no markup games, no compromise on quality. Just the best of French luxury at prices that finally make sense.",
         "points": "Hand-selected & authenticated|Real outlet prices|Tracked worldwide delivery",
         "cta_label": "See pricing",
-        "cta_link": "#pricing"
+        "cta_link": "#pricing",
+        "image_asset": "service.jpg"
+      }
+    },
+    "selection": {
+      "type": "featured-brands",
+      "settings": {
+        "kicker": "",
+        "title": "Handpicked, at outlet price",
+        "subtitle": "A glimpse of what I find in the Paris outlets. Ask for any of these — or anything similar.",
+        "collection": "",
+        "count": 10,
+        "carousel_speed": 1,
+        "card_cta": "View & order →",
+        "empty_note": "Selection coming soon.",
+        "cta_label": "Browse the full catalog",
+        "cta_link": "shopify://collections"
       }
     },
     "howscroll": {
@@ -35,7 +75,7 @@
             "image_asset": "how-1.jpg",
             "benefit": "No travel needed",
             "title": "Send your wishlist",
-            "text": "Paste the links of the items you want — sizes, colors, budget. Straight from your phone: no visa, no flights, no hotel."
+            "text": "Paste the links of the items you want (sizes, colors, budget)."
           }
         },
         "s2": {
@@ -44,7 +84,7 @@
             "image_asset": "how-2.jpg",
             "benefit": "Outlet prices, always",
             "title": "I scout, you validate",
-            "text": "I go to La Vallée Village & Val d'Europe, send you real-time photos and outlet prices. Nothing is bought without your go."
+            "text": "I go to La Vallée Village, send you real-time photos and outlet prices."
           }
         },
         "s3": {
@@ -53,23 +93,19 @@
             "image_asset": "how-3.jpg",
             "benefit": "Delivered worldwide",
             "title": "We settle & ship",
-            "text": "Final payment, careful packing and tracked Colissimo delivery to your door — Europe, Turkey & beyond."
+            "text": "Final payment, careful packing, and tracked home delivery worldwide."
           }
         }
       },
-      "block_order": ["s1", "s2", "s3"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
       "settings": {
         "kicker": "How it works",
-        "title": "Three simple steps"
-      }
-    },
-    "selection": {
-      "type": "featured-brands",
-      "settings": {
-        "kicker": "The selection",
-        "title": "Handpicked, at outlet price",
-        "subtitle": "A glimpse of what I find in the Paris outlets. Ask for any of these — or anything similar.",
-        "count": 10
+        "title": "Three simple steps",
+        "step_vh": 110
       }
     },
     "pricing": {
@@ -79,28 +115,61 @@
           "type": "row",
           "settings": {
             "label": "Minimum commission",
-            "value": "300 €"
+            "value": "300 €",
+            "muted": false
           }
         },
         "r2": {
           "type": "row",
           "settings": {
             "label": "Delivery",
-            "value": "Tracked parcel · Europe & worldwide"
+            "value": "Tracked parcel · Europe & worldwide",
+            "muted": false
           }
         }
       },
-      "block_order": ["r1", "r2"],
+      "block_order": [
+        "r1",
+        "r2"
+      ],
       "settings": {
         "kicker": "Pricing",
-        "title": "20% commission, nothing hidden",
-        "subtitle": "20% commission on your purchases (minimum 300 €), and no minimum spend. That commission covers the outlet trips, the scouting, the photos, the packing and the shipping — slide below to see what it looks like for your budget.",
+        "title": "The commission, nothing hidden",
+        "subtitle": "20% commission on your purchases, and no minimum spend. That commission covers the outlet trips, the scouting, the photos, the packing and the shipping.",
         "rate_label": "commission on your purchases",
+        "included": "Outlet trips & in-store scouting|Real-time photos & a quick debrief before I buy|Secure packing & tracked shipping",
+        "example_amounts": "500,1500,3000",
+        "ex_prefix": "You spend",
+        "ex_fee_prefix": "commission",
         "rate_note": "Minimum 300 € · No minimum purchase",
         "show_simulator": true,
         "show_travel": false,
         "show_versus": false,
-        "example_amounts": "500,1500,3000"
+        "sim_title": "Commission simulator",
+        "sim_label": "Amount of your purchases (€)",
+        "sim_purchases": "Your purchases",
+        "sim_commission": "My commission",
+        "sim_total": "Estimated total",
+        "sim_note": "Indicative estimate before delivery. A firm quote is validated together before any deposit.",
+        "travel_title": "vs. a shopping trip to Paris",
+        "flight_label": "Round-trip flight",
+        "flight_default": 300,
+        "hotel_label": "Hotel nights",
+        "nights_default": 3,
+        "night_price": 150,
+        "travel_total_label": "Trip cost you avoid",
+        "save_label": "You save",
+        "save_suffix": "vs travelling to Paris yourself — plus the visa, the week off and the restaurants.",
+        "jeans_title": "Real example — the same designer jeans",
+        "jeans_l1": "In Turkey (import taxes)",
+        "jeans_v1": "180 €",
+        "jeans_n1": "typical local price",
+        "jeans_l2": "Europe boutique price",
+        "jeans_v2": "100 €",
+        "jeans_n2": "regular retail",
+        "jeans_l3": "My outlet price",
+        "jeans_v3": "50 – 70 €",
+        "jeans_n3": "−30% to −50% in boutique"
       }
     },
     "letters": {
@@ -134,7 +203,11 @@
           }
         }
       },
-      "block_order": ["q1", "q2", "q3"],
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
       "settings": {
         "kicker": "FAQ",
         "title": "Frequently asked questions"
@@ -142,15 +215,22 @@
     },
     "contact": {
       "type": "contact-cta",
-      "settings": {}
+      "settings": {
+        "title": "Book your appointment",
+        "subtitle": "Limited slots per week. Tell me what you're looking for.",
+        "wa_label": "WhatsApp",
+        "auth_message": "Please sign in or create an account to contact us.",
+        "auth_cta_label": "Sign in",
+        "auth_register_label": "Create an account"
+      }
     }
   },
   "order": [
     "hero",
-    "asym",
-    "howscroll",
     "offers",
+    "asym",
     "selection",
+    "howscroll",
     "pricing",
     "letters",
     "faq",
