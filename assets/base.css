@@ -463,6 +463,12 @@ img{max-width:100%;display:block}
 .brand-chip-name{white-space:nowrap}
 .brand-chip-count{font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:.6rem;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums;align-self:flex-start;margin-top:1px}
 .brand-chip.active .brand-chip-count{color:rgba(255,255,255,.55)}
+/* Mobile : carousel horizontal (swipe) au lieu de pastilles empilées */
+@media (max-width:760px){
+  .brand-chips{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x proximity;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+  .brand-chips::-webkit-scrollbar{display:none}
+  .brand-chip{flex-shrink:0;scroll-snap-align:start}
+}
 
 .collection-none{padding:56px 0}
 .pagination{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:56px}
