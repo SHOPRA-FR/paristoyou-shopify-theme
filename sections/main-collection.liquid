@@ -38,7 +38,7 @@
               <div class="brand-chips" role="group" aria-label="{{ vendor_filter.label | escape }}">
                 {%- for v in vendor_filter.values -%}
                   <button type="button" class="brand-chip{% if v.active %} active{% endif %}" data-vendor="{{ v.value | escape }}" aria-pressed="{% if v.active %}true{% else %}false{% endif %}">
-                    {% render 'brand-logo', brand: v.value, size: 26 %}
+                    {% render 'brand-logo', brand: v.value, size: 28 %}
                     <span class="brand-chip-name">{{ v.label }}</span>
                     <span class="brand-chip-count">{{ v.count }}</span>
                   </button>

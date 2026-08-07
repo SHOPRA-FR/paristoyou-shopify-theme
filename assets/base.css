@@ -456,12 +456,12 @@ img{max-width:100%;display:block}
 #CollResults{transition:opacity .2s ease}
 
 /* Filtre marque en pastilles avec logo */
-.brand-chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:36px 0 0}
-.brand-chip{display:inline-flex;align-items:center;gap:10px;padding:10px 20px 10px 14px;border:1px solid rgba(0,0,0,.16);border-radius:100px;background:transparent;cursor:pointer;font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:.84rem;letter-spacing:.02em;color:var(--text);transition:border-color .2s,background .2s,color .2s}
+.brand-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:36px 0 0}
+.brand-chip{display:inline-flex;align-items:center;gap:11px;padding:11px 18px;border:1px solid rgba(0,0,0,.18);border-radius:2px;background:transparent;cursor:pointer;font-family:"Playfair Display",Georgia,serif;font-size:1rem;font-weight:500;letter-spacing:.01em;color:var(--text);transition:border-color .2s,background .2s,color .2s}
 .brand-chip:hover{border-color:var(--text)}
 .brand-chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
 .brand-chip-name{white-space:nowrap}
-.brand-chip-count{font-size:.7rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.brand-chip-count{font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:.6rem;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums;align-self:flex-start;margin-top:1px}
 .brand-chip.active .brand-chip-count{color:rgba(255,255,255,.55)}
 
 .collection-none{padding:56px 0}
